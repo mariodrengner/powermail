@@ -423,7 +423,7 @@ class tx_powermail_html extends tslib_pibase {
 				$markerArray['###MANDATORY_HELPER###'] = '';
 				// Add required class if needed
 				if ($preSelectionFound == false && $i == 0 && $this->pi_getFFvalue(t3lib_div::xml2array($this->xml), 'mandatory') == 1) {
-					$markerArray['###CLASS###'] .= 'required_one ';
+					//$markerArray['###CLASS###'] .= 'required_one ';
 					$markerArray['###VALUE###'] = 'value="" ';
 					$markerArray['###CHECKED###'] = 'checked="checked" ';
 					$markerArray['###MANDATORY_HELPER###'] = ' powermail_mandatory_helper';
@@ -753,9 +753,11 @@ class tx_powermail_html extends tslib_pibase {
 
 		$this->markerArray['###PLACEHOLDER###'] = 'placeholder="' . $this->pi_getLL('JSvalidation_dateinput_format', 'yyyy-mm-dd') . ' hh:mm" ';
 
+		/*
 		if ($this->markerArray['###ACCESSKEY###'] != '') { // if there is a defined accesskey
 			$params['inputField']['accesskey'] = $this->accesskeyarray[$i][2]; // set accesskey for datefield
 		}
+		*/
 
 		$this->html_hookwithinfields(); // adds hook to manipulate the markerArray for any field
 		$content = tslib_cObj::substituteMarkerArrayCached($this->tmpl['html_datetime'], $this->markerArray); // substitute Marker in Template
@@ -826,9 +828,11 @@ class tx_powermail_html extends tslib_pibase {
 			$this->markerArray['###MAX###'] = '';
 		}
 
+		/*
 		if ($this->markerArray['###ACCESSKEY###'] != '') { // if there is a defined accesskey
 			$params['inputField']['accesskey'] = $this->accesskeyarray[$i][2]; // set accesskey for datefield
 		}
+		*/
 
 		$this->markerArray['###PLACEHOLDER###'] = 'placeholder="' . $this->pi_getLL('JSvalidation_dateinput_format', 'yyyy-mm-dd') . '" ';
 

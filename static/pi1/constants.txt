@@ -77,13 +77,13 @@ plugin.powermail {
 
 
 	# cat=powermail validation client/powermail_javascript_files/0270; type=file[js]; label= Path to jQuery
-	js.jQueryPath = http://ajax.googleapis.com/ajax/libs/jquery/1.6/jquery.min.js
+	js.jQueryPath = http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js
 
 	# cat=powermail validation client/powermail_javascript_files/0280; type=file[js]; label= Path to jQueryTools Form
-	js.jQueryToolsFormPath = http://cdn.jquerytools.org/1.2.6/form/jquery.tools.min.js
+	js.jQueryToolsFormPath = http://cdn.jquerytools.org/1.2.7/form/jquery.tools.min.js
 
 	# cat=powermail validation client/powermail_javascript_files/0290; type=file[js]; label= Path to jQueryTools Tiny
-	js.jQueryToolsTinyPath = http://cdn.jquerytools.org/1.2.6/tiny/jquery.tools.min.js
+	js.jQueryToolsTinyPath = http://cdn.jquerytools.org/1.2.7/tiny/jquery.tools.min.js
 
 	# cat=powermail validation client/enable/0300; type=boolean; label= Activate javascript validation: (De)activate javascript validation in fields
 	js.validation = 1
