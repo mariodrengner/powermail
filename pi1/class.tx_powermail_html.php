@@ -319,7 +319,7 @@ class tx_powermail_html extends tslib_pibase {
 				$markerArray['###CLASS###'] .= ' powermail_uid' . $this->uid; // add input uid
 				$markerArray['###CLASS###'] .= ' powermail_subuid' . $this->uid . '_' . $i; // add input subuid
 				$markerArray['###CLASS###'] .= ($this->class_f != '' && $this->additionalCssToInputField)
-						? ' ' . htmlspecialchars($this->class_f) : ''; // add manual class
+						? ' ' . t3lib_div::removeXSS($this->class_f) : ''; // add manual class
 				$markerArray['###CLASS###'] .= '" '; // close tag
 				$markerArray['###HIDDENVALUE###'] = 'value="' . $this->piVarsFromSession['uid' . $this->uid][$i] . '"'; // add value for hidden field to markerArray
 				if ($this->pi_getFFvalue(t3lib_div::xml2array($this->xml), 'mandatory') == 1) {
@@ -442,7 +442,7 @@ class tx_powermail_html extends tslib_pibase {
 				$markerArray['###CLASS###'] .= ' powermail_uid' . $this->uid; // add input uid
 				$markerArray['###CLASS###'] .= ' powermail_subuid' . $this->uid . '_' . $i; // add input subuid
 				$markerArray['###CLASS###'] .= ($this->class_f != '' && $this->additionalCssToInputField)
-						? ' ' . htmlspecialchars($this->class_f) : ''; // add manual class
+						? ' ' . t3lib_div::removeXSS($this->class_f) : ''; // add manual class
 				$markerArray['###CLASS###'] .= '" '; // close tag
 				$this->turnedtabindex[$this->uid . '_' . $i] !== ''
 						? $markerArray['###TABINDEX###'] = 'tabindex="' . ($this->turnedtabindex[$this->uid . '_' . $i] + 1) . '" '
@@ -505,7 +505,7 @@ class tx_powermail_html extends tslib_pibase {
 		$this->markerArray['###CLASS###'] = 'class="powermail_' . $this->formtitle; // add formname
 		$this->markerArray['###CLASS###'] .= ' powermail_' . $this->type; // add type
 		$this->markerArray['###CLASS###'] .= ' powermail_uid' . $this->uid; // add field uid
-		$this->markerArray['###CLASS###'] .= ($this->class_f != '' && $this->additionalCssToInputField) ? ' ' . htmlspecialchars($this->class_f) : ''; // Add manual class
+		$this->markerArray['###CLASS###'] .= ($this->class_f != '' && $this->additionalCssToInputField) ? ' ' . t3lib_div::removeXSS($this->class_f) : ''; // Add manual class
 		$this->markerArray['###CLASS###'] .= '" '; // close tag
 		$this->markerArray['###VALUE###'] = 'value="' . $this->title . '" ';
 
@@ -535,7 +535,7 @@ class tx_powermail_html extends tslib_pibase {
 		$this->markerArray['###CLASS###'] = 'class="powermail_' . $this->formtitle; // add formname
 		$this->markerArray['###CLASS###'] .= ' powermail_' . $this->type; // add type
 		$this->markerArray['###CLASS###'] .= ' powermail_submit_uid' . $this->uid; // add field uid
-		$this->markerArray['###CLASS###'] .= ($this->class_f != '' && $this->additionalCssToInputField) ? ' ' . htmlspecialchars($this->class_f) : ''; // Add manual class
+		$this->markerArray['###CLASS###'] .= ($this->class_f != '' && $this->additionalCssToInputField) ? ' ' . t3lib_div::removeXSS($this->class_f) : ''; // Add manual class
 		$this->markerArray['###CLASS###'] .= '" '; // close tag
 		$this->markerArray['###VALUE###'] = 'value="' . $this->title . '" ';
 
@@ -576,7 +576,7 @@ class tx_powermail_html extends tslib_pibase {
 		$this->markerArray['###CLASS###'] = 'class="powermail_' . $this->formtitle;
 		$this->markerArray['###CLASS###'] .= ' powermail_' . $this->type;
 		$this->markerArray['###CLASS###'] .= ' powermail_submit_uid' . $this->uid;
-		$this->markerArray['###CLASS###'] .= ($this->class_f != '' && $this->additionalCssToInputField) ? ' ' . htmlspecialchars($this->class_f) : '';
+		$this->markerArray['###CLASS###'] .= ($this->class_f != '' && $this->additionalCssToInputField) ? ' ' . t3lib_div::removeXSS($this->class_f) : '';
 		$this->markerArray['###CLASS###'] .= '" ';
 
 		$this->html_hookwithinfields(); // adds hook to manipulate the markerArray for any field
@@ -1132,7 +1132,7 @@ class tx_powermail_html extends tslib_pibase {
 			}
 		}
 		if ($this->pi_getFFvalue(t3lib_div::xml2array($this->xml), 'inputtype') != '' && $this->type == 'text') {
-			$this->markerArray['###TYPE###'] = htmlspecialchars($this->pi_getFFvalue(t3lib_div::xml2array($this->xml), 'inputtype'));
+			$this->markerArray['###TYPE###'] = t3lib_div::removeXSS($this->pi_getFFvalue(t3lib_div::xml2array($this->xml), 'inputtype'));
 		}
 		// class="required powermail_title powermail_text powermail_uid12"
 		$this->markerArray['###CLASS###'] = 'class="'; // open tag
@@ -1145,14 +1145,14 @@ class tx_powermail_html extends tslib_pibase {
 		}
 
 		// Add manual class
-		$this->markerArray['###CLASS###'] .= ($this->class_f != '' && $this->additionalCssToInputField) ? ' ' . htmlspecialchars($this->class_f) : '';
+		$this->markerArray['###CLASS###'] .= ($this->class_f != '' && $this->additionalCssToInputField) ? ' ' . t3lib_div::removeXSS($this->class_f) : '';
 		if ($this->type == 'datetime') {
 			$this->markerArray['###CLASS_TIME###'] = $this->markerArray['###CLASS###'] . ' powermail_time' . '" ';
 		}
 		$this->markerArray['###CLASS###'] .= '" '; // close tag
 
 		// Add manual class to outer div
-		$this->markerArray['###CLASS_ADDITIONAL###'] .= ($this->class_f != '' && !$this->additionalCssToInputField) ? ' ' . htmlspecialchars($this->class_f) : '';
+		$this->markerArray['###CLASS_ADDITIONAL###'] .= ($this->class_f != '' && !$this->additionalCssToInputField) ? ' ' . t3lib_div::removeXSS($this->class_f) : '';
 
 		// ###SIZE###
 		if ($this->pi_getFFvalue(t3lib_div::xml2array($this->xml), 'size')) { // if size is set in flexform

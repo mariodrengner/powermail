@@ -114,11 +114,11 @@ class tx_powermail_markers extends tslib_pibase {
 				    $i = 1;
 					foreach ($v as $key => $file) {
 						$markerArray['###POWERMAIL_EVEN_ODD###'] = $markerArray['###POWERMAIL_EVEN_ODD###'] == 'even' ? 'odd' : 'even';
-						$this->markerArray['###' . strtoupper($k) . '_' . $key . '###'] = stripslashes($this->div->nl2br2($file)); // Filename
+						$this->markerArray['###' . strtoupper($k) . '_' . $key . '###'] = t3lib_div::removeXSS(stripslashes($this->div->nl2br2($file))); // Filename
 						$this->markerArray['###LABEL_' . strtolower($k) . '_' . $key . '###'] = sprintf($this->pi_getLL('locallangmarker_confirmation_files','Attached file %s: '), $i); // Label to filename
 						if (!in_array(strtoupper($k), $this->notInMarkerAll) && !in_array('###' . strtoupper($k) . '###', $this->notInMarkerAll)) {
 							$markerArray['###POWERMAIL_LABEL###'] = sprintf($this->pi_getLL('locallangmarker_confirmation_files','Attached file %s: '), $i);
-							$markerArray['###POWERMAIL_VALUE###'] = stripslashes($this->div->nl2br2($file));
+							$markerArray['###POWERMAIL_VALUE###'] = t3lib_div::removeXSS(stripslashes($this->div->nl2br2($file)));
                             if (!!$this->conf['upload.']['addLinkToUploads'] && $this->what == 'recipient_mail') {
                                 $markerArray['###POWERMAIL_VALUE###'] = '<a href="' . $this->baseURL . $this->uploadFolder . $markerArray['###POWERMAIL_VALUE###'] . '" target="_blank">' . $markerArray['###POWERMAIL_VALUE###'] . '</a>';
                             }
@@ -132,7 +132,7 @@ class tx_powermail_markers extends tslib_pibase {
 					if (is_numeric(str_replace('uid', '', $k))) { // use only piVars like UID555
 						if (!is_array($v)) { // standard: value is not an array
 							if (is_numeric(str_replace('uid', '', $k))) { // check if key is like uid55
-								$this->markerArray['###' . strtoupper($k) . '###'] = stripslashes($this->div->nl2br2($v)); // fill ###UID55###
+								$this->markerArray['###' . strtoupper($k) . '###'] = t3lib_div::removeXSS(stripslashes($this->div->nl2br2($v))); // fill ###UID55###
 								$this->markerArray['###LABEL_' . strtoupper($k) . '###'] = $this->label; // fill ###LABEL_UID55###
 
 								// ###POWERMAIL_ALL###
@@ -156,14 +156,14 @@ class tx_powermail_markers extends tslib_pibase {
 							foreach ($v as $kv => $vv) { // One loop for every piVar
 								if (is_numeric(str_replace('uid','',$k))) { // check if key is like uid55
 									if ($vv) { // if value exists
-										$this->markerArray['###' . strtoupper($k) . '_' . $kv . '###'] = stripslashes($this->div->nl2br2($vv)); // fill ###UID55_0###
+										$this->markerArray['###' . strtoupper($k) . '_' . $kv . '###'] = t3lib_div::removeXSS(stripslashes($this->div->nl2br2($vv))); // fill ###UID55_0###
 										$this->markerArray['###' . strtoupper($k) . '###'] .= ($i != 0 ? $this->cObj->stdWrap($this->conf['field.']['checkboxSplitSign'], $this->conf['field.']['checkboxSplitSign.']) : '') . stripslashes($this->div->nl2br2($vv)); // fill ###UID55### (comma between every value)
 										$this->markerArray['###LABEL_' . strtoupper($k) . '###'] = $this->label; // fill ###LABEL_UID55###
 										
 										// ###POWERMAIL_ALL###
 										if (!in_array(strtoupper($k), $this->notInMarkerAll) && !in_array('###' . strtoupper($k) . '###', $this->notInMarkerAll)) {
 											$markerArray['###POWERMAIL_LABEL###'] = $this->label;
-											$markerArray['###POWERMAIL_VALUE###'] .= stripslashes($this->div->nl2br2($vv)) . ', ';
+											$markerArray['###POWERMAIL_VALUE###'] .= t3lib_div::removeXSS(stripslashes($this->div->nl2br2($vv))) . ', ';
 											$markerArray['###POWERMAIL_EVEN_ODD###'] = $markerArray['###POWERMAIL_EVEN_ODD###'] == 'even' ? 'odd' : 'even';
 											$markerArray['###POWERMAIL_UID###'] = $k;
 											$this->hook_additional_marker($markerArray, $this->sessiondata, $k, $v, $kv, $vv); // add hook
