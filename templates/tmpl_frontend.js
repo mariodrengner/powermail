@@ -241,9 +241,12 @@
 				}
 			});
 
-            $('.tx_powermail_pi1_form input:radio').change(function(e) {
-                powermail_validator.data('validator').reset($('.tx_powermail_pi1_form input:radio'));
-            });
+			// Not needed anymore since jQuery Tools 1.2.7 handle radio button validation correctly
+			/*
+			 $('.tx_powermail_pi1_form input:radio').change(function(e) {
+			 powermail_validator.data('validator').reset($('.tx_powermail_pi1_form input:radio'));
+			 });
+			*/
 
             var fakeTextarea = document.createElement('textarea'),
                 textareaMaxlengthSupport = ('maxlength' in fakeTextarea);

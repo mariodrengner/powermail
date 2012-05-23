@@ -79,10 +79,13 @@ plugin.powermail {
 	# cat=powermail validation client/powermail_javascript_files/0270; type=file[js]; label= Path to jQuery
 	js.jQueryPath = http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js
 
-	# cat=powermail validation client/powermail_javascript_files/0280; type=file[js]; label= Path to jQueryTools Form
+	# cat=powermail validation client/powermail_javascript_files/0280; type=file[js]; label= Path to jQueryTools Form (Dateinput, Rangeinput and Validator)
 	js.jQueryToolsFormPath = http://cdn.jquerytools.org/1.2.7/form/jquery.tools.min.js
 
-	# cat=powermail validation client/powermail_javascript_files/0290; type=file[js]; label= Path to jQueryTools Tiny
+	# cat=powermail validation client/powermail_javascript_files/0285; type=file[js]; label= Local path to jQueryTools Form (Dateinput, Rangeinput and Validator)
+	js.jQueryToolsFormLocalPath = typo3conf/ext/powermail/res/js/jquery.tools.min.js
+
+	# cat=powermail validation client/powermail_javascript_files/0290; type=file[js]; label= Path to jQueryTools Tiny (Tabs, Tooltip, Scrollable and Overlay)
 	js.jQueryToolsTinyPath = http://cdn.jquerytools.org/1.2.7/tiny/jquery.tools.min.js
 
 	# cat=powermail validation client/enable/0300; type=boolean; label= Activate javascript validation: (De)activate javascript validation in fields
@@ -98,7 +101,10 @@ plugin.powermail {
 	js.includeJquery = 1
 
 	# cat=powermail validation client/enable/0340; type=boolean; label= Include jQueryTools Form library: Include jQueryTools Form library (only for usage without t3jquery)
-	js.includeJqueryTools = 1
+	js.includeJqueryTools = 0
+
+	# cat=powermail validation client/enable/0345; type=boolean; label= Include local jQueryTools Form library: Include jQueryTools Form library (only for usage without t3jquery)
+	js.includeJqueryToolsLocal = 1
 
 	# cat=powermail validation client/enable/0350; type=boolean; label= Include jQueryTools Tab library: Include jQueryTools Tab library (only for usage without t3jquery)
 	js.includeJqueryToolsTabs = 1

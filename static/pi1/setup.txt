@@ -661,6 +661,7 @@ page.includeJSlibs {
   powermail_jQuery = {$plugin.powermail.js.jQueryPath}
   powermail_jQueryTools.external = 1
   powermail_jQueryTools = {$plugin.powermail.js.jQueryToolsFormPath}
+  powermail_jQueryToolsLocal = {$plugin.powermail.js.jQueryToolsFormLocalPath}
   powermail_jQueryToolsTabs.external = 1
   powermail_jQueryToolsTabs = {$plugin.powermail.js.jQueryToolsTinyPath}
 }
@@ -678,6 +679,7 @@ page.jsFooterInline.10 < lib.powermailjs
 page.includeJSlibs {
   powermail_jQuery >
   powermail_jQueryTools >
+  powermail_jQueryToolsLocal >
   powermail_jQueryToolsTabs >
 }
 
@@ -688,6 +690,7 @@ page.includeJSFooterlibs {
 	powermail_jQuery = {$plugin.powermail.js.jQueryPath}
 	powermail_jQueryTools.external = 1
 	powermail_jQueryTools = {$plugin.powermail.js.jQueryToolsFormPath}
+	powermail_jQueryToolsLocal = {$plugin.powermail.js.jQueryToolsFormLocalPath}
 	powermail_jQueryToolsTabs.external = 1
 	powermail_jQueryToolsTabs = {$plugin.powermail.js.jQueryToolsTinyPath}
 }
@@ -709,6 +712,15 @@ page.includeJSlibs.powermail_jQuery >
 
 page.includeJSFooterlibs.powermail_jQueryTools >
 page.includeJSlibs.powermail_jQueryTools >
+
+[end]
+
+[globalVar = LIT:1 > {$plugin.powermail.js.includeJqueryToolsLocal}]
+
+	// remove local jQueryTools library
+
+page.includeJSFooterlibs.powermail_jQueryToolsLocal >
+page.includeJSlibs.powermail_jQueryToolsLocal >
 
 [end]
 
@@ -740,6 +752,12 @@ page.31320 {
 	    jsurl = {$plugin.powermail.js.jQueryToolsFormPath}
         tofooter = 0
     }
+    22 = USER
+    22 {
+        userFunc = tx_t3jquery->addJS
+	    jsfile = {$plugin.powermail.js.jQueryToolsFormLocalPath}
+        tofooter = 0
+    }
     25 = USER
     25 {
         userFunc = tx_t3jquery->addJS
@@ -764,6 +782,7 @@ page.31320 {
 page.31320 {
 	10.tofooter = 1
 	20.tofooter = 1
+	22.tofooter = 1
 	25.tofooter = 1
 	30.tofooter = 1
 }
@@ -779,6 +798,22 @@ page.31320.25 >
 
 [end]
 
+[globalVar = LIT:1 > {$plugin.powermail.js.includeJqueryTools}]
+
+	// remove jQueryTools form library if not needed
+
+page.31320.20 >
+
+[end]
+
+[globalVar = LIT:1 > {$plugin.powermail.js.includeJqueryToolsLocal}]
+
+	// remove local jQueryTools form library if not needed
+
+page.31320.22 >
+
+[end]
+
 [globalVar = LIT:1 > {$plugin.powermail.js.includeJqueryToolsTabs}]
 
 	// remove jQueryTools tab library if not needed
@@ -786,3 +821,4 @@ page.31320.25 >
 page.31320.25 >
 
 [end]
+
