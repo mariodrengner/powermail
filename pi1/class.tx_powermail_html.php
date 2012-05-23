@@ -405,10 +405,13 @@ class tx_powermail_html extends tslib_pibase {
 					break;
 				}
 			}
+			// Not needed anymore since jQuery Tools 1.2.7 can handle radio button validation
+			/*
 			if ($preSelectionFound == false && $this->pi_getFFvalue(t3lib_div::xml2array($this->xml), 'mandatory') == 1) {
 				// if no pre selection is found, add a mandatory helper radio button
 				$optionlines = array_merge(array(' ||*'), $optionlines);
 			}
+			*/
 			for ($i = 0; $i < count($optionlines); $i++) { // One tag for every option
 				$options[$i] = t3lib_div::trimExplode('|', $optionlines[$i], 0); // To split: label | value | *
 				$markerArray['###NAME###'] = 'name="' . $this->prefixId . '[uid' . $this->uid . ']" '; // add name to markerArray
@@ -422,12 +425,15 @@ class tx_powermail_html extends tslib_pibase {
 				$markerArray['###CLASS###'] = 'class="'; // start class tag
 				$markerArray['###MANDATORY_HELPER###'] = '';
 				// Add required class if needed
+				// Not needed anymore since jQuery Tools 1.2.7 can handle radio button validation
+				/*
 				if ($preSelectionFound == false && $i == 0 && $this->pi_getFFvalue(t3lib_div::xml2array($this->xml), 'mandatory') == 1) {
 					//$markerArray['###CLASS###'] .= 'required_one ';
 					$markerArray['###VALUE###'] = 'value="" ';
 					$markerArray['###CHECKED###'] = 'checked="checked" ';
 					$markerArray['###MANDATORY_HELPER###'] = ' powermail_mandatory_helper';
 				}
+				*/
 				if ($this->pi_getFFvalue(t3lib_div::xml2array($this->xml), 'mandatory') == 1) {
 					$markerArray['###REQUIRED###'] = ' required="required"';
 				}
@@ -770,6 +776,7 @@ class tx_powermail_html extends tslib_pibase {
 	/**
 	 * Function html_date() returns text field for date with calender help
 	 *
+	 * @return	string	$content
 	 * @return	string	$content
 	 */
 	private function html_date() {
