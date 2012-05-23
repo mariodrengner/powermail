@@ -83,7 +83,7 @@ plugin.powermail {
 	js.jQueryToolsFormPath = http://cdn.jquerytools.org/1.2.7/form/jquery.tools.min.js
 
 	# cat=powermail validation client/powermail_javascript_files/0285; type=file[js]; label= Local path to jQueryTools Form (Dateinput, Rangeinput and Validator)
-	js.jQueryToolsFormLocalPath = typo3conf/ext/powermail/res/js/jquery.tools.min.js
+	js.jQueryToolsFormLocalPath = EXT:powermail/res/js/jquery.tools.min.js
 
 	# cat=powermail validation client/powermail_javascript_files/0290; type=file[js]; label= Path to jQueryTools Tiny (Tabs, Tooltip, Scrollable and Overlay)
 	js.jQueryToolsTinyPath = http://cdn.jquerytools.org/1.2.7/tiny/jquery.tools.min.js
