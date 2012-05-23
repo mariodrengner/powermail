@@ -24,8 +24,6 @@
 
 unset($MCONF);
 require_once('conf.php');
-echo($_SERVER['PHP_SELF']);
-echo($BACK_PATH . 'init.php');
 require_once($BACK_PATH . 'init.php');
 require_once($BACK_PATH . 'template.php');
 
