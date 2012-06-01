@@ -642,7 +642,7 @@ lib.powermailjs {
 
 [end]
 
-[globalVar = LIT:0 > {$plugin.powermail.js.singleError}]
+[globalVar = LIT:0 < {$plugin.powermail.js.singleError}]
 
 	lib.powermailjs.10.marks.VALIDATOR_SINGLE_ERROR.value = true
 
