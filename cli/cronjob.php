@@ -33,7 +33,6 @@ require(dirname(PATH_thisScript) . '/' . $BACK_PATH . 'init.php');
 require_once(PATH_t3lib . 'class.t3lib_admin.php');
 require_once(PATH_t3lib . 'class.t3lib_cli.php');
 require_once(PATH_typo3 . 'template.php');
-require_once(PATH_t3lib . 'class.t3lib_htmlmail.php');
 if (t3lib_div::compat_version('4.5')) {
 	require_once(PATH_t3lib . 'class.t3lib_mail_message.php');
 }

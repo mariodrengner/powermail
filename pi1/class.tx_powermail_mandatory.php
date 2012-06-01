@@ -22,11 +22,6 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-require_once(PATH_tslib . 'class.tslib_pibase.php');
-require_once(t3lib_extMgm::extPath('powermail') . 'lib/class.tx_powermail_functions_div.php'); // file for div functions
-require_once(t3lib_extMgm::extPath('powermail') . 'lib/class.tx_powermail_markers.php'); // file for marker functions
-require_once(t3lib_extMgm::extPath('powermail') . 'lib/class.tx_powermail_dynamicmarkers.php'); // file for dynamicmarker functions
-
 /**
  * Plugin 'Powermail Form' for the 'powermail' extension.
  *
@@ -79,7 +74,7 @@ class tx_powermail_mandatory extends tslib_pibase {
 			'parameter' => $GLOBALS['TSFE']->id,
 			'useCacheHash' => 1,
 			#'no_cache' => 1
-			#'section' => 
+			#'section' =>
 		);
 		$this->markerArray['###POWERMAIL_TARGET###'] = $this->cObj->typolink('x', $targetLinkParams) . '#c' . $anchorId;
 		$this->markerArray['###POWERMAIL_NAME###'] = $this->cObj->data['tx_powermail_title'] . '_mandatory'; // Fill Marker with formname

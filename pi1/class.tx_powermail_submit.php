@@ -22,13 +22,7 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-require_once(PATH_tslib . 'class.tslib_pibase.php');
-require_once(PATH_t3lib . 'class.t3lib_htmlmail.php');
-require_once(t3lib_extMgm::extPath('powermail') . 'lib/class.tx_powermail_functions_div.php'); // file for div functions
-require_once(t3lib_extMgm::extPath('powermail') . 'lib/class.tx_powermail_markers.php'); // file for marker functions
 require_once(t3lib_extMgm::extPath('powermail') . 'lib/class.tx_powermail_db.php'); // file for marker functions
-require_once(t3lib_extMgm::extPath('powermail') . 'lib/class.tx_powermail_dynamicmarkers.php'); // file for dynamicmarker functions
-
 
 class tx_powermail_submit extends tslib_pibase {
 	var $prefixId = 'tx_powermail_submit'; // Same as class name
@@ -424,7 +418,7 @@ class tx_powermail_submit extends tslib_pibase {
 	function userName() {
 		if ($this->cObj->data['tx_powermail_sendername']) { // if name of sender was defined in flexform
 			// config
-			$fields = t3lib_div::trimExplode(',', $this->cObj->data['tx_powermail_sendername'], 1); // get array with list of all uids (0=>uid3, 1=>uid4)		
+			$fields = t3lib_div::trimExplode(',', $this->cObj->data['tx_powermail_sendername'], 1); // get array with list of all uids (0=>uid3, 1=>uid4)
 			$sendername = '';
 
 			// let's go

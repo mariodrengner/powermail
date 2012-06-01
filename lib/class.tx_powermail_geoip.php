@@ -22,8 +22,6 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-require_once(PATH_tslib . 'class.tslib_pibase.php');
-
 // This class offers geoip datas if available from extension geoip
 class tx_powermail_geoip extends tslib_pibase {
 

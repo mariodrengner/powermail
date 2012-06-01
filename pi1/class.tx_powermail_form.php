@@ -22,13 +22,6 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-require_once(PATH_tslib . 'class.tslib_pibase.php'); // get pibase
-require_once(t3lib_extMgm::extPath('powermail') . 'pi1/class.tx_powermail_html.php'); // get html and field functions
-require_once(t3lib_extMgm::extPath('powermail') . 'lib/class.tx_powermail_functions_div.php'); // file for div functions
-require_once(t3lib_extMgm::extPath('powermail') . 'lib/class.tx_powermail_dynamicmarkers.php'); // file for dynamicmarker functions
-require_once(t3lib_extMgm::extPath('powermail') . 'lib/class.tx_powermail_sessions.php'); // load session class
-
-
 /**
  * Class to create the form
  *
@@ -352,21 +345,21 @@ class tx_powermail_form extends tslib_pibase {
 	private function dynamicFields($array) {
 		// Give me current field details
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
-			'	
-				tx_powermail_fieldsets.uid fs_uid, 
-				tx_powermail_fields.uid f_uid, 
-				tx_powermail_fieldsets.felder fs_fields, 
-				tx_powermail_fieldsets.title fs_title, 
-				tx_powermail_fields.title f_title, 
-				tx_powermail_fields.formtype f_type, 
-				tx_powermail_fields.flexform f_field, 
-				tt_content.tx_powermail_title c_title, 
-				tx_powermail_fields.fe_field f_fefield, 
+			'
+				tx_powermail_fieldsets.uid fs_uid,
+				tx_powermail_fields.uid f_uid,
+				tx_powermail_fieldsets.felder fs_fields,
+				tx_powermail_fieldsets.title fs_title,
+				tx_powermail_fields.title f_title,
+				tx_powermail_fields.formtype f_type,
+				tx_powermail_fields.flexform f_field,
+				tt_content.tx_powermail_title c_title,
+				tx_powermail_fields.fe_field f_fefield,
 				tx_powermail_fields.description f_description
 			',
 			'
-				tx_powermail_fieldsets 
-				LEFT JOIN tx_powermail_fields ON tx_powermail_fieldsets.uid = tx_powermail_fields.fieldset 
+				tx_powermail_fieldsets
+				LEFT JOIN tx_powermail_fields ON tx_powermail_fieldsets.uid = tx_powermail_fields.fieldset
 				LEFT JOIN tt_content ON tx_powermail_fieldsets.tt_content = tt_content.uid
 			',
 			$where_clause = 'tx_powermail_fields.uid = ' . intval($array[1])

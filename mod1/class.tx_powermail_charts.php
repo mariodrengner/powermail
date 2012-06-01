@@ -37,9 +37,6 @@
  *
  */
 
-require_once(t3lib_extMgm::extPath('powermail') . 'lib/class.tx_powermail_functions_div.php');
-require_once(t3lib_extMgm::extPath('powermail') . 'mod1/class.tx_powermail_belist.php');
-
 /**
  * Plugin 'tx_powermail_charts' for the 'powermail' extension.
  *
@@ -157,10 +154,14 @@ class tx_powermail_charts {
 				<p>&nbsp;</p>
 				<h2>' . $pObj->lang->getLL('chart_table') . '</h2>';
 		}
+
+		/*
+		 * TODO: Class tx_powermail_belist doesn't exists anymore
 		$this->belist = t3lib_div::makeInstance('tx_powermail_belist');
 		$this->belist->init($pObj->lang);
 
 		$content .= $this->belist->main($pObj->id, $pObj->back_path, 0, 1);
+		 */
 
 		return $content;
 	}

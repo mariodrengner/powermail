@@ -28,7 +28,6 @@ require_once($BACK_PATH . 'init.php');
 require_once($BACK_PATH . 'template.php');
 
 $LANG->includeLLFile('EXT:powermail/mod1/locallang.xml');
-require_once(PATH_t3lib . 'class.t3lib_scbase.php');
 $BE_USER->modAccess($MCONF, 1);
 
 /**
@@ -130,7 +129,7 @@ class tx_powermail_module1 extends t3lib_SCbase {
 						"enableXlsExport": ' . ($this->tsconfig['properties']['config.']['export.']['xls.']['enable'] && t3lib_extMgm::isLoaded('phpexcel_library') ? '1' : '0') . ',
 						"enablePdfExport": ' . ($this->tsconfig['properties']['config.']['export.']['pdf.']['enable'] && t3lib_extMgm::isLoaded('phpexcel_library') ? '0' : '0') . '
 					};
-				
+
 					// Localisation:
 					Powermail.lang = {
 						"title": "' . $LANG->getLL('title') . '",

@@ -25,8 +25,6 @@
 
 if (!defined('PATH_typo3conf')) die ('Could not access this script directly!');
 
-require_once(PATH_tslib . 'class.tslib_pibase.php');
-
 class tx_powermail_countryzones extends tslib_pibase {
 
 	public function main($data) {

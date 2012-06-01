@@ -22,10 +22,6 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-require_once(PATH_tslib . 'class.tslib_pibase.php');
-require_once(t3lib_extMgm::extPath('powermail') . 'lib/class.tx_powermail_functions_div.php'); // file for div functions
-require_once(t3lib_extMgm::extPath('powermail') . 'lib/class.tx_powermail_geoip.php'); // file for geo info
-
 /**
  * Plugin 'tx_powermail_pi1' for the 'powermail' extension.
  *
@@ -88,7 +84,7 @@ class tx_powermail_markers extends tslib_pibase {
 				'',
 				'tx_powermail_fieldsets.sorting,tx_powermail_fields.sorting'
 			);
-			
+
 			if ($res !== false) {
                 $orderedSessionData = array();
 				while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)){
@@ -159,7 +155,7 @@ class tx_powermail_markers extends tslib_pibase {
 										$this->markerArray['###' . strtoupper($k) . '_' . $kv . '###'] = t3lib_div::removeXSS(stripslashes($this->div->nl2br2($vv))); // fill ###UID55_0###
 										$this->markerArray['###' . strtoupper($k) . '###'] .= ($i != 0 ? $this->cObj->stdWrap($this->conf['field.']['checkboxSplitSign'], $this->conf['field.']['checkboxSplitSign.']) : '') . stripslashes($this->div->nl2br2($vv)); // fill ###UID55### (comma between every value)
 										$this->markerArray['###LABEL_' . strtoupper($k) . '###'] = $this->label; // fill ###LABEL_UID55###
-										
+
 										// ###POWERMAIL_ALL###
 										if (!in_array(strtoupper($k), $this->notInMarkerAll) && !in_array('###' . strtoupper($k) . '###', $this->notInMarkerAll)) {
 											$markerArray['###POWERMAIL_LABEL###'] = $this->label;

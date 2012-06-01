@@ -22,9 +22,6 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-
-require_once(t3lib_extMgm::extPath('powermail') . 'lib/class.tx_powermail_functions_div.php');
-
 if (t3lib_extMgm::isLoaded('phpexcel_library')) {
 	require_once(t3lib_extMgm::extPath('phpexcel_library') . 'sv1/class.tx_phpexcellibrary_sv1.php');
 	$PHPExcelSV = t3lib_div::makeInstance('tx_phpexcellibrary_sv1');
