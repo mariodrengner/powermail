@@ -126,7 +126,7 @@
 		});
 
 		// select validation
-		$.tools.validator.fn('select', '',
+		$.tools.validator.fn('select[required="required"]', '',
 				function(el, value) {
                     if (el.attr('multiple')) {
                         return value != null ? true: '###VALIDATOR_LABEL_ONE_REQUIRED###';
