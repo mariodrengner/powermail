@@ -125,7 +125,7 @@ class tx_powermail_db extends tslib_pibase {
 				// if allowed
 				if ($this->dbInsert) {
 					$GLOBALS['TYPO3_DB']->exec_INSERTquery($table, $values); // DB entry for every table
-					$this->uid[$table] = mysql_insert_id(); // Get uid of current db entry
+					$this->uid[$table] = $GLOBALS['TYPO3_DB']->sql_insert_id(); // Get uid of current db entry
 				}
 			} else {
 				// unique values
@@ -163,7 +163,7 @@ class tx_powermail_db extends tslib_pibase {
 
 				} else { // there is no entry in the database
 					$GLOBALS['TYPO3_DB']->exec_INSERTquery($table, $values); // New DB entry
-					$this->uid[$table] = mysql_insert_id(); // Get uid of current db entry
+					$this->uid[$table] = $GLOBALS['TYPO3_DB']->sql_insert_id(); // Get uid of current db entry
 				}
 			}
 		}
@@ -179,9 +179,13 @@ class tx_powermail_db extends tslib_pibase {
 	private function fieldExists($field = '', $table = '') {
 		if (!empty($field) && !empty($table) && strpos($field, ".") === FALSE) {
 			// check if table and field exits in db
-			$row1 = $GLOBALS['TYPO3_DB']->sql_fetch_assoc(mysql_query('SHOW TABLES LIKE "' . $table . '"')); // check if table exist
+			$res1 = $GLOBALS['TYPO3_DB']->admin_query('SHOW TABLES LIKE "' . $table . '"');
+			$row1 = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res1); // check if table exist
+			$GLOBALS['TYPO3_DB']->sql_free_result($res1);
 			if ($row1) {
-				$row2 = $GLOBALS['TYPO3_DB']->sql_fetch_assoc(mysql_query('DESCRIBE ' . $table . ' ' . $field)); // check if field exist (if table is wront - errormessage)
+				$res2 = $GLOBALS['TYPO3_DB']->admin_query('DESCRIBE ' . $table . ' ' . $field);
+				$row2 = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res2); // check if field exist (if table is wront - errormessage)
+				$GLOBALS['TYPO3_DB']->sql_free_result($res2);
 			}
 
 			// debug values

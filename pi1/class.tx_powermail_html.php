@@ -852,7 +852,9 @@ class tx_powermail_html extends tslib_pibase {
 
 			// Look for another lang version (maybe static_info_tables_de or _fr)
 			if ($GLOBALS['TSFE']->tmpl->setup['config.']['language']) { // if language was set in ts
-				$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc(mysql_query('DESCRIBE static_countries cn_short_' . $GLOBALS['TSFE']->tmpl->setup['config.']['language'])); // check for localized version of static_info_tables
+				$res = $GLOBALS['TYPO3_DB']->admin_query('DESCRIBE static_countries cn_short_' . $GLOBALS['TSFE']->tmpl->setup['config.']['language']);
+				$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res); // check for localized version of static_info_tables
+				$GLOBALS['TYPO3_DB']->sql_free_result($res);
 			}
 			if ($row['Field']) { // if there is a localized version of static_info_tables
 				$localfield = ', cn_short_' . $GLOBALS['TSFE']->tmpl->setup['config.']['language'] . ' cn_short_lang'; // add to query
