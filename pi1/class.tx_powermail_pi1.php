@@ -50,12 +50,12 @@ class tx_powermail_pi1 extends tslib_pibase {
 		$this->pi_setPiVarDefaults();
 		$this->pi_loadLL();
 
-		// disable caching if needed
+			// Disable caching if needed
 		if ($this->switchToUserInt()) { // if switch is done
 			return; // stop duplicated output of powermail
 		}
 
-		// Instances
+			// Instances
 		$this->div = t3lib_div::makeInstance('tx_powermail_functions_div'); // Create new instance for div class
 		$this->sessions = t3lib_div::makeInstance('tx_powermail_sessions'); // New object: session functions
 		$this->form = t3lib_div::makeInstance('tx_powermail_form'); // Initialise the new instance to make cObj availabla in all other functions.
@@ -63,8 +63,52 @@ class tx_powermail_pi1 extends tslib_pibase {
 		$this->confirmation = t3lib_div::makeInstance('tx_powermail_confirmation'); // Create new instance for confirmation class
 		$this->mandatory = t3lib_div::makeInstance('tx_powermail_mandatory'); // Create new instance for mandatory class
 
-		// Security for piVars
+			// Security for piVars
 		$this->piVars = $this->div->sec($this->piVars); // first of all clean piVars
+
+			// TODO: Extract this functionality to its own class
+		if (!isset($this->piVars['sendNow']) && !$this->conf['field.']['checkboxJS']) {
+			// Add empty piVars for values which were not submitted but on last page
+			$select = 'tx_powermail_fieldsets.uid';
+			$from = 'tx_powermail_fieldsets';
+			$uid = (($this->cObj->data['_LOCALIZED_UID'] > 0) ? $this->cObj->data['_LOCALIZED_UID'] : $this->cObj->data['uid']);
+			$where = 'tx_powermail_fieldsets.tt_content=' . $uid . $this->cObj->enableFields('tx_powermail_fieldsets');
+			$groupBy = '';
+			$orderBy = 'tx_powermail_fieldsets.sorting';
+			$limit = '';
+
+				// For multiple pages (server application) only get the last fieldset
+			if ($this->cObj->data['tx_powermail_multiple'] == 2) {
+				if (isset($this->piVars['multiple'])) {
+					$limit = ($this->piVars['multiple'] - 2) . ', 1';
+				} else {
+					$limit = ($this->cObj->data['tx_powermail_fieldsets'] - 1) . ', 1';
+				}
+			}
+
+				// Get all necessary fieldsets
+			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery($select, $from, $where, $groupBy, $orderBy, $limit);
+			if ($res !== FALSE) {
+				while ($fieldset = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
+						// Get all fields from fieldset
+					$select = 'tx_powermail_fields.uid';
+					$from = 'tx_powermail_fields';
+					$where = 'tx_powermail_fields.fieldset=' . $fieldset['uid'] . $this->cObj->enableFields('tx_powermail_fields');
+					$groupBy = '';
+					$orderBy = '';
+					$limit = '';
+					$res1 = $GLOBALS['TYPO3_DB']->exec_SELECTquery($select, $from, $where, $groupBy, $orderBy, $limit);
+					if ($res1 !== FALSE) {
+						while ($field = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res1)) {
+							if (!isset($this->piVars['uid' . $field['uid']])) {
+								$this->piVars['uid' . $field['uid']] = '';
+							}
+						}
+					}
+				}
+				$GLOBALS['TYPO3_DB']->sql_free_result($res);
+			}
+		}
 
 		// Sessionwork
 		$this->sessions->deleteSession($this->conf, $this->cObj, $this->piVars['clearSession']); // If GET Param clearSession is set, delete complete Session
