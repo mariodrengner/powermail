@@ -1,26 +1,26 @@
 <?php
 /***************************************************************
-*  Copyright notice
-*
-*  (c) 2011 powermail development team (details on http://forge.typo3.org/projects/show/extension-powermail)
-*  All rights reserved
-*
-*  This script is part of the TYPO3 project. The TYPO3 project is
-*  free software; you can redistribute it and/or modify
-*  it under the terms of the GNU General Public License as published by
-*  the Free Software Foundation; either version 2 of the License, or
-*  (at your option) any later version.
-*
-*  The GNU General Public License can be found at
-*  http://www.gnu.org/copyleft/gpl.html.
-*
-*  This script is distributed in the hope that it will be useful,
-*  but WITHOUT ANY WARRANTY; without even the implied warranty of
-*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-*  GNU General Public License for more details.
-*
-*  This copyright notice MUST APPEAR in all copies of the script!
-***************************************************************/
+ *  Copyright notice
+ *
+ *  (c) 2011 powermail development team (details on http://forge.typo3.org/projects/show/extension-powermail)
+ *  All rights reserved
+ *
+ *  This script is part of the TYPO3 project. The TYPO3 project is
+ *  free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  The GNU General Public License can be found at
+ *  http://www.gnu.org/copyleft/gpl.html.
+ *
+ *  This script is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  This copyright notice MUST APPEAR in all copies of the script!
+ ***************************************************************/
 
 unset($MCONF);
 require_once('conf.php');
@@ -34,13 +34,13 @@ $BE_USER->modAccess($MCONF, 1);
 /**
  * Module 'mod1' for the 'powermail' extension.
  *
- * @author	powermail development team (details on http://forge.typo3.org/projects/show/extension-powermail)
- * @package	TYPO3
- * @subpackage	tx_powermail_module1
+ * @author    powermail development team (details on http://forge.typo3.org/projects/show/extension-powermail)
+ * @package    TYPO3
+ * @subpackage    tx_powermail_module1
  */
 class tx_powermail_module1 extends t3lib_SCbase {
 
-	public function init()	{
+	public function init() {
 		global $BE_USER, $LANG, $BACK_PATH, $TCA_DESCR, $TCA, $CLIENT, $TYPO3_CONF_VARS;
 		parent::init();
 		if (intval($this->id) === 0) {
@@ -52,9 +52,9 @@ class tx_powermail_module1 extends t3lib_SCbase {
 	 * Main method of be module
 	 * Generates header and module menu
 	 *
-	 * @return	void
+	 * @return    void
 	 */
-	public function main()	{
+	public function main() {
 		global $BE_USER, $LANG, $BACK_PATH, $TCA_DESCR, $TCA, $CLIENT, $TYPO3_CONF_VARS;
 
 		$this->LANG = $LANG;
@@ -73,7 +73,7 @@ class tx_powermail_module1 extends t3lib_SCbase {
 
 				$this->perpage = 25;
 				// Get hits per page if set by tsconfig
-				if($this->tsconfig['properties']['config.']['list.']['perPage'] > 0) {
+				if ($this->tsconfig['properties']['config.']['list.']['perPage'] > 0) {
 					$this->perpage = intval($this->tsconfig['properties']['config.']['list.']['perPage']);
 				}
 
@@ -83,7 +83,7 @@ class tx_powermail_module1 extends t3lib_SCbase {
 				$this->pageRenderer = $this->doc->getPageRenderer();
 
 				// Add CSS for backend modul
-				$this->pageRenderer->addCssFile( $BACK_PATH . t3lib_extMgm::extRelPath('powermail') .  'res/css/powermail_backend.css' );
+				$this->pageRenderer->addCssFile($BACK_PATH . t3lib_extMgm::extRelPath('powermail') . 'res/css/powermail_backend.css');
 
 				// Include Ext JS stuff
 				$this->pageRenderer->loadExtJS();
@@ -98,15 +98,14 @@ class tx_powermail_module1 extends t3lib_SCbase {
 				$this->pageRenderer->enableExtJsDebug();
 
 				// Include Ext JS inline code
-				$this->pageRenderer->addJsInlineCode(
-					'Powermail_Overview',
-					
+				$this->pageRenderer->addJsInlineCode('Powermail_Overview',
+
 					'Ext.namespace("Powermail");
 
 					// Parameter definition
 					Powermail.statics = {
 						"pagingSize": ' . $this->perpage . ',
-						"pid": ' . $this->id .',
+						"pid": ' . $this->id . ',
 						"sort": "crdate",
 						"dir": "DESC",
 						"filterIcon": "' . $this->enableQuotes(t3lib_iconWorks::getSpriteIcon('actions-system-tree-search-open')) . '",
@@ -130,7 +129,7 @@ class tx_powermail_module1 extends t3lib_SCbase {
 						"enableXlsExport": ' . ($this->tsconfig['properties']['config.']['export.']['xls.']['enable'] && t3lib_extMgm::isLoaded('phpexcel_library') ? '1' : '0') . ',
 						"enablePdfExport": ' . ($this->tsconfig['properties']['config.']['export.']['pdf.']['enable'] && t3lib_extMgm::isLoaded('phpexcel_library') ? '0' : '0') . '
 					};
-				
+
 					// Localisation:
 					Powermail.lang = {
 						"title": "' . $LANG->getLL('title') . '",
@@ -163,7 +162,7 @@ class tx_powermail_module1 extends t3lib_SCbase {
 						"receiver": "' . $LANG->getLL('receiver') . '",
 						"senderIP": "' . $LANG->getLL('ip') . '",
 						"noExcel": "' . $LANG->getLL('phpexcel_library') . '",
-						"noPdf": "' . $LANG->getLL('noPdf' , 'This export format is currently not implemented. Please contact the powermail development team, if you want to sponsor this feature.') . '",
+						"noPdf": "' . $LANG->getLL('noPdf', 'This export format is currently not implemented. Please contact the powermail development team, if you want to sponsor this feature.') . '",
 						"noMails1": "' . $LANG->getLL('nopowermails1') . '",
 						"noMails2": "' . $LANG->getLL('nopowermails2') . '"
 					};
@@ -214,7 +213,7 @@ class tx_powermail_module1 extends t3lib_SCbase {
 	/**
 	 * Check if there are mails on the current page
 	 *
-	 * @return	boolean
+	 * @return    boolean
 	 */
 	private function mailsOnCurrentPage() {
 		$select = 'uid';
@@ -223,30 +222,27 @@ class tx_powermail_module1 extends t3lib_SCbase {
 		$groupBy = '';
 		$orderBy = '';
 		$limit = 1;
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery ($select, $from, $where, $groupBy, $orderBy, $limit);
-		if ($res) {
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery($select, $from, $where, $groupBy, $orderBy, $limit);
+		if ($res !== FALSE) {
 			$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res); // Result in array
 			if ($row['uid'] > 0) {
 				return 1;
 			}
+			$GLOBALS['TYPO3_DB']->sql_free_result($res);
 		}
+
 		return 0;
 	}
 
 	/**
 	 * Setting up the config for the module menu
 	 *
-	 * @return	void
+	 * @return    void
 	 */
-	public function menuConfig()	{
+	public function menuConfig() {
 		global $LANG;
 
-		$this->MOD_MENU = array (
-			'function' => array (
-				'1' => '[icon_table]' . $LANG->getLL('function1'),
-				'2' => '[icon_chart]' . $LANG->getLL('function2')
-			)
-		);
+		$this->MOD_MENU = array('function' => array('1' => '[icon_table]' . $LANG->getLL('function1'), '2' => '[icon_chart]' . $LANG->getLL('function2')));
 
 		parent::menuConfig();
 	}
@@ -254,8 +250,8 @@ class tx_powermail_module1 extends t3lib_SCbase {
 	/**
 	 * Enable double quotes in a string for javascript
 	 *
-	 * @param	string		A given string with quotes
-	 * @return	string		String with enabled quotes
+	 * @param    string        A given string with quotes
+	 * @return    string        String with enabled quotes
 	 */
 	private function enableQuotes($string) {
 		return str_replace('"', '\"', $string);
@@ -264,14 +260,14 @@ class tx_powermail_module1 extends t3lib_SCbase {
 	/**
 	 * Final output for backend module
 	 *
-	 * @return	void
+	 * @return    void
 	 */
-	public function printContent()	{
+	public function printContent() {
 		echo $this->content;
 	}
 }
 
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/powermail/mod1/index.php'])	{
+if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/powermail/mod1/index.php']) {
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/powermail/mod1/index.php']);
 }
 
@@ -279,7 +275,7 @@ if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/powerma
 $SOBE = t3lib_div::makeInstance('tx_powermail_module1');
 $SOBE->init();
 // Include files?
-foreach($SOBE->include_once as $INC_FILE) {
+foreach ($SOBE->include_once as $INC_FILE) {
 	include_once($INC_FILE);
 }
 $SOBE->main();

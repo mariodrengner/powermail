@@ -1,52 +1,52 @@
 <?php
 /***************************************************************
-*  Copyright notice
-*
-*  (c) 2010 powermail development team (details on http://forge.typo3.org/projects/show/extension-powermail)
-*  All rights reserved
-*
-*  This script is part of the TYPO3 project. The TYPO3 project is
-*  free software; you can redistribute it and/or modify
-*  it under the terms of the GNU General Public License as published by
-*  the Free Software Foundation; either version 2 of the License, or
-*  (at your option) any later version.
-*
-*  The GNU General Public License can be found at
-*  http://www.gnu.org/copyleft/gpl.html.
-*
-*  This script is distributed in the hope that it will be useful,
-*  but WITHOUT ANY WARRANTY; without even the implied warranty of
-*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-*  GNU General Public License for more details.
-*
-*  This copyright notice MUST APPEAR in all copies of the script!
-***************************************************************/
+ *  Copyright notice
+ *
+ *  (c) 2010 powermail development team (details on http://forge.typo3.org/projects/show/extension-powermail)
+ *  All rights reserved
+ *
+ *  This script is part of the TYPO3 project. The TYPO3 project is
+ *  free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  The GNU General Public License can be found at
+ *  http://www.gnu.org/copyleft/gpl.html.
+ *
+ *  This script is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  This copyright notice MUST APPEAR in all copies of the script!
+ ***************************************************************/
 
-require_once(PATH_tslib.'class.tslib_pibase.php');
-require_once(t3lib_extMgm::extPath('powermail').'lib/class.tx_powermail_functions_div.php'); // file for div functions
+require_once(PATH_tslib . 'class.tslib_pibase.php');
+require_once(t3lib_extMgm::extPath('powermail') . 'lib/class.tx_powermail_functions_div.php'); // file for div functions
 
 
 /**
  * This class saves powermail values in OTHER db tables if wanted (this class is not the main database class for storing)
  *
- * @author	Alex Kellner <alexander.kellner@in2code.de>
- * @package	TYPO3
- * @subpackage	tx_powermail_functions_div
+ * @author    Alex Kellner <alexander.kellner@in2code.de>
+ * @package    TYPO3
+ * @subpackage    tx_powermail_functions_div
  */
 class tx_powermail_db extends tslib_pibase {
 
 	public $extKey = 'powermail';
-    public $scriptRelPath = 'pi1/class.tx_powermail_pi1.php'; // Path to pi1 to get locallang.xml from pi1 folder
+	public $scriptRelPath = 'pi1/class.tx_powermail_pi1.php'; // Path to pi1 to get locallang.xml from pi1 folder
 	public $dbInsert = 1; // Disable db insert for testing only
 
 	/**
 	 * Main Function for inserting datas to other tables
 	 *
-	 * @param	array		TypoScript configuration
-	 * @param	array		Session values
-	 * @param	object		content object
-	 * @param	bool		if storing is allowed
-	 * @return	array		$array: Filtered piVars Array
+	 * @param    array        TypoScript configuration
+	 * @param    array        Session values
+	 * @param    object        content object
+	 * @param    bool        if storing is allowed
+	 * @return    array        $array: Filtered piVars Array
 	 */
 	public function main($conf, $sessiondata, $cObj, $ok) {
 		// config
@@ -70,8 +70,8 @@ class tx_powermail_db extends tslib_pibase {
 							foreach ($this->conf['dbEntry.'][$key] as $kk => $vv) { // One loop for every field to insert in current table
 								if (substr($kk, 0, 1) != '_' && substr($kk, -1) != '.') { // if fieldname is not _enable or _mm and not with . at the end
 
-									if ($this->fieldExists($kk, str_replace('.','',$key))) { // if db table and field exists
-										$this->db_values[$key][$kk] = $this->cObj->cObjGetSingle($this->conf['dbEntry.'][$key][$kk], $this->conf['dbEntry.'][$key][$kk.'.']); // write current TS value to array
+									if ($this->fieldExists($kk, str_replace('.', '', $key))) { // if db table and field exists
+										$this->db_values[$key][$kk] = $this->cObj->cObjGetSingle($this->conf['dbEntry.'][$key][$kk], $this->conf['dbEntry.'][$key][$kk . '.']); // write current TS value to array
 									}
 
 								}
@@ -90,20 +90,14 @@ class tx_powermail_db extends tslib_pibase {
 							if (count($this->conf['dbEntry.'][$key]['_mm.']) > 0) { // if mm entry enabled
 								foreach ($this->conf['dbEntry.'][$key]['_mm.'] as $kkk => $vvv) { // One loop for every mm db insert
 									if (substr($kkk, -1) == '.') { // We want the array
-										if (
-											$this->fieldExists('uid_local', $this->cObj->cObjGetSingle($this->conf['dbEntry.'][$key]['_mm.'][$kkk]['1'], $this->conf['dbEntry.'][$key]['_mm.'][$kkk]['1.']))
-											&&
-											$this->fieldExists('uid', $this->cObj->cObjGetSingle($this->conf['dbEntry.'][$key]['_mm.'][$kkk]['2'], $this->conf['dbEntry.'][$key]['_mm.'][$kkk]['2.']))
-											&&
-											is_numeric($this->cObj->cObjGetSingle($this->conf['dbEntry.'][$key]['_mm.'][$kkk]['3'], $this->conf['dbEntry.'][$key]['_mm.'][$kkk]['3.']))
+										if ($this->fieldExists('uid_local', $this->cObj->cObjGetSingle($this->conf['dbEntry.'][$key]['_mm.'][$kkk]['1'], $this->conf['dbEntry.'][$key]['_mm.'][$kkk]['1.'])) && $this->fieldExists('uid', $this->cObj->cObjGetSingle($this->conf['dbEntry.'][$key]['_mm.'][$kkk]['2'], $this->conf['dbEntry.'][$key]['_mm.'][$kkk]['2.'])) && is_numeric($this->cObj->cObjGetSingle($this->conf['dbEntry.'][$key]['_mm.'][$kkk]['3'], $this->conf['dbEntry.'][$key]['_mm.'][$kkk]['3.']))
 										) { // 1. is db table && 2. is db table && 3. is a number
 											if ($this->uid[str_replace('.', '', $key)] > 0) { // if uid_local exists
-												$this->db_values_mm[$key] = array (
-													'uid_local' => $this->uid[str_replace('.', '', $key)],
-													'uid_foreign' => $this->cObj->cObjGetSingle($this->conf['dbEntry.'][$key]['_mm.'][$kkk]['3'], $this->conf['dbEntry.'][$key]['_mm.'][$kkk]['3.'])
-												);
+												$this->db_values_mm[$key] = array('uid_local' => $this->uid[str_replace('.', '', $key)], 'uid_foreign' => $this->cObj->cObjGetSingle($this->conf['dbEntry.'][$key]['_mm.'][$kkk]['3'], $this->conf['dbEntry.'][$key]['_mm.'][$kkk]['3.']));
 											}
-											if (count($this->db_values_mm[$key]) > 0) $this->dbUpdate($this->cObj->cObjGetSingle($this->conf['dbEntry.'][$key]['_mm.'][$kkk]['1'], $this->conf['dbEntry.'][$key]['_mm.'][$kkk]['1.']), $this->db_values_mm[$key]); // DB entry for every table
+											if (count($this->db_values_mm[$key]) > 0) {
+												$this->dbUpdate($this->cObj->cObjGetSingle($this->conf['dbEntry.'][$key]['_mm.'][$kkk]['1'], $this->conf['dbEntry.'][$key]['_mm.'][$kkk]['1.']), $this->db_values_mm[$key]);
+											} // DB entry for every table
 										}
 									}
 								}
@@ -120,41 +114,43 @@ class tx_powermail_db extends tslib_pibase {
 	/**
 	 * Function dbUpdate() inserts or updates database
 	 *
-	 * @param	string		Table
-	 * @param	array		values
-	 * @return	void
+	 * @param    string        Table
+	 * @param    array        values
+	 * @return    void
 	 */
 	private function dbUpdate($table, $values) {
 
 		if (count($values) > 0) { // if there are values
-			if (!isset($this->conf['dbEntry.'][$table.'.']['_ifUnique.']) || $this->conf['dbEntry.'][$table.'.']['_ifUnique.'] == 'disable') { // no unique values
-
-				if ($this->dbInsert) { // if allowed
+			if (!isset($this->conf['dbEntry.'][$table . '.']['_ifUnique.']) || $this->conf['dbEntry.'][$table . '.']['_ifUnique.'] == 'disable') { // no unique values
+				// if allowed
+				if ($this->dbInsert) {
 					$GLOBALS['TYPO3_DB']->exec_INSERTquery($table, $values); // DB entry for every table
 					$this->uid[$table] = mysql_insert_id(); // Get uid of current db entry
 				}
-
-			} else { // unique values
-
-				$uniqueField = key($this->conf['dbEntry.'][$table.'.']['_ifUnique.']); // get first entry of this array
-				$mode = $this->conf['dbEntry.'][$table.'.']['_ifUnique.'][$uniqueField]; // mode could be "none" or "update"
+			} else {
+				// unique values
+				$uniqueField = key($this->conf['dbEntry.'][$table . '.']['_ifUnique.']); // get first entry of this array
+				$mode = $this->conf['dbEntry.'][$table . '.']['_ifUnique.'][$uniqueField]; // mode could be "none" or "update"
 				if ($this->fieldExists('uid', $table)) { // check if field uid exists in table
-					$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery ( // get uid of existing value
-						'uid',
-						$table,
-						$where_clause = $uniqueField . ' = "'.$this->cObj->cObjGetSingle($this->conf['dbEntry.'][$table.'.'][$uniqueField], $this->conf['dbEntry.'][$table.'.'][$uniqueField.'.']).'"' . ($this->fieldExists('deleted', $table) ? ' AND deleted = 0' : ''),
-						$groupBy = '',
-						$orderBy = '',
-						$limit = 1
-					);
-					if ($res) $row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
+					// get uid of existing value
+					$select = $table . '.uid';
+					$where = $table . '.' . $uniqueField . ' = "' . $this->cObj->cObjGetSingle($this->conf['dbEntry.'][$table . '.'][$uniqueField], $this->conf['dbEntry.'][$table . '.'][$uniqueField . '.']) . '"' . ($this->fieldExists('deleted', $table) ? ' AND deleted = 0' : '');
+					$groupBy = '';
+					$orderBy = '';
+					$limit = '1';
+					$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery($select, $table, $where, $groupBy, $orderBy, $limit);
+					if ($res !== FALSE) {
+						$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
+						$GLOBALS['TYPO3_DB']->sql_free_result($res);
+					}
 				}
 
-				if ($row['uid'] > 0) { // there is already an entry in the database
+				// there is already an entry in the database
+				if (is_array($row) && isset($row['uid']) && $row['uid'] > 0) {
 					switch ($mode) {
 						case 'update': // mode is update
 							$GLOBALS['TYPO3_DB']->exec_UPDATEquery($table, 'uid = ' . intval($row['uid']), $values); // update old entry with new values
-								// Make row uid global
+							// Make row uid global
 							$this->uid[$table] = $row['uid'];
 							break;
 
@@ -166,26 +162,22 @@ class tx_powermail_db extends tslib_pibase {
 					}
 
 				} else { // there is no entry in the database
-
 					$GLOBALS['TYPO3_DB']->exec_INSERTquery($table, $values); // New DB entry
 					$this->uid[$table] = mysql_insert_id(); // Get uid of current db entry
-
 				}
-
 			}
 		}
-
 	}
 
 	/**
 	 * Function fieldExists() checks if a table and field exist in mysql db
 	 *
-	 * @param	string		field
-	 * @param	string		table
-	 * @return	void
+	 * @param    string        field
+	 * @param    string        table
+	 * @return    void
 	 */
 	private function fieldExists($field = '', $table = '') {
-		if (!empty($field) && !empty($table) && strpos($field, ".") === false) {
+		if (!empty($field) && !empty($table) && strpos($field, ".") === FALSE) {
 			// check if table and field exits in db
 			$row1 = $GLOBALS['TYPO3_DB']->sql_fetch_assoc(mysql_query('SHOW TABLES LIKE "' . $table . '"')); // check if table exist
 			if ($row1) {
@@ -212,7 +204,7 @@ class tx_powermail_db extends tslib_pibase {
 	/**
 	 * Function debug() generates debug output
 	 *
-	 * @return	void
+	 * @return    void
 	 */
 	private function debug() {
 		$this->debug_array['Main Table'] = $this->db_values; // array for debug view
@@ -225,20 +217,19 @@ class tx_powermail_db extends tslib_pibase {
 	/**
 	 * Add hook
 	 *
-	 * @return	void
+	 * @return    void
 	 */
 	private function hook_AfterDbImport() {
-        if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['powermail']['PM_AfterDbImportHook'])) { // Adds hook for processing
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['powermail']['PM_AfterDbImportHook'] as $_classRef) {
-                $_procObj = &t3lib_div::getUserObj($_classRef);
-                $_procObj->PM_AfterDbImportHook($this); // Get new marker Array from other extensions
-            }
-        }
-    }
-
+		if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['powermail']['PM_AfterDbImportHook'])) { // Adds hook for processing
+			foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['powermail']['PM_AfterDbImportHook'] as $_classRef) {
+				$_procObj = &t3lib_div::getUserObj($_classRef);
+				$_procObj->PM_AfterDbImportHook($this); // Get new marker Array from other extensions
+			}
+		}
+	}
 }
 
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/powermail/lib/class.tx_powermail_db.php'])	{
+if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/powermail/lib/class.tx_powermail_db.php']) {
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/powermail/lib/class.tx_powermail_db.php']);
 }
 

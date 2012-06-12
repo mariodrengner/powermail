@@ -1,26 +1,26 @@
 <?php
 /***************************************************************
-*  Copyright notice
-*
-*  (c) 2010 powermail development team (details on http://forge.typo3.org/projects/show/extension-powermail)
-*  All rights reserved
-*
-*  This script is part of the TYPO3 project. The TYPO3 project is
-*  free software; you can redistribute it and/or modify
-*  it under the terms of the GNU General Public License as published by
-*  the Free Software Foundation; either version 2 of the License, or
-*  (at your option) any later version.
-*
-*  The GNU General Public License can be found at
-*  http://www.gnu.org/copyleft/gpl.html.
-*
-*  This script is distributed in the hope that it will be useful,
-*  but WITHOUT ANY WARRANTY; without even the implied warranty of
-*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-*  GNU General Public License for more details.
-*
-*  This copyright notice MUST APPEAR in all copies of the script!
-***************************************************************/
+ *  Copyright notice
+ *
+ *  (c) 2010 powermail development team (details on http://forge.typo3.org/projects/show/extension-powermail)
+ *  All rights reserved
+ *
+ *  This script is part of the TYPO3 project. The TYPO3 project is
+ *  free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  The GNU General Public License can be found at
+ *  http://www.gnu.org/copyleft/gpl.html.
+ *
+ *  This script is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  This copyright notice MUST APPEAR in all copies of the script!
+ ***************************************************************/
 
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
@@ -43,8 +43,8 @@ require_once(t3lib_extMgm::extPath('powermail') . 'mod1/class.tx_powermail_belis
 /**
  * Plugin 'tx_powermail_charts' for the 'powermail' extension.
  *
- * @author	powermail development team (details on http://forge.typo3.org/projects/show/extension-powermail)
- * @package	TYPO3
+ * @author    powermail development team (details on http://forge.typo3.org/projects/show/extension-powermail)
+ * @package    TYPO3
  * @subpackage tx_powermail
  */
 class tx_powermail_charts {
@@ -52,34 +52,24 @@ class tx_powermail_charts {
 	/**
 	 * Default values for pageTSConfig
 	 *
-	 * @var	array
+	 * @var    array
 	 */
-	var $tsconfig = array (
-		'properties' => array (
-			'config.' => array (
-				'chart.' => array (
-					// Default settings for timeframe (1 month in seconds)
-					'timeframe' => 2678400,
-					// Default settings for sectionframe (1 week in seconds)
-					'sectionframe' => 604800,
-					'title' => '4 Weeks ago|3 Weeks ago|2 Weeks ago|Last Week'
-				)
-			)
-		)
-	);
+	var $tsconfig = array('properties' => array('config.' => array('chart.' => array(// Default settings for timeframe (1 month in seconds)
+		'timeframe' => 2678400, // Default settings for sectionframe (1 week in seconds)
+		'sectionframe' => 604800, 'title' => '4 Weeks ago|3 Weeks ago|2 Weeks ago|Last Week'))));
 
 	/**
 	 * BeList object
 	 *
-	 * @var	tx_powermail_belist
+	 * @var    tx_powermail_belist
 	 */
-	var $belist = null;
+	var $belist = NULL;
 
 	/**
 	 * Main chart function for chart and table output
 	 *
-	 * @param	object		$pObj: Partent Object
-	 * @return	string		$content: HTML content with table and chart
+	 * @param    object        $pObj: Partent Object
+	 * @return    string        $content: HTML content with table and chart
 	 */
 	function main($pObj) {
 		$tmp_tsconfig = t3lib_BEfunc::getModTSconfig($pObj->id, 'tx_powermail_mod1');
@@ -118,7 +108,7 @@ class tx_powermail_charts {
 			$where = '
 				pid = ' . intval($pObj->id) . '
 				AND crdate < ' . (time() - $delta1) . '
-				AND crdate > ' . (time() -  $this->tsconfig['properties']['config.']['chart.']['timeframe'] + $delta2) . '
+				AND crdate > ' . (time() - $this->tsconfig['properties']['config.']['chart.']['timeframe'] + $delta2) . '
 				AND hidden = 0
 				AND deleted = 0';
 			$groupBy = $orderBy = '';
@@ -128,15 +118,16 @@ class tx_powermail_charts {
 			$select = 'uid';
 			$res2 = $GLOBALS['TYPO3_DB']->exec_SELECTquery($select, $from, $where, $groupBy, $orderBy, $limit);
 
-			if ($res && $res2) {
+			if ($res !== FALSE && $res2 !== FALSE) {
 				$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
 				$no += $GLOBALS['TYPO3_DB']->sql_num_rows($res2);
+				$GLOBALS['TYPO3_DB']->sql_free_result($res);
+				$GLOBALS['TYPO3_DB']->sql_free_result($res2);
 			}
 
-			if($row['no'] > 0) {
+			if ($row['no'] > 0) {
 				$values .= $row['no'];
-
-			}else{
+			} else {
 				$values .= '0';
 			}
 			$values .= ',';
@@ -148,7 +139,7 @@ class tx_powermail_charts {
 			$url = 'http://chart.apis.google.com/chart?cht=lc&chd=t:' . $this->reverseList($values) . '&chs=700x200&chxt=x,y&chl=' . $this->urlencode2($this->tsconfig['properties']['config.']['chart.']['title'], '|');
 			$content .= '
 				<h2>' . $pObj->lang->getLL('chart_chart') . '</h2>
-				<iframe style="width: 728px; height: 220px; border: 1px solid #444; padding: 5px; background-color: white;" src="'.$url.'"></iframe>';
+				<iframe style="width: 728px; height: 220px; border: 1px solid #444; padding: 5px; background-color: white;" src="' . $url . '"></iframe>';
 		}
 
 		// Make listview
@@ -168,13 +159,13 @@ class tx_powermail_charts {
 	/**
 	 * Like urlencode but splits on delimiter and than merges again (urlencode without delimiter)
 	 *
-	 * @param	string		$string: Overall string
-	 * @param	string		$delimiter: Like , or |
-	 * @return	string		$string: urlencoded string
+	 * @param    string        $string: Overall string
+	 * @param    string        $delimiter: Like , or |
+	 * @return    string        $string: urlencoded string
 	 */
 	function urlencode2($string, $delimiter) {
 		$parts = t3lib_div::trimExplode($delimiter, $string, 1);
-		foreach ((array) $parts as $key => $value) {
+		foreach ((array)$parts as $key => $value) {
 			$parts[$key] = rawurlencode($value);
 		}
 		$string = implode($delimiter, $parts);
@@ -185,8 +176,8 @@ class tx_powermail_charts {
 	/**
 	 * reverseList() reverses commaseparetd string (1,2,3 => 3,2,1)
 	 *
-	 * @param	string		$string: commaseparated string
-	 * @return	string		$string: reversed string
+	 * @param    string        $string: commaseparated string
+	 * @return    string        $string: reversed string
 	 */
 	function reverseList($string) {
 		$tmp_array = t3lib_div::trimExplode(',', $string, 1);
@@ -200,4 +191,5 @@ class tx_powermail_charts {
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/powermail/mod1/class.tx_powermail_charts.php']) {
 	include_once ($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/powermail/mod1/class.tx_powermail_charts.php']);
 }
+
 ?>
