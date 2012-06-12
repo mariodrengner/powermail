@@ -78,6 +78,7 @@ class tx_powermail_markers extends tslib_pibase {
 			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery($select, $from, $where, $groupBy, $orderBy, $limit);
 
 			if ($res !== FALSE) {
+				$orderedSessionData = array();
 				while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 					if ($this->sessiondata['uid' . $row['uid']] != "") {
 						$orderedSessionData['uid' . $row['uid']] = $this->sessiondata['uid' . $row['uid']];
