@@ -34,7 +34,6 @@ require_once(t3lib_extMgm::extPath('powermail') . 'lib/class.tx_powermail_geoip.
  * @subpackage    tx_powermail_markers
  */
 class tx_powermail_markers extends tslib_pibase {
-
 	public $extKey = 'powermail';
 	public $scriptRelPath = 'pi1/class.tx_powermail_pi1.php'; // Path to pi1 to get locallang.xml from pi1 folder
 	public $locallangmarker_prefix = 'locallangmarker_'; // prefix for automatic locallangmarker
@@ -46,6 +45,7 @@ class tx_powermail_markers extends tslib_pibase {
 	 * @param    array        Session values
 	 * @param    array        Content Object
 	 * @param    string        Kind of output (recipient_mail, confirmation, ...)
+	 *
 	 * @return    array        markerArray
 	 */
 	public function GetMarkerArray($conf, $sessionfields, $cObj, $what = '') {
@@ -60,11 +60,18 @@ class tx_powermail_markers extends tslib_pibase {
 		$this->markerArray['###POWERMAIL_ALL###'] = $content_item = '';
 		$this->markerArray = array(); // init
 		$this->sessiondata = $this->getSession($what); // fill variable with values from session
+		switch ($what) {
+			case 'confirmation':
+			case 'recipient_mail':
+			case 'sender_mail':
+			case 'thx':
+				unset($this->sessiondata['FILE']);
+				break;
+		}
 		$this->notInMarkerAll = t3lib_div::trimExplode(',', $this->conf['markerALL.']['notIn'], 1); // choose which fields should not be listed in marker ###ALL### (ERROR is never allowed to be shown)
 		$this->tmpl['all']['all'] = $this->cObj->getSubpart(tslib_cObj::fileResource($this->conf['template.']['all']), "###POWERMAIL_ALL###"); // Load HTML Template: ALL (works on subpart ###POWERMAIL_ALL###)
 		$this->tmpl['all']['item'] = $this->cObj->getSubpart($this->tmpl['all']['all'], "###ITEM###"); // Load HTML Template: ALL (works on subpart ###POWERMAIL_ALL###)
 		$this->hook_markerArray(); // adds hook
-
 
 		if (isset($this->sessiondata) && is_array($this->sessiondata)) {
 
@@ -185,6 +192,7 @@ class tx_powermail_markers extends tslib_pibase {
 	 *
 	 * @param    string        Field Uid
 	 * @param    string        Value
+	 *
 	 * @return    string        Label to field
 	 */
 	private function GetLabelfromBackend($name, $value = '') {
@@ -218,6 +226,7 @@ class tx_powermail_markers extends tslib_pibase {
 	 * Function DynamicLocalLangMarker() to get automaticaly a marker from locallang.xml (###LOCALLANG_BLABLA### from locallang.xml: locallangmarker_blabla
 	 *
 	 * @param    array        Locallang array
+	 *
 	 * @return    string        Label from locallang
 	 */
 	private function DynamicLocalLangMarker($array) {
@@ -229,6 +238,7 @@ class tx_powermail_markers extends tslib_pibase {
 	 * Function getSession() loads values from current session (with or without hidden fields)
 	 *
 	 * @param    string        Kind of output
+	 *
 	 * @return    array        Session Array
 	 */
 	private function getSession($what) {
@@ -245,10 +255,10 @@ class tx_powermail_markers extends tslib_pibase {
 
 		// 3. delete hidden field from session array if should
 		if (($what == 'recipient_mail' && !$allowhidden[0]) || // if current action is recipient_mail and hidden fields are not allowed for this
-		($what == 'sender_mail' && !$allowhidden[1]) || // if current action is sender_mail and hidden fields are not allowed for this
-		($what == 'thx' && !$allowhidden[2]) || // if current action is thx and hidden fields are not allowed for this
-		($what == 'confirmation' && !$allowhidden[3]) || // if current action is confirmation and hidden fields are not allowed for this
-		($what == 'mandatory' && !$allowhidden[4]) // if current action is mandatory and hidden fields are not allowed for this
+			($what == 'sender_mail' && !$allowhidden[1]) || // if current action is sender_mail and hidden fields are not allowed for this
+			($what == 'thx' && !$allowhidden[2]) || // if current action is thx and hidden fields are not allowed for this
+			($what == 'confirmation' && !$allowhidden[3]) || // if current action is confirmation and hidden fields are not allowed for this
+			($what == 'mandatory' && !$allowhidden[4]) // if current action is mandatory and hidden fields are not allowed for this
 		) {
 			// Give me all hidden and deleted field of current page
 			$select = 'uid';
@@ -294,6 +304,7 @@ class tx_powermail_markers extends tslib_pibase {
 	 * @param    string        Value 1. Level
 	 * @param    string        Key 2. Level
 	 * @param    string        Value 2. Level
+	 *
 	 * @return    void
 	 */
 	private function hook_additional_marker(&$markerArray, &$formValues, &$k, &$v, &$kv = FALSE, &$vv = FALSE) {
