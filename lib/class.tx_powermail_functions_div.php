@@ -84,7 +84,7 @@ class tx_powermail_functions_div {
 	 * @return	void
 	 */
 	public function debug($array, $msg = 'Debug output') {
-		t3lib_div::debug($array, $this->extKey . ': ' . $msg); // debug output
+		t3lib_utility_Debug::debug($array, $this->extKey . ': ' . $msg); // debug output
 	}
 
 	/**
