@@ -1,5 +1,6 @@
 ﻿2012-06-12  Nicole Cordes <cordes@cps-it.de>
 
+	* Fixed back links to last page on multiple pages (server application)
 	* Fixed Bug #30157: File Upload: Fields are shown twice (Thanks to Christian Herberger)
 	* Fixed Bug #29772: non-mandatory selects are checked by custom validator (Thanks to Jacob)
 	* Fixed Bug #29546: prefill doesn't work properly in select-boxes (Thanks to Mischa Heissmann)
