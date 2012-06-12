@@ -1322,6 +1322,7 @@ class tx_powermail_html extends tslib_pibase {
 			foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['powermail']['PM_FieldWrapMarkerArrayHook'] as $_classRef) {
 				$_procObj = & t3lib_div::getUserObj($_classRef);
 				$_procObj->PM_FieldWrapMarkerArrayHook($this->uid, $this->xml, $this->type, $this->title, $this->markerArray, $this->piVarsFromSession, $this); // Get new marker Array from other extensions
+
 			}
 		}
 	}
@@ -1352,7 +1353,7 @@ class tx_powermail_html extends tslib_pibase {
 	 * @return    boolean
 	 */
 	private function isPrefilled($index, $selected, $value) {
-		if ($this->cObj->stdWrap($this->conf['prefill.']['uid' . $this->uid . '_' . $index], $this->conf['prefill.']['uid' . $this->uid . '_' . $index . '.'])) {
+		if ($this->cObj->stdWrap($this->conf['prefill.']['uid' . $this->uid . '_' . $index], $this->conf['prefill.']['uid' . $this->uid . '_' . $index . '.']) == $value) {
 			return TRUE; // by field
 		} elseif (is_int($selected[0]) && in_array($index, (array)$selected)) {
 			return TRUE; // by index
