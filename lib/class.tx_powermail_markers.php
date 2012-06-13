@@ -57,8 +57,8 @@ class tx_powermail_markers extends tslib_pibase {
 		$this->geo = t3lib_div::makeInstance('tx_powermail_geoip'); // Instance with geo class
 		$this->div = t3lib_div::makeInstance('tx_powermail_functions_div'); // New object: div functions
 		$this->geoArray = $this->geo->main($this->conf); // Get geoinfo array
-		$this->markerArray['###POWERMAIL_ALL###'] = $content_item = '';
 		$this->markerArray = array(); // init
+		$this->markerArray['###POWERMAIL_ALL###'] = $content_item = '';
 		$this->sessiondata = $this->getSession($what); // fill variable with values from session
 		switch ($what) {
 			case 'confirmation':
@@ -205,7 +205,9 @@ class tx_powermail_markers extends tslib_pibase {
 		$uid = str_replace('uid', '', $name); // remove uid from uid43 to get 43
 		// GET title where fields.flexform LIKE <value index="vDEF">vorname</value>
 		$select = 'tx_powermail_fields.title';
-		$from = 'tx_powermail_fields' . 'LEFT JOIN tx_powermail_fieldsets ON tx_powermail_fields.fieldset = tx_powermail_fieldsets.uid' . 'LEFT JOIN tt_content ON tt_content.uid = tx_powermail_fieldsets.tt_content';
+		$from = 'tx_powermail_fields ' .
+			'LEFT JOIN tx_powermail_fieldsets ON tx_powermail_fields.fieldset = tx_powermail_fieldsets.uid ' .
+			'LEFT JOIN tt_content ON tt_content.uid = tx_powermail_fieldsets.tt_content';
 		$where = 'tx_powermail_fields.uid = ' . intval($uid);
 		$groupBy = '';
 		$orderBy = '';
