@@ -1,5 +1,6 @@
 ﻿2012-06-13  Nicole Cordes <cordes@cps-it.de>
 
+	* Added t3lib_div::removeXSS functions for proper sanitizing
 	* Fixed Bug #37992: urldecoded input "grows" when switching between input and confirmation page (Thanks to Philipp Kitzberger)
 	* Fixed Bug #37991: Missing labels on confirmation page (Thanks to Philipp Kitzberger)
 	* Fixed Bug #35534: Multiple Steps PHP looses user input in 1.6.6 (Thanks to Philipp Kitzberger)
