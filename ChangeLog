@@ -1,4 +1,8 @@
-﻿2012-06-13  Nicole Cordes <cordes@cps-it.de>
+﻿2012-06-14  Nicole Cordes <cordes@cps-it.de>
+
+	* Fixed Bug #37629: Non-mandatory radio checkboxes aren't working
+
+2012-06-13  Nicole Cordes <cordes@cps-it.de>
 
 	* Added t3lib_div::removeXSS functions for proper sanitizing
 	* Fixed Bug #37992: urldecoded input "grows" when switching between input and confirmation page (Thanks to Philipp Kitzberger)

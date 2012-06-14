@@ -394,8 +394,11 @@ class tx_powermail_html extends tslib_pibase {
 					break;
 				}
 			}
-			if ($preSelectionFound == FALSE && $this->pi_getFFvalue(t3lib_div::xml2array($this->xml), 'mandatory') == 1) {
-				// if no pre selection is found, add a mandatory helper radio button
+			// Add an extra hidden option with empty value
+			// We have to use it for non-mandatory radio buttons as there is an error in jQuery Tools
+			// See https://github.com/jquerytools/jquerytools/issues/733
+			if ($preSelectionFound == FALSE && $this->pi_getFFvalue(t3lib_div::xml2array($this->xml), 'mandatory') != 1) {
+				// if no pre selection is found, add an empty helper radio button
 				$optionlines = array_merge(array(' ||*'), $optionlines);
 			}
 			for ($i = 0; $i < count($optionlines); $i++) { // One tag for every option
@@ -409,8 +412,7 @@ class tx_powermail_html extends tslib_pibase {
 				$markerArray['###CLASS###'] = 'class="'; // start class tag
 				$markerArray['###MANDATORY_HELPER###'] = '';
 				// Add required class if needed
-				if ($preSelectionFound == FALSE && $i == 0 && $this->pi_getFFvalue(t3lib_div::xml2array($this->xml), 'mandatory') == 1) {
-					$markerArray['###CLASS###'] .= 'required_one ';
+				if ($preSelectionFound == FALSE && $i == 0 && $this->pi_getFFvalue(t3lib_div::xml2array($this->xml), 'mandatory') != 1) {
 					$markerArray['###VALUE###'] = 'value="" ';
 					$markerArray['###CHECKED###'] = 'checked="checked" ';
 					$markerArray['###MANDATORY_HELPER###'] = ' powermail_mandatory_helper';
