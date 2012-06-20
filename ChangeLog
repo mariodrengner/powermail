@@ -1,4 +1,8 @@
-﻿2012-06-14  Nicole Cordes <cordes@cps-it.de>
+﻿2012-06-20  Nicole Cordes <cordes@cps-it.de>
+
+	* Investigated in Bug #38173; Tab order radio buttons (Thanks to Björn Heinermann)
+
+2012-06-14  Nicole Cordes <cordes@cps-it.de>
 
 	* Fixed Bug #37629: Non-mandatory radio checkboxes aren't working
 

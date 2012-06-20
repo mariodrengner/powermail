@@ -205,27 +205,50 @@ class tx_powermail_form extends tslib_pibase {
 		$array = array(); //init
 
 		// Let's go
-		$select = 'tx_powermail_fields.uid, tx_powermail_fields.formtype, tx_powermail_fields.flexform';
-		$from = 'tx_powermail_fields ' . 'LEFT JOIN tx_powermail_fieldsets ON tx_powermail_fields.fieldset = tx_powermail_fieldsets.uid ' . 'LEFT JOIN tt_content ON tx_powermail_fieldsets.tt_content = tt_content.uid';
-		$where = 'tx_powermail_fieldsets.tt_content = ' . (($this->cObj->data['_LOCALIZED_UID'] > 0) ? $this->cObj->data['_LOCALIZED_UID'] : $this->cObj->data['uid']) . tslib_cObj::enableFields('tx_powermail_fieldsets') . tslib_cObj::enableFields('tx_powermail_fields');
+		$select = 'tx_powermail_fieldsets.uid';
+		$from = 'tx_powermail_fieldsets ' .
+			'LEFT JOIN tt_content ON tx_powermail_fieldsets.tt_content = tt_content.uid';
+		$where = 'tx_powermail_fieldsets.tt_content = ' . (($this->cObj->data['_LOCALIZED_UID'] > 0) ? $this->cObj->data['_LOCALIZED_UID'] : $this->cObj->data['uid']) .
+			$this->cObj->enableFields('tx_powermail_fieldsets');
 		$groupBy = '';
-		$orderBy = 'tx_powermail_fieldsets.sorting, tx_powermail_fields.sorting';
+		$orderBy = 'tx_powermail_fieldsets.sorting';
 		$limit = '';
+		if ($this->cObj->data['tx_powermail_multiple'] == 2) {
+			if (isset($this->piVars['multiple'])) {
+				$limit = ($this->piVars['multiple'] - 1) . ', 1';
+			}
+		}
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery($select, $from, $where, $groupBy, $orderBy, $limit);
 		if ($res !== FALSE) { // If there is a result
-			while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) { // One loop for every field
-				if ($row['formtype'] != 'check' && $row['formtype'] != 'radio') { // if not checkbox or radiobuttons
-					$array[] = $row['uid']; // increase array with this uid
-				} else { // if checkbox or radiobuttons
-					$options = t3lib_div::trimExplode("\n", $this->pi_getFFvalue(t3lib_div::xml2array($row['flexform']), 'options'), 1); // all options in an array
+			while ($fieldset = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) { // One loop for every field
+				$select = 'tx_powermail_fields.uid, tx_powermail_fields.formtype, tx_powermail_fields.flexform';
+				$from = 'tx_powermail_fields';
+				$where = 'tx_powermail_fields.fieldset = ' . $fieldset['uid'] . $this->cObj->enableFields('tx_powermail_fields');
+				$orderBy = 'tx_powermail_fields.sorting';
+				$limit = '';
+				$r = $GLOBALS['TYPO3_DB']->exec_SELECTquery($select, $from, $where, $groupBy, $orderBy, $limit);
+				if ($r !== FALSE) { // If there is a result
+					while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($r)) { // One loop for every field
+						if ($row['formtype'] != 'check' && $row['formtype'] != 'radio') { // if not checkbox or radiobuttons
+							$array[] = $row['uid']; // increase array with this uid
+						} elseif ($row['formtype'] == 'radio') {
+								// For radio buttons only tabindex first button
+							$array[] = $row['uid'] . '_0';
+						} else {
+								// For checkboxes
+							$options = t3lib_div::trimExplode("\n", $this->pi_getFFvalue(t3lib_div::xml2array($row['flexform']), 'options'), 1); // all options in an array
 
-					for ($i = 0; $i < count($options); $i++) { // one loop for every option
-						$array[] = $row['uid'] . '_' . $i; // increase array with this uid
+							for ($i = 0; $i < count($options); $i++) { // one loop for every option
+								$array[] = $row['uid'] . '_' . $i; // increase array with this uid
+							}
+						}
 					}
+					$GLOBALS['TYPO3_DB']->sql_free_result($r);
 				}
 			}
 			$GLOBALS['TYPO3_DB']->sql_free_result($res);
 		}
+
 
 		return $array;
 	}

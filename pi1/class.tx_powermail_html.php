@@ -399,7 +399,7 @@ class tx_powermail_html extends tslib_pibase {
 			// See https://github.com/jquerytools/jquerytools/issues/733
 			if ($preSelectionFound == FALSE && $this->pi_getFFvalue(t3lib_div::xml2array($this->xml), 'mandatory') != 1) {
 				// if no pre selection is found, add an empty helper radio button
-				$optionlines = array_merge(array(' ||*'), $optionlines);
+				array_push($optionlines, ' ||*');
 			}
 			for ($i = 0; $i < count($optionlines); $i++) { // One tag for every option
 				$options[$i] = t3lib_div::trimExplode('|', $optionlines[$i], 0); // To split: label | value | *
@@ -409,25 +409,33 @@ class tx_powermail_html extends tslib_pibase {
 				$markerArray['###LABEL_NAME###'] = 'uid' . $this->uid . '_' . $i; // add labelname
 				$markerArray['###ID###'] = 'id="uid' . $this->uid . '_' . $i . '" '; // add labelname
 				$markerArray['###VALUE###'] = 'value="' . (isset($options[$i][1]) ? htmlspecialchars($options[$i][1]) : htmlspecialchars($options[$i][0])) . '" ';
-				$markerArray['###CLASS###'] = 'class="'; // start class tag
+				$markerArray['###CLASS###'] = '';
+				$markerArray['###TABINDEX###'] = '';
+				$markerArray['###ACCESSKEY###'] = '';
 				$markerArray['###MANDATORY_HELPER###'] = '';
-				// Add required class if needed
-				if ($preSelectionFound == FALSE && $i == 0 && $this->pi_getFFvalue(t3lib_div::xml2array($this->xml), 'mandatory') != 1) {
+				if ($preSelectionFound == FALSE && $this->pi_getFFvalue(t3lib_div::xml2array($this->xml), 'mandatory') != 1 && $options[$i][2] == '*') {
 					$markerArray['###VALUE###'] = 'value="" ';
 					$markerArray['###CHECKED###'] = 'checked="checked" ';
 					$markerArray['###MANDATORY_HELPER###'] = ' powermail_mandatory_helper';
+				} else {
+						// Add required class if needed
+					if ($this->pi_getFFvalue(t3lib_div::xml2array($this->xml), 'mandatory') == 1) {
+						$markerArray['###REQUIRED###'] = ' required="required"';
+					}
+					$markerArray['###CLASS###'] = 'class="'; // start class tag
+					$markerArray['###CLASS###'] .= 'powermail_' . $this->formtitle; // add form title
+					$markerArray['###CLASS###'] .= ' powermail_' . $this->type; // add input type
+					$markerArray['###CLASS###'] .= ' powermail_uid' . $this->uid; // add input uid
+					$markerArray['###CLASS###'] .= ' powermail_subuid' . $this->uid . '_' . $i; // add input subuid
+					$markerArray['###CLASS###'] .= ($this->class_f != '' && $this->additionalCssToInputField) ? ' ' . htmlspecialchars($this->class_f) : ''; // add manual class
+					$markerArray['###CLASS###'] .= '" '; // close tag
+					if (isset($this->turnedtabindex[$this->uid . '_' . $i])) {
+						$markerArray['###TABINDEX###'] = 'tabindex="' . ($this->turnedtabindex[$this->uid . '_' . $i] + 1) . '" ';
+					}
+					if (isset($this->newaccesskey[$this->uid][$i])) {
+						$markerArray['###ACCESSKEY###'] = 'accesskey="' . $this->newaccesskey[$this->uid][$i] . '" ';
+					}
 				}
-				if ($this->pi_getFFvalue(t3lib_div::xml2array($this->xml), 'mandatory') == 1) {
-					$markerArray['###REQUIRED###'] = ' required="required"';
-				}
-				$markerArray['###CLASS###'] .= 'powermail_' . $this->formtitle; // add form title
-				$markerArray['###CLASS###'] .= ' powermail_' . $this->type; // add input type
-				$markerArray['###CLASS###'] .= ' powermail_uid' . $this->uid; // add input uid
-				$markerArray['###CLASS###'] .= ' powermail_subuid' . $this->uid . '_' . $i; // add input subuid
-				$markerArray['###CLASS###'] .= ($this->class_f != '' && $this->additionalCssToInputField) ? ' ' . htmlspecialchars($this->class_f) : ''; // add manual class
-				$markerArray['###CLASS###'] .= '" '; // close tag
-				$this->turnedtabindex[$this->uid . '_' . $i] !== '' ? $markerArray['###TABINDEX###'] = 'tabindex="' . ($this->turnedtabindex[$this->uid . '_' . $i] + 1) . '" ' : $markerArray['###TABINDEX###'] = ''; // tabindex for every radiobutton
-				isset($this->newaccesskey[$this->uid][$i]) ? $markerArray['###ACCESSKEY###'] = 'accesskey="' . $this->newaccesskey[$this->uid][$i] . '" ' : $markerArray['###ACCESSKEY###'] = ''; // accesskey for every radiobutton
 
 				// ###CHECKED###
 				if ($options[$i][2] == '*') { // Preselection from backend
