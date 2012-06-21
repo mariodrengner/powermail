@@ -128,7 +128,9 @@ class tx_powermail_mandatory extends tslib_pibase {
 
 		// Give me all fields of current content uid
 		$select = 'tx_powermail_fields.uid, tx_powermail_fields.title, tx_powermail_fields.flexform, tx_powermail_fields.class';
-		$from = 'tx_powermail_fields ' . 'LEFT JOIN tx_powermail_fieldsets ON tx_powermail_fields.fieldset = tx_powermail_fieldsets.uid ' . 'LEFT JOIN tt_content ON tx_powermail_fieldsets.tt_content = tt_content.uid';
+		$from = 'tx_powermail_fields ' .
+			'LEFT JOIN tx_powermail_fieldsets ON tx_powermail_fields.fieldset = tx_powermail_fieldsets.uid ' .
+			'LEFT JOIN tt_content ON tx_powermail_fieldsets.tt_content = tt_content.uid';
 		$where = 'tx_powermail_fieldsets.tt_content = ' . (($this->cObj->data['_LOCALIZED_UID'] > 0) ? $this->cObj->data['_LOCALIZED_UID'] : $this->cObj->data['uid']) . tslib_cObj::enableFields('tt_content') . tslib_cObj::enableFields('tx_powermail_fieldsets') . tslib_cObj::enableFields('tx_powermail_fields');
 		$groupBy = '';
 		$orderBy = 'tx_powermail_fieldsets.sorting ASC, tx_powermail_fields.sorting ASC';
@@ -303,7 +305,9 @@ class tx_powermail_mandatory extends tslib_pibase {
 
 			// Give me all captcha fields of current tt_content
 			$select = 'tx_powermail_fields.uid';
-			$from = 'tx_powermail_fields ' . 'LEFT JOIN tx_powermail_fieldsets ON tx_powermail_fields.fieldset = tx_powermail_fieldsets.uid ' . 'LEFT JOIN tt_content ON tx_powermail_fieldsets.tt_content = tt_content.uid';
+			$from = 'tx_powermail_fields ' .
+				'LEFT JOIN tx_powermail_fieldsets ON tx_powermail_fields.fieldset = tx_powermail_fieldsets.uid ' .
+				'LEFT JOIN tt_content ON tx_powermail_fieldsets.tt_content = tt_content.uid';
 			$where = 'tx_powermail_fields.formtype = "captcha" AND tx_powermail_fieldsets.tt_content = ' . (($this->cObj->data['_LOCALIZED_UID'] > 0) ? $this->cObj->data['_LOCALIZED_UID'] : $this->cObj->data['uid']) . tslib_cObj::enableFields('tt_content') . tslib_cObj::enableFields('tx_powermail_fieldsets') . tslib_cObj::enableFields('tx_powermail_fields');
 			$groupBy = '';
 			$orderBy = 'tx_powermail_fieldsets.sorting ASC, tx_powermail_fields.sorting ASC';

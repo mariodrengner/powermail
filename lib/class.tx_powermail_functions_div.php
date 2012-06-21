@@ -424,7 +424,9 @@ class tx_powermail_functions_div {
 		$uid = str_replace('uid', '', $uid); // remove uid from uid43 to get 43
 
 		$select = 'tx_powermail_fields.formtype';
-		$from = 'tx_powermail_fields ' . 'LEFT JOIN tx_powermail_fieldsets ON tx_powermail_fields.fieldset = tx_powermail_fieldsets.uid' . 'LEFT JOIN tt_content ON tt_content.uid = tx_powermail_fieldsets.tt_content';
+		$from = 'tx_powermail_fields ' .
+			'LEFT JOIN tx_powermail_fieldsets ON tx_powermail_fields.fieldset = tx_powermail_fieldsets.uid ' .
+			'LEFT JOIN tt_content ON tt_content.uid = tx_powermail_fieldsets.tt_content';
 		$where = 'tx_powermail_fields.uid = ' . intval($uid);
 		$groupBy = '';
 		$orderBy = '';

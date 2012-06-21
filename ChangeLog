@@ -1,4 +1,8 @@
-﻿2012-06-20  Nicole Cordes <cordes@cps-it.de>
+﻿2012-06-21  Nicole Cordes <cordes@cps-it.de>
+
+	* Fixed Bug #38246: DB Error in ext:lib/class.tx_powermail_functions_div.php Line 427 (Thanks to Björn Heinermann)
+
+2012-06-20  Nicole Cordes <cordes@cps-it.de>
 
 	* Investigated in Bug #38173; Tab order radio buttons (Thanks to Björn Heinermann)
 

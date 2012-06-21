@@ -117,7 +117,8 @@ class tx_powermail_countryzones extends tslib_pibase {
 		$outerMarkerArray['###CLASS###'] = str_replace($this->uid, ($this->add + $this->uid), $this->markerArray['###CLASS###']); // change class="... uid55" -> class="... uid100055"
 
 		$select = '*';
-		$from = 'static_countries ' . 'LEFT JOIN static_country_zones ON static_countries.cn_iso_2 = static_country_zones.zn_country_iso_2';
+		$from = 'static_countries ' .
+			'LEFT JOIN static_country_zones ON static_countries.cn_iso_2 = static_country_zones.zn_country_iso_2';
 		$groupBy = '';
 		$orderBy = 'static_country_zones.zn_code';
 		$limit = '';

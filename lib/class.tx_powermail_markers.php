@@ -77,7 +77,8 @@ class tx_powermail_markers extends tslib_pibase {
 
 			// sort session vars to match the order specified in backend
 			$select = 'tx_powermail_fields.uid AS uid';
-			$from = 'tx_powermail_fields ' . 'LEFT JOIN tx_powermail_fieldsets ON tx_powermail_fields.fieldset = tx_powermail_fieldsets.uid';
+			$from = 'tx_powermail_fields ' .
+				'LEFT JOIN tx_powermail_fieldsets ON tx_powermail_fields.fieldset = tx_powermail_fieldsets.uid';
 			$where = 'tx_powermail_fieldsets.tt_content = ' . intval(($this->cObj->data['_LOCALIZED_UID'] > 0) ? $this->cObj->data['_LOCALIZED_UID'] : $this->cObj->data['uid']) . ' AND tx_powermail_fields.deleted = 0 AND tx_powermail_fields.hidden = 0 ';
 			$groupBy = '';
 			$orderBy = 'tx_powermail_fieldsets.sorting,tx_powermail_fields.sorting';
