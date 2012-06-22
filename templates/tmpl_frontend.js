@@ -22,6 +22,11 @@
 	});
 
 	$(function() {
+		
+		powermail_enable_validator = !('###VALIDATOR_DISABLE###' == 'true');
+		powermail_validator_single_error = ('###VALIDATOR_SINGLE_ERROR###' == 'true');
+		powermail_enable_date_selector = ('###SHOW_SELECTORS###' == 'true');
+		powermail_enable_date_icon = ('###SHOW_TRIGGER_ICON###' == 'true');
 
 		// add placeholder attribute behavior in web browsers that don't support it
 		var fakeInput = document.createElement('input'),
@@ -102,8 +107,8 @@
 		$(':date').dateinput({
 			format: '###VALIDATOR_DATEINPUT_FORMAT###',
 			firstDay: parseInt('###VALIDATOR_DATEINPUT_FIRSTDAY###'),
-			selectors: ###SHOW_SELECTORS###,
-			trigger: ###SHOW_TRIGGER_ICON###,
+			selectors: powermail_enable_date_selector,
+			trigger: powermail_enable_date_icon,
 			disabled: false,
 			readonly: false,
 			yearRange: [-99, 99],
@@ -147,6 +152,21 @@
 					return true;
 				}
 		);
+
+		/*
+		$.tools.validator.fn(":radio", function(input, value){
+			return true;
+		});
+		$.tools.validator.fn(":radio[required]", function(input, value) {
+			var checked = false;
+			var els = $("[name='" + input.attr("name") + "']").each(function(i, input) {
+				if ($(input).is(":checked") || checked) {
+					checked = true;
+				}
+			});
+			return checked;
+		});
+		*/
 
 		// initialize range input
 		$(':range').rangeinput();
@@ -214,15 +234,15 @@
 				}
 		);
 
-		if (!###VALIDATOR_DISABLE###) {
+		if (powermail_enable_validator) {
 			powermail_validator = $('form.tx_powermail_pi1_form').attr('novalidate','novalidate').validator({
 				position: '###VALIDATOR_POSITION###',
-				offset: [###VALIDATOR_OFFSET_Y###, ###VALIDATOR_OFFSET_X###],
+				offset: [parseInt('###VALIDATOR_OFFSET_Y###'), parseInt('###VALIDATOR_OFFSET_X###')],
 				message: '###VALIDATOR_MESSAGE###',
 				messageClass: '###VALIDATOR_MESSAGE_CLASS###',
 				inputEvent: 'blur',
 				grouped: true,
-				singleError: ###VALIDATOR_SINGLE_ERROR###,
+				singleError: (powermail_validator_single_error),
 				formEvent : 'submit',
 				onBeforeValidate: function(e, els) {
 					clearPlaceholderValue(e, els);
@@ -235,7 +255,7 @@
                         $('ul.powermail_multiplejs_tabs li a[href*="#' + $(els[0].input).closest('fieldset.tx-powermail-pi1_fieldset').attr('id') + '"]').click();
                         
                     }
-					if (###SCROLL_TO_ERROR###) {
+					if ('###SCROLL_TO_ERROR###' == 'true') {
 						$('html,body').animate({ "scrollTop": $(els[0].input).offset().top - 50}, 1000);
 					}
 				}
@@ -244,7 +264,7 @@
 			// Not needed anymore since jQuery Tools 1.2.7 handle radio button validation correctly
 			/*
 			 $('.tx_powermail_pi1_form input:radio').change(function(e) {
-			 powermail_validator.data('validator').reset($('.tx_powermail_pi1_form input:radio'));
+			 	powermail_validator.data('validator').reset($('.tx_powermail_pi1_form input:radio'));
 			 });
 			*/
 
@@ -261,8 +281,8 @@
 
 		}
 
-        reinitializeValidator = function() {
-            if (!###VALIDATOR_DISABLE###) {
+        var reinitializeValidator = function() {
+            if (powermail_enable_validator) {
                 var validatorConf = powermail_validator.data('validator').getConf();
                 powermail_validator.data('validator').destroy();
                 powermail_validator = $('form.tx_powermail_pi1_form').validator(validatorConf);
@@ -280,7 +300,7 @@
                     },
                     dataType: 'json',
                     success: function(response) {
-                        if (!###VALIDATOR_DISABLE###) {
+                        if (powermail_enable_validator) {
                             powermail_validator.data('validator').reset();
                         }
                         var idCountry = parseInt(response[0]['id']);
@@ -340,7 +360,7 @@
             if ($(this).val() != '') {
                 $(this).getCountryZones();
             } else {
-                if (!###VALIDATOR_DISABLE###) {
+                if (powermail_enable_validator) {
                     powermail_validator.data('validator').reset();
                 }
                 idCountryZone = parseInt($(this).attr('id').substr(3)) + 100000;
@@ -350,7 +370,7 @@
         });
 
 
-        if (###SHOW_TRIGGER_ICON###) {
+        if (powermail_enable_date_icon) {
             $('.tx_powermail_pi1_fieldwrap_html_datetime, .tx_powermail_pi1_fieldwrap_html_date').addClass('calendar_icon');
         }
 
@@ -375,7 +395,7 @@
 			$('ul.powermail_multiplejs_tabs li a').removeClass('act');
 			$(this).addClass('act');
 			// reset error messages if js validation is enabled
-			if (!###VALIDATOR_DISABLE###)
+			if (powermail_enable_validator)
 			{
 				$(this).parent().parent().find('a').not('.current').each(function(id, item) {
 					var temp = item.href.split('#');
