@@ -2,6 +2,7 @@
 	$.tools.validator.localize('en', {
 		'*': '###VALIDATOR_LABEL_PLEASE_CORRECT###',
 		'[required]': '###VALIDATOR_LABEL_REQUIRED###',
+		':radio[required]': '###VALIDATOR_LABEL_REQUIRED###',
 		':email': '###VALIDATOR_LABEL_EMAIL###',
 		':url': '###VALIDATOR_LABEL_URL###',
 		':number': '###VALIDATOR_LABEL_NUMBER###',
