@@ -404,9 +404,7 @@ tr.odd td{background:#eee;}
 
 		// Generate table header
 		$tableHeaderContent = '';
-		$GLOBALS['TYPO3_DB']->sql_data_seek($this->res, $this->getRowWithMostPiVars());
-		$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($this->res);
-		$headerPiVars = t3lib_div::xml2array($row['piVars'], 'piVars');
+		$headerPiVars = $this->getAllUsedPiVars();
 		// Get form type of piVars
 
 		$tableHeaderContent .= '<thead><tr>';
@@ -435,6 +433,7 @@ tr.odd td{background:#eee;}
 		// Generate table body
 		$htmlContent .= '<tbody>';
 		$GLOBALS['TYPO3_DB']->sql_data_seek($this->res, 0);
+		$i = 0;
 		while (($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($this->res))) {
 			$uploadURLPath = t3lib_div::getIndpEnv('TYPO3_SITE_URL') . $row['uploadPath'];
 			if ($row['piVars']) {
@@ -459,7 +458,8 @@ tr.odd td{background:#eee;}
 						if (isset($piVars) && is_array($piVars)) {
 
 							// One loop for every piVar
-							foreach ($piVars as $key => $value) {
+							foreach ($headerPiVars as $key => $headerValue) {
+								$value = isset($piVars[$key]) ? $piVars[$key] : '';
 								if (!is_array($value)) {
 									$value = $this->charConvert($this->cleanString($value));
 									switch ($this->formtypes[$key]) {
@@ -477,6 +477,7 @@ tr.odd td{background:#eee;}
 									}
 									$htmlContent .= '<td>' . $value . '</td>';
 								} else {
+									//t3lib_utility_Debug::debug($piVars);
 									$htmlContentSecondLevel = array();
 									// One loop for every piVar in second level
 									foreach ($piVars[$key] as $key2 => $value2) {
@@ -487,13 +488,7 @@ tr.odd td{background:#eee;}
 									$htmlContent .= '<td>' . implode(', ', $htmlContentSecondLevel) . '</td>';
 								}
 							}
-							$piVarsCounter = count($piVars);
-							while ($piVarsCounter < count($headerPiVars)) {
-								$htmlContent .= '<td></td>';
-								$piVarsCounter++;
-							}
 						}
-
 						// Dynamic value like uid45
 					} elseif (is_numeric(str_replace(array('uid', '_'), '', $key))) {
 
@@ -561,9 +556,7 @@ tr.odd td{background:#eee;}
 		$csvHeader = '';
 
 		// Generate CSV Header
-		$GLOBALS['TYPO3_DB']->sql_data_seek($this->res, $this->getRowWithMostPiVars());
-		$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($this->res);
-		$headerPiVars = t3lib_div::xml2array(($row['piVars']), 'piVars');
+		$headerPiVars = $this->getAllUsedPiVars();
 		foreach ($this->rowConfig as $key => $value) {
 			$newValue = $this->charConvert($value);
 			if (trim($newValue != '')) {
@@ -616,7 +609,8 @@ tr.odd td{background:#eee;}
 					} elseif ($key == 'uid') {
 						if (isset($piVars) && is_array($piVars)) {
 							// One loop for every piVar
-							foreach ($piVars as $key => $value) {
+							foreach ($headerPiVars as $key => $headerValue) {
+								$value = isset($piVars[$key]) ? $piVars[$key] : '';
 								if (!is_array($value)) {
 									$value = $this->charConvert($this->cleanString($value));
 									switch ($this->formtypes[$key]) {
@@ -644,11 +638,6 @@ tr.odd td{background:#eee;}
 									}
 									$csvContent .= '"' . implode(', ', $csvContentSecondLevel) . '"' . $this->seperator;
 								}
-							}
-							$piVarsCounter = count($piVars);
-							while ($piVarsCounter < count($headerPiVars)) {
-								$csvContent .= $this->seperator;
-								$piVarsCounter++;
 							}
 						}
 
@@ -744,9 +733,7 @@ tr.odd td{background:#eee;}
 
 			// Generate EXCEL Header
 			if ($this->useTitle) {
-				$GLOBALS['TYPO3_DB']->sql_data_seek($this->res, $this->getRowWithMostPiVars());
-				$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($this->res);
-				$headerPiVars = t3lib_div::xml2array($row['piVars'], 'piVars');
+				$headerPiVars = $this->getAllUsedPiVars();
 				$sheetHeaderCol = 0;
 				$sheetHeaderCols = array();
 				$excelColNames = $this->getExcelColNames(intval(count($headerPiVars) + count($this->rowConfig)));
@@ -816,7 +803,9 @@ tr.odd td{background:#eee;}
 						} elseif ($key == 'uid') {
 							if (isset($piVars) && is_array($piVars)) {
 								// One loop for every piVar
-								foreach ($piVars as $key => $value) {
+								//foreach ($piVars as $key => $value) {
+								foreach ($headerPiVars as $key => $headerValue) {
+									$value = isset($piVars[$key]) ? $piVars[$key] : '';
 									if (!is_array($value)) {
 										$value = $this->charConvert($this->cleanString(t3lib_div::htmlspecialchars_decode($value)));
 										switch ($this->formtypes[$key]) {
@@ -1118,6 +1107,27 @@ tr.odd td{background:#eee;}
 		}
 		return $rowWithMostPiVars;
 	}
+
+	/**
+	 * Method getAllUsedPiVars() to find all possible cols. If fields are added
+	 * it can happen that records have different piVars. To be able to export
+	 * all cols in selected records we need to get all used piVars for
+	 * generating and exporting correct headers and columns
+	 *
+	 * @return array an array with all existing piVars as Key
+	 */
+	protected function getAllUsedPiVars() {
+		$collectedPiVars = array();
+		$GLOBALS['TYPO3_DB']->sql_data_seek($this->res, 0);
+		while (($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($this->res))) {
+			if ($row['piVars']) {
+				$piVars = t3lib_div::xml2array($row['piVars'], 'piVars');
+				$collectedPiVars = array_merge($collectedPiVars, $piVars);
+			}
+		}
+		return $collectedPiVars;
+	}
+
 
 	/**
 	 * Method piVarsFromExportLanguageUid() check if piVars from exportHeaderLanguageUid
