@@ -110,7 +110,7 @@ plugin.powermail {
 	js.includeJqueryToolsTabs = 1
 
 	# cat=powermail validation client/enable/0360; type=boolean; label= Show date icons: Show trigger icons in date and datetime fields
-	js.showtriggericon = 0
+	js.showtriggericon = 1
 
 	# cat=powermail validation client/enable/0370; type=boolean; label= Hiddenfields for checkboxes: (De)activate the hiddenfields for checkboxes. If only checkboxes are in use, there is a problem to enable a checkbox, submit, go back and deaktivate checkbox and submit again - the value ist still set. To fix this, you can use a JavaScript with hiddenfields (set by default).
 	field.checkboxJS = 1
@@ -122,7 +122,7 @@ plugin.powermail {
 	js.scrolltoerror = 1
 
 	# cat=powermail validation client/enable/0395; type=boolean; label= Show month and year selectors: Show pull down menu for date and year
-	js.showselectors = 0
+	js.showselectors = 1
 
 	# cat=powermail validation client/powermail_validation_error/0400; type=options[top right, center right, bottom right, bottom center, bottom left, center left, top left, top center]; label= Validation errors position: Position of validation errors
 	js.validationPosition = top right
