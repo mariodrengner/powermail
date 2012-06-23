@@ -245,7 +245,6 @@ class tx_powermail_export {
 		$this->pageTitle = $pageArray['title'];
 
 		$this->phpexcel = t3lib_extMgm::isLoaded('phpexcel_library');
-		$this->header = '';
 		$this->content = '';
 		$i = 0;
 
@@ -370,7 +369,7 @@ class tx_powermail_export {
 			$GLOBALS['TYPO3_DB']->exec_UPDATEquery('tx_powermail_mails', 'pid = ' . $this->pid . $this->generalRecordsFilter, array('deleted' => 1));
 		}
 
-		return $this->header . $this->content;
+		return $this->content;
 	}
 
 	/**
@@ -1043,14 +1042,14 @@ tr.odd td{background:#eee;}
 	}
 
 	/**
-	 * Generate header and stores result in $this->header
+	 * Generate header
 	 *
 	 * @return    void
 	 */
 	protected function generateFileHeader() {
 		if (strstr(t3lib_div::getIndpEnv('HTTP_USER_AGENT'), 'MSIE')) {
-			$this->header .= header('Content-Type: application/force-download; charset=' . $this->outputEncoding);
-			$this->header .= header('Content-Disposition: attachment; filename="' . $this->filename . '"');
+			header('Content-Type: application/force-download; charset=' . $this->outputEncoding);
+			header('Content-Disposition: attachment; filename="' . $this->filename . '"');
 		} else {
 			switch ($this->export) {
 				case 'xls':
@@ -1063,8 +1062,8 @@ tr.odd td{background:#eee;}
 				default:
 					$contenttype = 'text/csv; charset=' . $this->outputEncoding;
 			}
-			$this->header .= header('Content-Type: ' . $contenttype);
-			$this->header .= header('Content-Disposition: inline; filename="' . $this->filename . '"');
+			header('Content-Type: ' . $contenttype);
+			header('Content-Disposition: inline; filename="' . $this->filename . '"');
 		}
 
 		if ($this->debug) {
@@ -1073,14 +1072,14 @@ tr.odd td{background:#eee;}
 			t3lib_div::devLog('Temporary filename was set to ' . $this->tempFilename, $this->extKey, 0);
 		}
 
-		$this->header .= header('Expires: Fri, 01 Jan 2010 05:00:00 GMT');
+		header('Expires: Fri, 01 Jan 2010 05:00:00 GMT');
 		if (strstr(t3lib_div::getIndpEnv('HTTP_USER_AGENT'), 'MSIE') == FALSE) {
-			$this->header .= header('Cache-Control: no-cache');
-			$this->header .= header('Pragma: no-cache');
+			header('Cache-Control: no-cache');
+			header('Pragma: no-cache');
 		} else {
 				// Fixes a bug which won't allow a XLS download to start in IE over SSL connection
-			$this->header .= header('Cache-Control: private');
-			$this->header .= header('Pragma: public');
+			header('Cache-Control: private');
+			header('Pragma: public');
 		}
 	}
 
