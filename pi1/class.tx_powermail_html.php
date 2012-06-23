@@ -1215,7 +1215,7 @@ class tx_powermail_html extends tslib_pibase {
 
 		// ###DESCRIPTION###
 		if (!empty($this->description)) {
-			$this->markerArray['###DESCRIPTION###'] = $this->cObj->wrap($this->description, $this->conf['description.']['wrap'], '|'); // add wrapped label to markerArray
+			$this->markerArray['###DESCRIPTION###'] = $this->cObj->dataWrap($this->description, $this->conf['description.']['dataWrap'], '|'); // add wrapped label to markerArray
 		}
 
 		// ###MANDATORY_SYMBOL###
