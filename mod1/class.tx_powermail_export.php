@@ -321,6 +321,9 @@ class tx_powermail_export {
 		$this->generateFormtypesArray();
 
 		$this->generalRecordsFilter = ' AND hidden = 0 AND deleted = 0';
+
+		$this->hook();
+
 		$select = '*';
 		$from = 'tx_powermail_mails';
 		$where = 'pid = ' . $this->pid . $this->timeFilter . $this->generalRecordsFilter;
@@ -368,6 +371,24 @@ class tx_powermail_export {
 		}
 
 		return $this->header . $this->content;
+	}
+
+	/**
+	 * Hook to change configuration before export data.
+	 *
+	 * @return void
+	 */
+	protected function hook() {
+		if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['powermail']['PM_ExportHook'])) { // Adds hook for processing of extra global markers
+			foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['powermail']['PM_ExportHook'] as $_classRef) {
+				$_procObj = & t3lib_div::getUserObj($_classRef);
+					// Ensure the function exists by checking implementation of interface
+				if ($_procObj instanceof PM_ExportHook) {
+						/** @var PM_ExportHook $_procObj */
+					$_procObj->PM_ExportHook($this); // Open function to manipulate data
+				}
+			}
+		}
 	}
 
 	/**

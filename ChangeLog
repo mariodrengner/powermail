@@ -1,4 +1,8 @@
-﻿2012-06-21  Nicole Cordes <cordes@cps-it.de>
+﻿2012-06-23  Nicole Cordes <cordes@cps-it.de>
+
+	* Added Feature #30190: Hook in module class (Thanks to Julia Pardanaud)
+
+2012-06-21  Nicole Cordes <cordes@cps-it.de>
 
 	* Fixed Bug #38246: DB Error in ext:lib/class.tx_powermail_functions_div.php Line 427 (Thanks to Björn Heinermann)
 
