@@ -296,8 +296,11 @@ class tx_powermail_html extends tslib_pibase {
 			for ($i = 0; $i < count($optionlines); $i++) { // One tag for every option
 				$options[$i] = t3lib_div::trimExplode('|', $optionlines[$i], 0); // Every row is a new option
 				$markerArray['###NAME###'] = 'name="' . $this->prefixId . '[uid' . $this->uid . '][' . $i . ']" '; // add name to markerArray
-				$markerArray['###LABEL###'] = $this->div->parseFunc($options[$i][0], $this->cObj, $this->conf['label.']['parse']);
-				$markerArray['###LABEL###'] = ($this->conf['label.']['parse']) ? $markerArray['###LABEL###'] : htmlspecialchars($markerArray['###LABEL###']);
+				if ($this->conf['label.']['parse']) {
+					$markerArray['###LABEL###'] = $this->div->parseFunc($options[$i][0], $this->cObj);
+				} else {
+					$markerArray['###LABEL###'] = htmlspecialchars($markerArray['###LABEL###']);
+				}
 				$markerArray['###LABEL_NAME###'] = 'uid' . $this->uid . '_' . $i; // add labelname
 				$markerArray['###ID###'] = 'id="uid' . $this->uid . '_' . $i . '" '; // add labelname
 				$markerArray['###VALUE###'] = 'value="' . (isset($options[$i][1]) ? htmlspecialchars($options[$i][1]) : htmlspecialchars($options[$i][0])) . '" ';
@@ -361,7 +364,11 @@ class tx_powermail_html extends tslib_pibase {
 		$subpartArray['###CONTENT###'] = $content_item; // subpart 3
 
 		// Outer Marker array
-		$this->markerArray['###LABEL_MAIN###'] = htmlspecialchars($this->title);
+		if ($this->conf['label.']['parse']) {
+			$this->markerArray['###LABEL_MAIN###'] = $this->div->parseFunc($this->title, $this->cObj, $this->conf['label.']['parse']);
+		} else {
+			$this->markerArray['###LABEL_MAIN###'] = htmlspecialchars($this->title);
+		}
 		$this->markerArray['###POWERMAIL_FIELD_UID###'] = $this->uid;
 
 		$this->html_hookwithinfields(); // adds hook to manipulate the markerArray for any field
@@ -458,9 +465,11 @@ class tx_powermail_html extends tslib_pibase {
 		$subpartArray = array(); // init
 		$subpartArray['###CONTENT###'] = $content_item; // subpart 3
 
-		$this->markerArray['###LABEL_MAIN###'] = $this->div->parseFunc($this->title, $this->cObj, $this->conf['label.']['parse']);
-		$this->markerArray['###LABEL_MAIN###'] = ($this->conf['label.']['parse']) ? $this->title : htmlspecialchars($this->title);
-
+		if ($this->conf['label.']['parse']) {
+			$this->markerArray['###LABEL_MAIN###'] = $this->div->parseFunc($this->title, $this->cObj);
+		} else {
+			$this->markerArray['###LABEL_MAIN###'] = htmlspecialchars($this->title);
+		}
 		$this->markerArray['###POWERMAIL_FIELD_UID###'] = $this->uid;
 
 		if ($this->pi_getFFvalue(t3lib_div::xml2array($this->xml), 'mandatory') == 1) {
@@ -1208,9 +1217,10 @@ class tx_powermail_html extends tslib_pibase {
 		}
 
 		// ###LABEL###
-		if (!empty($this->title)) {
-			$this->markerArray['###LABEL###'] = $this->title;
-			$this->markerArray['###LABEL###'] = ($this->conf['label.']['parse']) ? $this->markerArray['###LABEL###'] : htmlspecialchars($this->markerArray['###LABEL###']);
+		if ($this->conf['label.']['parse']) {
+			$this->markerArray['###LABEL###'] = $this->div->parseFunc($this->title, $this->cObj);
+		} else {
+			$this->markerArray['###LABEL###'] = htmlspecialchars($this->markerArray['###LABEL###']);
 		}
 
 		// ###DESCRIPTION###
