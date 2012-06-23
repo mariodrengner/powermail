@@ -4,6 +4,8 @@
 	* Fixed Bug #30438: validate-alpha-w-umlauts and validate-alphanum-w-umlaut in 1.6.4 broken (Thanks to Tobias)
 	* Fixed Bug #30705: XLS export : unable to download in IE (Thanks to Julien Henchoz)
 	* Removed header variable from mod1/class.tx_powermail_export.php as header()-function hasn't any return value
+	* Fixed Bug #31011: Field validation doesnt work correctly (Thanks to Arek)
+
 
 2012-06-21  Nicole Cordes <cordes@cps-it.de>
 

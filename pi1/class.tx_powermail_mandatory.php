@@ -251,23 +251,24 @@ class tx_powermail_mandatory extends tslib_pibase {
 		// Let's go and check
 		if (isset($this->conf['validate.']) && is_array($this->conf['validate.'])) { // Only if any validation is set per typoscript
 			foreach ($this->conf['validate.'] as $key => $value) { // One loop for every validation
+				$sessionfieldKey = str_replace('.', '', $key);
 				// autocheck
 				if ($this->conf['validate.'][$key]['auto']) { // If autocheck of current value is active
 					if (isset($autoarray[$this->conf['validate.'][$key]['auto']])) { // if regulare expression in $autoarray
-						if ($this->sessionfields[str_replace('.', '', $key)]) { // if there is a value in the field, which to check
+						if (isset($this->sessionfields[$sessionfieldKey]) && $this->sessionfields[$sessionfieldKey] != '') { // if there is a value in the field, which to check
 
 							// Check
-							if (!preg_match($autoarray[$this->conf['validate.'][$key]['auto']], $this->sessionfields[str_replace('.', '', $key)])) { // If check failed
-								$this->sessionfields['ERROR'][str_replace(array('.', 'uid'), '', $key)][] = ($this->conf['validate.'][$key]['errormsg'] ? $this->conf['validate.'][$key]['errormsg'] : $this->pi_getLL('error_expression_validation')); // write errormessage
+							if (!preg_match($autoarray[$this->conf['validate.'][$key]['auto']], $this->sessionfields[$sessionfieldKey])) { // If check failed
+								$this->sessionfields['ERROR'][str_replace('uid', '', $sessionfieldKey)][] = ($this->conf['validate.'][$key]['errormsg'] ? $this->conf['validate.'][$key]['errormsg'] : $this->pi_getLL('error_expression_validation')); // write errormessage
 							}
 						}
 					}
 				} elseif ($this->conf['validate.'][$key]['expression']) { // regulare expression
-					if ($this->sessionfields[str_replace('.', '', $key)]) { // if there is a value in the field, which to check
+					if (isset($this->sessionfields[$sessionfieldKey]) && $this->sessionfields[$sessionfieldKey] != '') { // if there is a value in the field, which to check
 
 						// Check
-						if (!preg_match($this->div->marker2value($this->conf['validate.'][$key]['expression'], $this->sessionfields), $this->sessionfields[str_replace('.', '', $key)])) { // If check failed
-							$this->sessionfields['ERROR'][str_replace(array('.', 'uid'), '', $key)][] = ($this->conf['validate.'][$key]['errormsg'] ? $this->conf['validate.'][$key]['errormsg'] : $this->pi_getLL('error_expression_validation')); // write errormessage
+						if (!preg_match($this->div->marker2value($this->conf['validate.'][$key]['expression'], $this->sessionfields), $this->sessionfields[$sessionfieldKey])) { // If check failed
+							$this->sessionfields['ERROR'][str_replace('uid', '', $sessionfieldKey)][] = ($this->conf['validate.'][$key]['errormsg'] ? $this->conf['validate.'][$key]['errormsg'] : $this->pi_getLL('error_expression_validation')); // write errormessage
 						}
 					}
 				}
