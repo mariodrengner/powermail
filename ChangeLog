@@ -1,6 +1,7 @@
 ﻿2012-06-23  Nicole Cordes <cordes@cps-it.de>
 
 	* Added Feature #30190: Hook in module class (Thanks to Julia Pardanaud)
+	* Fixed Bug #30438: validate-alpha-w-umlauts and validate-alphanum-w-umlaut in 1.6.4 broken (Thanks to Tobias)
 
 2012-06-21  Nicole Cordes <cordes@cps-it.de>
 
