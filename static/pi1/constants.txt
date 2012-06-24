@@ -133,16 +133,25 @@ plugin.powermail {
 	# cat=plugin.powermail_additionalconfig//0930; type=boolean; label= Always include javascript for form validation and special input types (date/datetime/slider)
 	js.alwaysInclude = 0
 
-	# cat=plugin.powermail_additionalconfig//0940; type=boolean; label= Include jQuery and jQueryTools libraries to header (only for usage without t3jquery)
+	# cat=plugin.powermail_additionalconfig//0940; type=boolean; label= Include jQuery and jQuery Tools libraries to header (only for usage without t3jquery)
 	js.toHeader = 0
 
-	# cat=plugin.powermail_additionalconfig//0950; type=boolean; label= Include jQuery library (only for usage without t3jquery)
+	# cat=plugin.powermail_additionalconfig//0950; type=text; label= Path to jQuery library
+	js.jQueryPath = https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js
+
+	# cat=plugin.powermail_additionalconfig//0955; type=boolean; label= Include jQuery library (only for usage without t3jquery)
 	js.includeJquery = 1
 
-	# cat=plugin.powermail_additionalconfig//0960; type=boolean; label= Include jQueryTools Form library (only for usage without t3jquery)
+	# cat=plugin.powermail_additionalconfig//0960; type=text; label= Path to jQuery Tools library (form tools)
+	js.jQueryToolsFormPath = http://cdn.jquerytools.org/1.2.7/form/jquery.tools.min.js
+
+	# cat=plugin.powermail_additionalconfig//0965; type=boolean; label= Include jQuery Tools form library (only for usage without t3jquery)
 	js.includeJqueryTools = 1
 
-	# cat=plugin.powermail_additionalconfig//0970; type=boolean; label= Include jQueryTools Tab library (only for usage without t3jquery)
+	# cat=plugin.powermail_additionalconfig//0970; type=text; label= Path to jQuery Tools library (UI tools)
+	js.jQueryToolsUIPath = http://cdn.jquerytools.org/1.2.7/tiny/jquery.tools.min.js
+
+	# cat=plugin.powermail_additionalconfig//0975; type=boolean; label= Include jQuery Tools Tab library (only for usage without t3jquery)
 	js.includeJqueryToolsTabs = 1
 
 	# cat=plugin.powermail_additionalconfig//1000; type=boolean; label= Hiddenfields for checkboxes: (De)activate the hiddenfields for checkboxes. If only checkboxes are in use, there is a problem to enable a checkbox, submit, go back and deaktivate checkbox and submit again - the value ist still set. To fix this, you can use a JavaScript with hiddenfields (set by default).

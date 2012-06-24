@@ -7,6 +7,7 @@
 	* Fixed Bug #31011: Field validation doesnt work correctly (Thanks to Arek)
 	* Fixed Bug #31029: Absolute path to icon_info.gif (Thanks to Markus Klein)
 	* Added Feature #31340: no html possible in label of checkbox (Thanks to Martin Holtz)
+	* Updated jQuery and jQuery Tools to the latest versions
 
 2012-06-21  Nicole Cordes <cordes@cps-it.de>
 
