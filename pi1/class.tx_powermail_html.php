@@ -226,23 +226,22 @@ class tx_powermail_html extends tslib_pibase {
 			for ($i = 0; $i < count($optionlines); $i++) { // One tag for every option
 				$markerArray['###LABEL###'] = htmlspecialchars($options[$i][0]);
 				$markerArray['###VALUE###'] = (isset($options[$i][1]) ? htmlspecialchars($options[$i][1]) : htmlspecialchars($options[$i][0]));
+				$markerArray['###SELECTED###'] = '';
+
+				$set[$i] = 0;
 
 				// ###SELECTED###
 				if (!is_array($this->piVarsFromSession['uid' . $this->uid])) { // no multiple
-					if ($options[$i][2] == '*') {
-						$markerArray['###SELECTED###'] = ' selected="selected"';
-					} // selected from backend
-					else {
-						$markerArray['###SELECTED###'] = '';
-					} // clear
 					if (isset($this->piVarsFromSession['uid' . $this->uid])) { // if session was set
 						if ($this->piVarsFromSession['uid' . $this->uid] == ($options[$i][1] ? $options[$i][1] : $options[$i][0])) {
 							$markerArray['###SELECTED###'] = 'selected="selected" ';
+							$set[$i] = 1;
 						} // mark as selected
-						else {
-							$markerArray['###SELECTED###'] = '';
-						} // clear
-					}
+					} elseif ($options[$i][2] == '*') {
+							// Only preselect if no session value was found
+						$markerArray['###SELECTED###'] = ' selected="selected"';
+						$set[$i] = 1;
+					} // selected from backend
 				} else { // multiple
 					for ($j = 0; $j < count($this->piVarsFromSession['uid' . $this->uid]); $j++) {
 						if ($this->piVarsFromSession['uid' . $this->uid][$j] == ($options[$i][1] ? $options[$i][1] : $options[$i][0])) {
@@ -250,17 +249,12 @@ class tx_powermail_html extends tslib_pibase {
 							$set[$i] = 1;
 						}
 					}
-					if (!$set[$i]) {
-						$markerArray['###SELECTED###'] = '';
-					} // clear
 				}
 
 				// Preselection from typoscript
 				if (!$set[$i] && !empty($this->conf['prefill.']['uid' . $this->uid])) {
 					if ($this->isPrefilled($i, $selected, ($options[$i][1] ? $options[$i][1] : $options[$i][0])) != FALSE) {
 						$markerArray['###SELECTED###'] = ' selected="selected"'; // mark as selected
-					} else {
-						$markerArray['###SELECTED###'] = ''; // clear
 					}
 				}
 

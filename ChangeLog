@@ -1,4 +1,8 @@
-﻿2012-06-23  Nicole Cordes <cordes@cps-it.de>
+﻿2012-06-25  Nicole Cordes <cordes@cps-it.de>
+
+	* Fixed Bug #32682: preselection of selectboxes fails if typoscript (prefill.xxxxx) is defined (Thanks to Markus Müller)
+
+2012-06-23  Nicole Cordes <cordes@cps-it.de>
 
 	* Added Feature #30190: Hook in module class (Thanks to Julia Pardanaud)
 	* Fixed Bug #30438: validate-alpha-w-umlauts and validate-alphanum-w-umlaut in 1.6.4 broken (Thanks to Tobias)
