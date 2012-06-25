@@ -79,8 +79,9 @@ class tx_powermail_markers extends tslib_pibase {
 			$select = 'tx_powermail_fields.uid AS uid';
 			$from = 'tx_powermail_fields ' .
 				'LEFT JOIN tx_powermail_fieldsets ON tx_powermail_fields.fieldset = tx_powermail_fieldsets.uid';
-			$where = 'tx_powermail_fieldsets.tt_content = ' . intval(($this->cObj->data['_LOCALIZED_UID'] > 0) ? $this->cObj->data['_LOCALIZED_UID'] : $this->cObj->data['uid']) . ' AND tx_powermail_fields.deleted = 0 AND tx_powermail_fields.hidden = 0 ';
-			$groupBy = '';
+			$where = 'tx_powermail_fieldsets.tt_content = ' . intval(($this->cObj->data['_LOCALIZED_UID'] > 0) ? $this->cObj->data['_LOCALIZED_UID'] : $this->cObj->data['uid']) .
+				' AND tx_powermail_fields.deleted = 0 AND tx_powermail_fields.hidden = 0 ';
+			$groupBy = 'tx_powermail_fields.uid';
 			$orderBy = 'tx_powermail_fieldsets.sorting,tx_powermail_fields.sorting';
 			$limit = '';
 			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery($select, $from, $where, $groupBy, $orderBy, $limit);
@@ -210,7 +211,7 @@ class tx_powermail_markers extends tslib_pibase {
 			'LEFT JOIN tx_powermail_fieldsets ON tx_powermail_fields.fieldset = tx_powermail_fieldsets.uid ' .
 			'LEFT JOIN tt_content ON tt_content.uid = tx_powermail_fieldsets.tt_content';
 		$where = 'tx_powermail_fields.uid = ' . intval($uid);
-		$groupBy = '';
+		$groupBy = 'tx_powermail_fields.uid';
 		$orderBy = '';
 		$limit = '';
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery($select, $from, $where, $groupBy, $orderBy, $limit);
@@ -266,7 +267,8 @@ class tx_powermail_markers extends tslib_pibase {
 			// Give me all hidden and deleted field of current page
 			$select = 'uid';
 			$from = 'tx_powermail_fields';
-			$where = '(' . 'pid = ' . intval($GLOBALS['TSFE']->id) . ' AND formtype = "hidden"' . tslib_cObj::enableFields('tx_powermail_fields') . ') OR ( pid = ' . intval($GLOBALS['TSFE']->id) . ' AND deleted = 1 )';
+			$where = '(' . 'pid = ' . intval($GLOBALS['TSFE']->id) . ' AND formtype = "hidden"' . tslib_cObj::enableFields('tx_powermail_fields') . ') ' .
+				'OR ( pid = ' . intval($GLOBALS['TSFE']->id) . ' AND deleted = 1 )';
 			$groupBy = '';
 			$orderBy = '';
 			$limit = '';

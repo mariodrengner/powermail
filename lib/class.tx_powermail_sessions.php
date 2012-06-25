@@ -196,7 +196,7 @@ class tx_powermail_sessions extends tslib_pibase {
 
 			$res = $GLOBALS['TYPO3_DB']->sql_query($query);
 
-			if ($res) { // If there is a result
+			if ($res !== FALSE) { // If there is a result
 				while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) { // One loop for every uploadfield
 					if ($_FILES['tx_powermail_pi1']['name']['uid' . $row['uid']]) { // if there is a content in current upload field
 						if (is_array($_FILES['tx_powermail_pi1']['name']['uid' . $row['uid']])) { // is this an array? Can be for multiple file-upload
@@ -266,6 +266,7 @@ class tx_powermail_sessions extends tslib_pibase {
 						}
 					}
 				}
+				$GLOBALS['TYPO3_DB']->sql_free_result($res);
 			}
 		}
 

@@ -242,9 +242,9 @@ class tx_powermail_pi1 extends tslib_pibase {
 				'AND tx_powermail_fieldsets.tt_content = ' . (($this->cObj->data['_LOCALIZED_UID'] > 0) ? $this->cObj->data['_LOCALIZED_UID'] : $this->cObj->data['uid']) .
 				tslib_cObj::enableFields('tt_content') . tslib_cObj::enableFields('tx_powermail_fieldsets') .
 				tslib_cObj::enableFields('tx_powermail_fields');
-			$groupBy = '';
+			$groupBy = 'tx_powermail_fields.uid';
 			$orderBy = 'tx_powermail_fieldsets.sorting ASC, tx_powermail_fields.sorting ASC';
-			$limit = 1;
+			$limit = '1';
 			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery($select, $from, $where, $groupBy, $orderBy, $limit);
 			if ($res !== FALSE) { // If there is a result
 				while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) { // One loop for every captcha field

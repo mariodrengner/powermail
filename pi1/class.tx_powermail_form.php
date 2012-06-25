@@ -133,7 +133,8 @@ class tx_powermail_form extends tslib_pibase {
 
 		$select = 'uid';
 		$from = 'tx_powermail_fieldsets';
-		$where = 'tt_content = ' . (($this->cObj->data['_LOCALIZED_UID'] > 0) ? $this->cObj->data['_LOCALIZED_UID'] : $this->cObj->data['uid']) . tslib_cObj::enableFields('tx_powermail_fieldsets');
+		$where = 'tt_content = ' . (($this->cObj->data['_LOCALIZED_UID'] > 0) ? $this->cObj->data['_LOCALIZED_UID'] : $this->cObj->data['uid']) .
+			tslib_cObj::enableFields('tx_powermail_fieldsets');
 		$groupBy = '';
 		$orderBy = 'sorting DESC';
 		$limitOne = '1';
@@ -147,7 +148,8 @@ class tx_powermail_form extends tslib_pibase {
 
 		$select = '*'; // 'uid,title', before
 		$from = 'tx_powermail_fieldsets';
-		$where = 'tt_content = ' . (($this->cObj->data['_LOCALIZED_UID'] > 0) ? $this->cObj->data['_LOCALIZED_UID'] : $this->cObj->data['uid']) . tslib_cObj::enableFields('tx_powermail_fieldsets');
+		$where = 'tt_content = ' . (($this->cObj->data['_LOCALIZED_UID'] > 0) ? $this->cObj->data['_LOCALIZED_UID'] : $this->cObj->data['uid']) .
+			tslib_cObj::enableFields('tx_powermail_fieldsets');
 		$groupBy = '';
 		$orderBy = 'sorting ASC';
 		// Give me all needed fieldsets
@@ -156,12 +158,17 @@ class tx_powermail_form extends tslib_pibase {
 			while ($row_fs = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res1)) { // One loop for every fieldset
 				$this->InnerMarkerArray['###POWERMAIL_FIELDS###'] = ''; // init
 
-				$select = 'tx_powermail_fieldsets.uid fs_uid, tx_powermail_fields.uid f_uid, tx_powermail_fieldsets.felder fs_fields, ' . 'tx_powermail_fieldsets.title fs_title, tx_powermail_fieldsets.class fs_class, tx_powermail_fields.title f_title, ' . 'tx_powermail_fields.formtype f_type, tx_powermail_fields.flexform f_field, tt_content.tx_powermail_title c_title, ' . 'tx_powermail_fields.fe_field f_fefield, tx_powermail_fields.description f_description, tx_powermail_fields.class f_class';
+				$select = 'tx_powermail_fieldsets.uid fs_uid, tx_powermail_fields.uid f_uid, tx_powermail_fieldsets.felder fs_fields, ' .
+					'tx_powermail_fieldsets.title fs_title, tx_powermail_fieldsets.class fs_class, tx_powermail_fields.title f_title, ' .
+					'tx_powermail_fields.formtype f_type, tx_powermail_fields.flexform f_field, tt_content.tx_powermail_title c_title, ' .
+					'tx_powermail_fields.fe_field f_fefield, tx_powermail_fields.description f_description, tx_powermail_fields.class f_class';
 				$from = 'tx_powermail_fieldsets ' .
 					'LEFT JOIN tx_powermail_fields ON tx_powermail_fieldsets.uid = tx_powermail_fields.fieldset ' .
 					'LEFT JOIN tt_content ON tx_powermail_fieldsets.tt_content = tt_content.uid';
-				$where = 'tx_powermail_fieldsets.tt_content = ' . (($this->cObj->data['_LOCALIZED_UID'] > 0) ? $this->cObj->data['_LOCALIZED_UID'] : $this->cObj->data['uid']) . ' AND tx_powermail_fields.fieldset = ' . $row_fs['uid'] . tslib_cObj::enableFields('tx_powermail_fieldsets') . tslib_cObj::enableFields('tx_powermail_fields');
-				$groupBy = '';
+				$where = 'tx_powermail_fieldsets.tt_content = ' . (($this->cObj->data['_LOCALIZED_UID'] > 0) ? $this->cObj->data['_LOCALIZED_UID'] : $this->cObj->data['uid']) .
+					' AND tx_powermail_fields.fieldset = ' . $row_fs['uid'] . tslib_cObj::enableFields('tx_powermail_fieldsets') .
+					tslib_cObj::enableFields('tx_powermail_fields');
+				$groupBy = 'tx_powermail_fields.uid';
 				$orderBy = 'tx_powermail_fieldsets.sorting, tx_powermail_fields.sorting';
 				$limit1 = '';
 				// Give me all fields in current fieldset, which are related to current content
@@ -218,7 +225,7 @@ class tx_powermail_form extends tslib_pibase {
 			'LEFT JOIN tt_content ON tx_powermail_fieldsets.tt_content = tt_content.uid';
 		$where = 'tx_powermail_fieldsets.tt_content = ' . (($this->cObj->data['_LOCALIZED_UID'] > 0) ? $this->cObj->data['_LOCALIZED_UID'] : $this->cObj->data['uid']) .
 			$this->cObj->enableFields('tx_powermail_fieldsets');
-		$groupBy = '';
+		$groupBy = 'tx_powermail_fieldsets.uid';
 		$orderBy = 'tx_powermail_fieldsets.sorting';
 		$limit = '';
 		if ($this->cObj->data['tx_powermail_multiple'] == 2) {
@@ -271,7 +278,8 @@ class tx_powermail_form extends tslib_pibase {
 		$this->multiple = array();
 		$select = 'count(*) no';
 		$from = 'tx_powermail_fieldsets';
-		$where = 'tt_content = ' . (($this->cObj->data['_LOCALIZED_UID'] > 0) ? $this->cObj->data['_LOCALIZED_UID'] : $this->cObj->data['uid']) . tslib_cObj::enableFields('tx_powermail_fieldsets');
+		$where = 'tt_content = ' . (($this->cObj->data['_LOCALIZED_UID'] > 0) ? $this->cObj->data['_LOCALIZED_UID'] : $this->cObj->data['uid']) .
+			tslib_cObj::enableFields('tx_powermail_fieldsets');
 		$groupBy = '';
 		$orderBy = '';
 		$limit = '';
@@ -328,7 +336,8 @@ class tx_powermail_form extends tslib_pibase {
 
 			$select = 'uid,title';
 			$from = 'tx_powermail_fieldsets';
-			$where = 'tt_content = ' . (($this->cObj->data['_LOCALIZED_UID'] > 0) ? $this->cObj->data['_LOCALIZED_UID'] : $this->cObj->data['uid']) . tslib_cObj::enableFields('tx_powermail_fieldsets');
+			$where = 'tt_content = ' . (($this->cObj->data['_LOCALIZED_UID'] > 0) ? $this->cObj->data['_LOCALIZED_UID'] : $this->cObj->data['uid']) .
+				tslib_cObj::enableFields('tx_powermail_fieldsets');
 			$groupBy = '';
 			$orderBy = 'sorting ASC';
 			$limit = '';
@@ -367,9 +376,9 @@ class tx_powermail_form extends tslib_pibase {
 			'LEFT JOIN tx_powermail_fields ON tx_powermail_fieldsets.uid = tx_powermail_fields.fieldset ' .
 			'LEFT JOIN tt_content ON tx_powermail_fieldsets.tt_content = tt_content.uid';
 		$where = 'tx_powermail_fields.uid = ' . intval($array[1]);
-		$groupBy = '';
+		$groupBy = 'tx_powermail_fields.uid';
 		$orderBy = '';
-		$limit = '';
+		$limit = '1';
 		// Give me current field details
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery($select, $from, $where, $groupBy, $orderBy, $limit);
 		if ($res !== FALSE) {

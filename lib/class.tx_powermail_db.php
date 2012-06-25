@@ -134,7 +134,10 @@ class tx_powermail_db extends tslib_pibase {
 				if ($this->fieldExists('uid', $table)) { // check if field uid exists in table
 					// get uid of existing value
 					$select = $table . '.uid';
-					$where = $table . '.' . $uniqueField . ' = "' . $this->cObj->cObjGetSingle($this->conf['dbEntry.'][$table . '.'][$uniqueField], $this->conf['dbEntry.'][$table . '.'][$uniqueField . '.']) . '"' . ($this->fieldExists('deleted', $table) ? ' AND deleted = 0' : '');
+					$where = $table . '.' . $uniqueField . ' = "' . $this->cObj->cObjGetSingle(
+						$this->conf['dbEntry.'][$table . '.'][$uniqueField],
+						$this->conf['dbEntry.'][$table . '.'][$uniqueField . '.']) . '"' .
+						($this->fieldExists('deleted', $table) ? ' AND deleted = 0' : '');
 					$groupBy = '';
 					$orderBy = '';
 					$limit = '1';
@@ -174,7 +177,7 @@ class tx_powermail_db extends tslib_pibase {
 	 *
 	 * @param    string        field
 	 * @param    string        table
-	 * @return    void
+	 * @return boolean
 	 */
 	private function fieldExists($field = '', $table = '') {
 		if (!empty($field) && !empty($table) && strpos($field, ".") === FALSE) {
@@ -198,11 +201,11 @@ class tx_powermail_db extends tslib_pibase {
 
 			// return true or false
 			if ($row1 && $row2) {
-				return 1; // table and field exist
-			} else {
-				return 0; // table or field don't exist
+				return TRUE; // table and field exist
 			}
 		}
+
+		return FALSE; // table or field don't exist
 	}
 
 	/**

@@ -38,13 +38,13 @@ class user_powermail_tx_powermail_fields_fe_field {
 		// Adding an item!
 		$tableName = 'fe_users';
 		$res = $GLOBALS['TYPO3_DB']->admin_get_fields($tableName);
-	
-		if(isset($res)) {
+
+		if(is_array($res)) {
 			$confArr = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['powermail']); // Get backandconfig
 			$AllowedFeuserFields = t3lib_div::trimExplode(',',$confArr['feusersPrefill'],1); // Allowed feuser fields in an array
-			
+
 			foreach($res as $k=>$v) { // Adding an item!
-				
+
 				$label = '';
 				$label = $pObj->sL('LLL:EXT:cms/locallang_tca.xml:fe_users.'.$k);
 				if($label == '') { // if label is still empty
@@ -59,7 +59,7 @@ class user_powermail_tx_powermail_fields_fe_field {
 				if($label != '' && in_array($k, $AllowedFeuserFields)) { // only if $label is not empty and is allowed
 					$params['items'][] = array(preg_replace('/:$/','',$label), $k);
 				}
-			
+
 			}
 		}
 		// No return - the $params and $pObj variables are passed by reference, so just change content in then and it is passed back automatically...

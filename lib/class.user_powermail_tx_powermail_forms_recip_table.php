@@ -33,11 +33,11 @@
  * @subpackage	tx_powermail
  */
 class user_powermail_tx_powermail_forms_recip_table {
-	
-	function main(&$params,&$pObj)	{							
+
+	function main(&$params,&$pObj)	{
 		$tables = $GLOBALS['TYPO3_DB']->admin_get_tables();
-		
-		if(isset($tables) && is_array($tables)) {
+
+		if(is_array($tables)) {
 			if(t3lib_div::int_from_ver(TYPO3_version) < t3lib_div::int_from_ver('4.2.0')) {
 				foreach($tables as $v) {
 					$params['items'][] = array($pObj->sL($v),$v);
@@ -49,7 +49,7 @@ class user_powermail_tx_powermail_forms_recip_table {
 				}
 			}
 		}
-		
+
 	}
 }
 

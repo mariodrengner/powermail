@@ -1219,7 +1219,8 @@ tr.odd td{background:#eee;}
 				)
 				AND f.uid = ' . intval($uid) . '
 				AND f.deleted = 0';
-			$groupBy = $orderBy = $limit = '';
+			$groupBy = 'f.uid';
+			$orderBy = $limit = '';
 			// GET title where fields.flexform LIKE <value index="vDEF">vorname</value>
 			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery($select, $from, $where, $groupBy, $orderBy, $limit);
 			if ($res !== FALSE) {

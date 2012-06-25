@@ -116,20 +116,20 @@ class tx_powermail_countryzones extends tslib_pibase {
 		$outerMarkerArray['###ID###'] = 'id="uid' . ($this->add + $this->uid) . '" '; // id in markerArray uid55_1
 		$outerMarkerArray['###CLASS###'] = str_replace($this->uid, ($this->add + $this->uid), $this->markerArray['###CLASS###']); // change class="... uid55" -> class="... uid100055"
 
-		$select = '*';
+		$select = 'static_country_zones.*';
 		$from = 'static_countries ' .
 			'LEFT JOIN static_country_zones ON static_countries.cn_iso_2 = static_country_zones.zn_country_iso_2';
-		$groupBy = '';
+		$groupBy = 'static_country_zones.uid';
 		$orderBy = 'static_country_zones.zn_code';
 		$limit = '';
 
 		// where clause
 		if (!$uid) {
-			$where = 'static_countries.cn_iso_2 = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($value);
-			$where .= ' OR static_countries.cn_iso_3 = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($value);
-			$where .= ' OR static_countries.cn_short_en = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($value); // where clause if value of country given
+			$where = 'static_countries.cn_iso_2 = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($value) .
+				' OR static_countries.cn_iso_3 = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($value) .
+				' OR static_countries.cn_short_en = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($value); // where clause if value of country given
 		} else { // where clause if uid of country given
-			$where = 'static_countries.uid = "' . intval($uid) . '"';
+			$where = 'static_countries.uid = ' . intval($uid);
 		}
 
 		// select

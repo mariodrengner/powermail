@@ -4,6 +4,7 @@
 	* Fixed Bug #32934: xhtml validation fails because of formaction (Thanks to Philipp Kitzberger)
 	* Set default value for plugin.powermail.label.parse to 0 due to security reasons
 	* Fixed label rendering when plugin.powermail.label.parse is disabled
+	* Cleaned up SQL statements
 
 2012-06-23  Nicole Cordes <cordes@cps-it.de>
 

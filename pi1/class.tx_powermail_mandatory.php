@@ -131,10 +131,12 @@ class tx_powermail_mandatory extends tslib_pibase {
 		$from = 'tx_powermail_fields ' .
 			'LEFT JOIN tx_powermail_fieldsets ON tx_powermail_fields.fieldset = tx_powermail_fieldsets.uid ' .
 			'LEFT JOIN tt_content ON tx_powermail_fieldsets.tt_content = tt_content.uid';
-		$where = 'tx_powermail_fieldsets.tt_content = ' . (($this->cObj->data['_LOCALIZED_UID'] > 0) ? $this->cObj->data['_LOCALIZED_UID'] : $this->cObj->data['uid']) . tslib_cObj::enableFields('tt_content') . tslib_cObj::enableFields('tx_powermail_fieldsets') . tslib_cObj::enableFields('tx_powermail_fields');
-		$groupBy = '';
+		$where = 'tx_powermail_fieldsets.tt_content = ' . (($this->cObj->data['_LOCALIZED_UID'] > 0) ? $this->cObj->data['_LOCALIZED_UID'] : $this->cObj->data['uid']) .
+			tslib_cObj::enableFields('tt_content') . tslib_cObj::enableFields('tx_powermail_fieldsets') .
+			tslib_cObj::enableFields('tx_powermail_fields');
+		$groupBy = 'tx_powermail_fields.uid';
 		$orderBy = 'tx_powermail_fieldsets.sorting ASC, tx_powermail_fields.sorting ASC';
-		$limit = '10000';
+		$limit = '';
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery($select, $from, $where, $groupBy, $orderBy, $limit);
 		if ($res !== FALSE) { // If there is a result
 			while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) { // One loop for every field
@@ -221,7 +223,8 @@ class tx_powermail_mandatory extends tslib_pibase {
 				elseif (strtolower($value) == 'ip' && $confarray['disableIPlog'] != 1) { // value == ip AND IP log is not disabled
 					$select = 'senderIP';
 					$from = 'tx_powermail_mails';
-					$where = 'pid = ' . (($this->conf['PID.']['dblog']) ? intval($this->conf['PID.']['dblog']) : $GLOBALS['TSFE']->id) . ' AND senderIP = "' . $_SERVER['REMOTE_ADDR'] . '"' . tslib_cObj::enableFields('tx_powermail_mails');
+					$where = 'pid = ' . (($this->conf['PID.']['dblog']) ? intval($this->conf['PID.']['dblog']) : $GLOBALS['TSFE']->id) .
+						' AND senderIP = "' . $_SERVER['REMOTE_ADDR'] . '"' . tslib_cObj::enableFields('tx_powermail_mails');
 					$groupBy = '';
 					$orderBy = '';
 					$limit = '1';
@@ -246,7 +249,13 @@ class tx_powermail_mandatory extends tslib_pibase {
 	 */
 	public function regulareExpressions() {
 		// Config - set regulare expressions for autocheck
-		$autoarray = array('email' => "#^[_a-z0-9!#$%&\\'*+-\/=?^_`.{|}~]+(\.[_a-z0-9!#$%&\'*+-\\/=?^_`.{|}~]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,6})$#", 'url' => "#^(http://|https://)?([a-z0-9-]+\.)+([a-z0-9-]{2,3})$#", 'numbers' => "/^[0-9]+$/", 'phone' => "/^[0-9\/+-]+$/", 'alphanum' => "/^[a-zA-Z0-9]+$/");
+		$autoarray = array(
+			'email' => "#^[_a-z0-9!#$%&\\'*+-\/=?^_`.{|}~]+(\.[_a-z0-9!#$%&\'*+-\\/=?^_`.{|}~]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,6})$#",
+			'url' => "#^(http://|https://)?([a-z0-9-]+\.)+([a-z0-9-]{2,3})$#",
+			'numbers' => "/^[0-9]+$/",
+			'phone' => "/^[0-9\/+-]+$/",
+			'alphanum' => "/^[a-zA-Z0-9]+$/"
+		);
 
 		// Let's go and check
 		if (isset($this->conf['validate.']) && is_array($this->conf['validate.'])) { // Only if any validation is set per typoscript
@@ -309,10 +318,13 @@ class tx_powermail_mandatory extends tslib_pibase {
 			$from = 'tx_powermail_fields ' .
 				'LEFT JOIN tx_powermail_fieldsets ON tx_powermail_fields.fieldset = tx_powermail_fieldsets.uid ' .
 				'LEFT JOIN tt_content ON tx_powermail_fieldsets.tt_content = tt_content.uid';
-			$where = 'tx_powermail_fields.formtype = "captcha" AND tx_powermail_fieldsets.tt_content = ' . (($this->cObj->data['_LOCALIZED_UID'] > 0) ? $this->cObj->data['_LOCALIZED_UID'] : $this->cObj->data['uid']) . tslib_cObj::enableFields('tt_content') . tslib_cObj::enableFields('tx_powermail_fieldsets') . tslib_cObj::enableFields('tx_powermail_fields');
-			$groupBy = '';
+			$where = 'tx_powermail_fields.formtype = "captcha" ' .
+				'AND tx_powermail_fieldsets.tt_content = ' . (($this->cObj->data['_LOCALIZED_UID'] > 0) ? $this->cObj->data['_LOCALIZED_UID'] : $this->cObj->data['uid']) .
+				tslib_cObj::enableFields('tt_content') . tslib_cObj::enableFields('tx_powermail_fieldsets') .
+				tslib_cObj::enableFields('tx_powermail_fields');
+			$groupBy = 'tx_powermail_fields.uid';
 			$orderBy = 'tx_powermail_fieldsets.sorting ASC, tx_powermail_fields.sorting ASC';
-			$limit = '1';
+			$limit = '';
 			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery($select, $from, $where, $groupBy, $orderBy, $limit);
 			if ($res !== FALSE) { // If there is a result
 				while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) { // One loop for every captcha field

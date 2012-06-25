@@ -428,9 +428,9 @@ class tx_powermail_functions_div {
 			'LEFT JOIN tx_powermail_fieldsets ON tx_powermail_fields.fieldset = tx_powermail_fieldsets.uid ' .
 			'LEFT JOIN tt_content ON tt_content.uid = tx_powermail_fieldsets.tt_content';
 		$where = 'tx_powermail_fields.uid = ' . intval($uid);
-		$groupBy = '';
+		$groupBy = 'tx_powermail_fields.uid';
 		$orderBy = '';
-		$limit = '';
+		$limit = '1';
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery($select, $from, $where, $groupBy, $orderBy, $limit);
 		if ($res !== FALSE) {
 			$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);

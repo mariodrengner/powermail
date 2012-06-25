@@ -38,7 +38,7 @@ class user_powermail_tx_powermail_forms_recip_id {
 
 			$select = '*'; // get all fields
 			$from = $params['row']['tx_powermail_recip_table']; // of selected table
-			$where = '1 AND deleted = 0'; // where clause
+			$where = 'deleted = 0'; // where clause
 			$groupBy = '';
 			$orderBy = '';
 			$limit = '100000'; // limit for performance reasons

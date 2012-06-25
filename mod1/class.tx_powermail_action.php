@@ -52,7 +52,8 @@ class tx_powermail_action {
 	 * @return	boolean Returns true if success
 	 */
 	function deleteItem($uids) {
-		
+		$res = FALSE;
+
 		$uids_array = json_decode($uids);
 		foreach($uids_array as $uid){
 			$res = $GLOBALS['TYPO3_DB']->exec_UPDATEquery(
