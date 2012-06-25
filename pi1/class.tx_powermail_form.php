@@ -117,8 +117,14 @@ class tx_powermail_form extends tslib_pibase {
 			$this->OuterMarkerArray['###POWERMAIL_MULTIPLE_PAGEBROWSER###'] = $this->multipleLink(0); // Pagebrowser
 			$this->OuterMarkerArray['###POWERMAIL_MULTIPLE###'] = ' powermail_multiple_php';
 			if ($this->multiple['numberoffieldsets'] != $this->multiple['currentpage']) { // On last fieldset, don't overwrite Target
-				$linkVars = array('returnLast' => 'url', 'parameter' => $GLOBALS['TSFE']->id, 'additionalParams' => '&tx_powermail_pi1[mailID]=' . intval($formUid) . '&tx_powermail_pi1[multiple]=' . ($this->multiple['currentpage'] + 1), 'useCacheHash' => 1);
-				$this->OuterMarkerArray['###POWERMAIL_ACTION###'] = $this->cObj->typolink('x', $linkVars); // Overwrite Target
+				$linkVars = array(
+					'returnLast' => 'url',
+					'parameter' => $GLOBALS['TSFE']->id,
+					'additionalParams' => '&tx_powermail_pi1[mailID]=' . intval($formUid) .
+						'&tx_powermail_pi1[multiple]=' . ($this->multiple['currentpage'] + 1),
+					'useCacheHash' => 1
+				);
+				$this->OuterMarkerArray['###POWERMAIL_ACTION###'] = htmlspecialchars($this->cObj->typolink('x', $linkVars)); // Overwrite Target
 			}
 		} elseif ($this->cObj->data['tx_powermail_multiple'] == 1) { // If multiple JS is set
 			$this->OuterMarkerArray['###POWERMAIL_MULTIPLE_PAGEBROWSER###'] = $this->multipleLink('js'); // JavaScript switch
