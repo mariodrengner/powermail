@@ -160,8 +160,8 @@ plugin.powermail {
 	# cat=plugin.powermail_additionalconfig//1100; type=boolean; label= Use rteCSStext function: Text from rich text editor will be parsed automatically for emails and thx message (every line gets an p tag, etc...). Disabling could be useful if you want to use only plain text mails.
 	rte.parse = 1
 
-	# cat=plugin.powermail_additionalconfig//1110; type=boolean; label= Use labelparse function: Labels could be used with TYPO3 LINK syntax (e.g. 1)
-	label.parse = 1
+	# cat=plugin.powermail_additionalconfig//1110; type=boolean; label= Use labelparse function: Labels are parsed with lib.parseFunc_RTE function (e.g. 1)
+	label.parse = 0
 
 	# cat=plugin.powermail_additionalconfig//1120; type=boolean; label= Style instead of size: Using a local stylesheet in the input fields and in all textareas instead of size or rows and cols - the value in the flexform should be in pixel (e.g. 1)
 	input.style = 0

@@ -2,6 +2,7 @@
 
 	* Fixed Bug #32682: preselection of selectboxes fails if typoscript (prefill.xxxxx) is defined (Thanks to Markus Müller)
 	* Fixed Bug #32934: xhtml validation fails because of formaction (Thanks to Philipp Kitzberger)
+	* Set default value for plugin.powermail.label.parse to 0 due to security reasons
 
 2012-06-23  Nicole Cordes <cordes@cps-it.de>
 
