@@ -1,4 +1,8 @@
-﻿2012-06-25  Nicole Cordes <cordes@cps-it.de>
+﻿2012-06-26  Nicole Cordes <cordes@cps-it.de>
+
+	* Fixed duplicate call of tx_powermail_mandatory
+
+2012-06-25  Nicole Cordes <cordes@cps-it.de>
 
 	* Fixed Bug #32682: preselection of selectboxes fails if typoscript (prefill.xxxxx) is defined (Thanks to Markus Müller)
 	* Fixed Bug #32934: xhtml validation fails because of formaction (Thanks to Philipp Kitzberger)

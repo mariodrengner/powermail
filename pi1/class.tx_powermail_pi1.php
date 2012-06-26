@@ -133,10 +133,9 @@ class tx_powermail_pi1 extends tslib_pibase {
 						if (!$this->piVars['sendNow']) { // If sendNow is not set
 
 							if (!$this->check()) { // if all needed fields in backend where filled
-								if (!$this->mandatory->main($this->conf, $this->sessionfields, $this->cObj)) { // Mandatory check negative
+								if (!($this->content = $this->mandatory->main($this->conf, $this->sessionfields, $this->cObj))) { // Mandatory check negative
 									$this->content = $this->confirmation->main($this->conf, $this->sessionfields, $this->cObj); // Call the confirmation function.
 								} else { // Mandatory check positive
-									$this->content = $this->mandatory->main($this->conf, $this->sessionfields, $this->cObj); // Call the mandatory function
 									if ($this->conf['mandatory.']['messages']) {
 										$this->content .= $this->form->main($this->conf, $this->sessionfields, $this->cObj);
 									} // Show form below mandatory message
@@ -148,10 +147,9 @@ class tx_powermail_pi1 extends tslib_pibase {
 						} else { // sendNow is set - so call submit function
 
 							if (!$this->check()) { // if all needed fields in backend where filled
-								if (!$this->mandatory->main($this->conf, $this->sessionfields, $this->cObj)) { // Mandatory check negative
+								if (!($this->content = $this->mandatory->main($this->conf, $this->sessionfields, $this->cObj))) { // Mandatory check negative
 									$this->content = $this->submit->main($this->conf, $this->sessionfields, $this->cObj); // Call the submit function.
 								} else { // Mandatory check positive
-									$this->content = $this->mandatory->main($this->conf, $this->sessionfields, $this->cObj); // Call the mandatory function
 									if ($this->conf['mandatory.']['messages']) {
 										$this->content .= $this->form->main($this->conf, $this->sessionfields, $this->cObj);
 									} // Show form below mandatory message
@@ -165,10 +163,9 @@ class tx_powermail_pi1 extends tslib_pibase {
 					} else { // No confirm page active, so start submit
 
 						if (!$this->check()) {
-							if (!$this->mandatory->main($this->conf, $this->sessionfields, $this->cObj)) { // Mandatory check negative
+							if (!($this->content = $this->mandatory->main($this->conf, $this->sessionfields, $this->cObj))) { // Mandatory check negative
 								$this->content = $this->submit->main($this->conf, $this->sessionfields, $this->cObj); // Call the submit function.
 							} else { // Mandatory check positive
-								$this->content = $this->mandatory->main($this->conf, $this->sessionfields, $this->cObj); // Call the mandatory function
 								if ($this->conf['mandatory.']['messages']) {
 									$this->content .= $this->form->main($this->conf, $this->sessionfields, $this->cObj);
 								} // Show form below mandatory message
