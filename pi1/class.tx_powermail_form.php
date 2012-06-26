@@ -307,10 +307,15 @@ class tx_powermail_form extends tslib_pibase {
 		} elseif ($add === -1) { // Backward link
 
 			if ($this->multiple['currentpage'] > 1) { // If current fieldset is not the first
-				$linkVars = array('parameter' => $GLOBALS['TSFE']->id, 'returnLast' => 'url', 'additionalParams' => '&tx_powermail_pi1[multiple]=' . ($this->multiple['currentpage'] + $add) . '&tx_powermail_pi1[mailID]=' . ($this->cObj->data['_LOCALIZED_UID'] > 0 ? $this->cObj->data['_LOCALIZED_UID'] : $this->cObj->data['uid']), 'useCacheHash' => 1);
+				$linkVars = array(
+					'parameter' => $GLOBALS['TSFE']->id,
+					'returnLast' => 'url',
+					'additionalParams' => '&tx_powermail_pi1[multiple]=' . ($this->multiple['currentpage'] + $add) .
+						'&tx_powermail_pi1[mailID]=' . ($this->cObj->data['_LOCALIZED_UID'] > 0 ? $this->cObj->data['_LOCALIZED_UID'] : $this->cObj->data['uid']),
+					'useCacheHash' => 1);
 				$link = ($GLOBALS['TSFE']->tmpl->setup['config.']['absRefPrefix'] == '' ? $this->baseurl : '');
 				$link .= $this->cObj->typolink('x', $linkVars); // Create target url
-				$content = '<input type="button" value="' . $this->pi_getLL('multiple_back', 'Previous step') . '" onclick="location=\'' . $link . '\'" class="tx_powermail_pi1_submitmultiple_back" />';
+				$content = '<input type="button" value="' . $this->pi_getLL('multiple_back', 'Previous step') . '" onclick="location=\'' . htmlspecialchars($link) . '\'" class="tx_powermail_pi1_submitmultiple_back" />';
 			} else {
 				$content = ''; // clear it if it's not needed
 			}
@@ -344,7 +349,7 @@ class tx_powermail_form extends tslib_pibase {
 			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery($select, $from, $where, $groupBy, $orderBy, $limit);
 			if ($res !== FALSE) { // If there is a result
 				while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) { // One loop for every fieldset
-					$markerArray['###POWERMAIL_MULTIPLEJS_PAGEBROWSER_LINK###'] = htmlentities($this->cObj->typolink('x', array('parameter' => $GLOBALS['TSFE']->id, 'returnLast' => 'url', 'useCacheHash' => 1)) . '#tx-powermail-pi1_fieldset_' . $row['uid']);
+					$markerArray['###POWERMAIL_MULTIPLEJS_PAGEBROWSER_LINK###'] = htmlspecialchars($this->cObj->typolink('x', array('parameter' => $GLOBALS['TSFE']->id, 'returnLast' => 'url', 'useCacheHash' => 1)) . '#tx-powermail-pi1_fieldset_' . $row['uid']);
 					$markerArray['###POWERMAIL_MULTIPLEJS_PAGEBROWSER_TITLE###'] = $row['title'];
 					$content_item .= $this->cObj->substituteMarkerArrayCached($this->tmpl['multiplejs']['item'], $markerArray);
 				}

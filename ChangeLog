@@ -1,6 +1,7 @@
 ﻿2012-06-26  Nicole Cordes <cordes@cps-it.de>
 
 	* Fixed duplicate call of tx_powermail_mandatory
+	* Added character encoding for all action and typoscript links
 
 2012-06-25  Nicole Cordes <cordes@cps-it.de>
 

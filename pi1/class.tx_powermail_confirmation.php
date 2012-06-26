@@ -61,14 +61,14 @@ class tx_powermail_confirmation extends tslib_pibase {
 				'&tx_powermail_pi1[mailID]=' .
 				(($this->cObj->data['_LOCALIZED_UID'] > 0) ? $this->cObj->data['_LOCALIZED_UID'] : $this->cObj->data['uid']);
 		}
-		$this->markerArray['###POWERMAIL_TARGET_BACK###'] = $this->cObj->typolink('x', array(
+		$this->markerArray['###POWERMAIL_TARGET_BACK###'] = htmlspecialchars($this->cObj->typolink('x', array(
 			'returnLast' => 'url',
 			'parameter' => $GLOBALS['TSFE']->id,
 			'additionalParams' => $additionalParams,
 			'no_cache' => $this->conf['caching'],
 			'useCacheHash' => 1,
-		));
-		$this->markerArray['###POWERMAIL_TARGET_SUBMIT###'] = $this->cObj->typolink('x', array(
+		)));
+		$this->markerArray['###POWERMAIL_TARGET_SUBMIT###'] = htmlspecialchars($this->cObj->typolink('x', array(
 			'returnLast' => 'url',
 			'parameter' => $GLOBALS['TSFE']->id,
 			'section' => (($this->cObj->data['_LOCALIZED_UID'] > 0) ? $this->cObj->data['_LOCALIZED_UID'] : $this->cObj->data['uid']),
@@ -76,7 +76,7 @@ class tx_powermail_confirmation extends tslib_pibase {
 				(($this->cObj->data['_LOCALIZED_UID'] > 0) ? $this->cObj->data['_LOCALIZED_UID'] : $this->cObj->data['uid']) .
 				'&tx_powermail_pi1[sendNow]=1',
 			'useCacheHash' => 1,
-		));
+		)));
 		$this->hook(); // adds hook
 		$this->content = $this->cObj->substituteMarkerArrayCached($this->tmpl['all'], $this->markerArray); // substitute Marker in Template
 		$this->content = $this->dynamicMarkers->main($this->conf, $this->cObj, $this->content); // Fill dynamic locallang or typoscript markers

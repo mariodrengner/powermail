@@ -515,8 +515,8 @@ class tx_powermail_html extends tslib_pibase {
 
 		if ($this->pi_getFFvalue(t3lib_div::xml2array($this->xml), 'clearSession')) { // if checkbox clearSession is checked
 			$this->markerArray['###JS###'] = 'onclick="location=\''; // Fill marker ###JS### with eventhandler
-			$this->markerArray['###JS###'] .= (strpos($GLOBALS['TSFE']->tmpl->setup['config.']['absRefPrefix'], 'http://') !== FALSE ? '' : t3lib_div::getIndpEnv('TYPO3_SITE_URL'));
-			$this->markerArray['###JS###'] .= $this->cObj->typolink('x', array('returnLast' => 'url', 'parameter' => $GLOBALS['TSFE']->id, 'additionalParams' => '&amp;tx_powermail_pi1[clearSession]=-1'), 1);
+			$this->markerArray['###JS###'] .= htmlspecialchars((strpos($GLOBALS['TSFE']->tmpl->setup['config.']['absRefPrefix'], 'http://') !== FALSE ? '' : t3lib_div::getIndpEnv('TYPO3_SITE_URL')));
+			$this->markerArray['###JS###'] .= htmlspecialchars($this->cObj->typolink('x', array('returnLast' => 'url', 'parameter' => $GLOBALS['TSFE']->id, 'additionalParams' => '&amp;tx_powermail_pi1[clearSession]=-1'), 1));
 			$this->markerArray['###JS###'] .= '\'" ';
 		}
 
@@ -1235,7 +1235,7 @@ class tx_powermail_html extends tslib_pibase {
 
 		// ###POWERMAIL_TARGET###
 		#$this->markerArray['###POWERMAIL_TARGET###'] = $GLOBALS['TSFE']->absRefPrefix.$this->cObj->typolink('x', array("returnLast" => "url", "parameter" => $GLOBALS['TSFE']->id, "useCacheHash"=>1)); // Global marker with form target
-		$this->markerArray['###POWERMAIL_TARGET###'] = $this->cObj->typolink('x', array('returnLast' => 'url', 'parameter' => $GLOBALS['TSFE']->id, 'additionalParams' => '&tx_powermail_pi1[mailID]=' . ($this->cObj->data['_LOCALIZED_UID'] > 0 ? $this->cObj->data['_LOCALIZED_UID'] : $this->cObj->data['uid']), 'useCacheHash' => 1));
+		$this->markerArray['###POWERMAIL_TARGET###'] = htmlspecialchars($this->cObj->typolink('x', array('returnLast' => 'url', 'parameter' => $GLOBALS['TSFE']->id, 'additionalParams' => '&tx_powermail_pi1[mailID]=' . ($this->cObj->data['_LOCALIZED_UID'] > 0 ? $this->cObj->data['_LOCALIZED_UID'] : $this->cObj->data['uid']), 'useCacheHash' => 1)));
 
 		// ###POWERMAIL_NAME###
 		$this->markerArray['###POWERMAIL_NAME###'] = htmlspecialchars($this->formtitle); // Global Marker with formname
