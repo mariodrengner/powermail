@@ -239,6 +239,7 @@ class tx_powermail_form extends tslib_pibase {
 				$select = 'tx_powermail_fields.uid, tx_powermail_fields.formtype, tx_powermail_fields.flexform';
 				$from = 'tx_powermail_fields';
 				$where = 'tx_powermail_fields.fieldset = ' . $fieldset['uid'] . $this->cObj->enableFields('tx_powermail_fields');
+				$groupBy = '';
 				$orderBy = 'tx_powermail_fields.sorting';
 				$limit = '';
 				$r = $GLOBALS['TYPO3_DB']->exec_SELECTquery($select, $from, $where, $groupBy, $orderBy, $limit);
