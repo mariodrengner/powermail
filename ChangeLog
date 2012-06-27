@@ -1,6 +1,7 @@
 ﻿2012-06-27  Nicole Cordes <cordes@cps-it.de>
 
 	* Fixed Bug #38423: DB Error in ext:pi1/class.tx_powermail_form.php in funcion tabindexArray() Line 218 (Thanks to Björn Heinermann)
+	* Added server side validation for all options (even extended typoscript validation possibilities)
 
 2012-06-26  Nicole Cordes <cordes@cps-it.de>
 

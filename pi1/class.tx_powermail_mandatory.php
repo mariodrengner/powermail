@@ -76,8 +76,15 @@ class tx_powermail_mandatory extends tslib_pibase {
 		$this->markerArray = $this->markers->GetMarkerArray($this->conf, $this->sessionfields, $this->cObj, 'mandatory'); // Fill markerArray
 
 		$anchorId = ($this->cObj->data['_LOCALIZED_UID'] > 0 ? $this->cObj->data['_LOCALIZED_UID'] : $this->cObj->data['uid']);
-		$targetLinkParams = array('returnLast' => 'url', 'parameter' => $GLOBALS['TSFE']->id, 'useCacheHash' => 1,#'no_cache' => 1
-			#'section' =>
+		$targetLinkParams = array(
+			'returnLast' => 'url',
+			'parameter' => $GLOBALS['TSFE']->id,
+			'useCacheHash' => 1,
+			'additionalParams' => (($this->cObj->data['tx_powermail_multiple'] == 2)
+				? '&tx_powermail_pi1[multiple]=' . $this->cObj->data['tx_powermail_fieldsets']
+				: '')
+			//'no_cache' => 1
+			//'section' =>
 		);
 		$this->markerArray['###POWERMAIL_TARGET###'] = htmlspecialchars($this->cObj->typolink('x', $targetLinkParams) . '#c' . $anchorId);
 		$this->markerArray['###POWERMAIL_NAME###'] = $this->cObj->data['tx_powermail_title'] . '_mandatory'; // Fill Marker with formname
@@ -248,36 +255,91 @@ class tx_powermail_mandatory extends tslib_pibase {
 	 * @return    void
 	 */
 	public function regulareExpressions() {
-		// Config - set regulare expressions for autocheck
-		$autoarray = array(
-			'email' => "#^[_a-z0-9!#$%&\\'*+-\/=?^_`.{|}~]+(\.[_a-z0-9!#$%&\'*+-\\/=?^_`.{|}~]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,6})$#",
-			'url' => "#^(http://|https://)?([a-z0-9-]+\.)+([a-z0-9-]{2,3})$#",
-			'numbers' => "/^[0-9]+$/",
-			'phone' => "/^[0-9\/+-]+$/",
-			'alphanum' => "/^[a-zA-Z0-9]+$/"
-		);
+			// Config - set regulare expressions
+		$patternArray = array();
+		$patternArray = array_merge($patternArray, array_fill_keys(
+			array('validate-email', 'email'),
+			'/^([a-z0-9_\.\-\+]+)@([a-z0-9\.\-]+)\.([a-z\.]{2,6})$/i'
+		));
+		$patternArray = array_merge($patternArray, array_fill_keys(
+			array('validate-url', 'url'),
+			'%^(https?:\/\/)?[a-z0-9\.\-]+\.[a-z\.]{2,6}[#&+_\?\/\w \.\-=]*$%i'
+		));
+		$patternArray = array_merge($patternArray, array_fill_keys(
+			array('validate-digits', 'numbers'),
+			'/^[0-9]*$/'
+		));
+		$patternArray['validate-number'] = '/^[0-9,\.]+$/';
+		$patternArray['validate-alpha'] = '/^[a-z\s]*$/i';
+		$patternArray['validate-alphanum'] = '/^[a-z0-9\s]*$/i';
+		$patternArray['validate-alpha-w-umlaut'] = '/^[a-z\x{00C0}-\x{00FF}\s]*$/iu';
+		$patternArray['validate-alphanum-w-umlaut'] = '/^[a-z0-9\x{00C0}-\x{00FF}\s]*$/iu';
 
-		// Let's go and check
+			// Process server-side validation
+		$select = 'tx_powermail_fields.uid, tx_powermail_fields.title, tx_powermail_fields.flexform';
+		$from = 'tx_powermail_fields ' .
+			'LEFT JOIN tx_powermail_fieldsets ON tx_powermail_fields.fieldset = tx_powermail_fieldsets.uid ' .
+			'LEFT JOIN tt_content ON tx_powermail_fieldsets.tt_content = tt_content.uid';
+		$where = 'tx_powermail_fields.formtype = "text" AND ' .
+			'tx_powermail_fieldsets.tt_content = ' . ($this->cObj->data['_LOCALIZED_UID'] > 0 ? $this->cObj->data['_LOCALIZED_UID'] : $this->cObj->data['uid']) .
+			tslib_cObj::enableFields('tt_content') . tslib_cObj::enableFields('tx_powermail_fieldsets') .
+			tslib_cObj::enableFields('tx_powermail_fields');
+		$groupBy = 'tx_powermail_fields.uid';
+		$orderBy = 'tx_powermail_fieldsets.sorting ASC, tx_powermail_fields.sorting ASC';
+		$limit = '';
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery($select, $from, $where, $groupBy, $orderBy, $limit);
+		if ($res !== FALSE) { // If there is a result
+			while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) { // One loop for every found email
+				if (trim($this->sessionfields['uid' . $row['uid']]) != '') {
+					$validation = $this->pi_getFFvalue(t3lib_div::xml2array($row['flexform']), 'validate');
+					if ($validation == 'validate-pattern') {
+						$patternArray['validate-pattern'] = '/' . str_replace('/', '\x{002F}' , t3lib_div::removeXSS($this->pi_getFFvalue(t3lib_div::xml2array($row['flexform']), 'pattern'))) . '/u';
+					} elseif ($validation && isset($patternArray[$validation])) {
+						if (!preg_match($patternArray[$validation], $this->sessionfields['uid' . $row['uid']])) {
+							$this->sessionfields['ERROR'][$row['uid']][] = sprintf(
+								$this->pi_getLL('error_' . str_replace('-', '_', $validation), 'The value of "%s" is not correct'),
+								$row['title']
+							); // set current error to sessionlist
+						}
+					}
+				}
+			}
+			$GLOBALS['TYPO3_DB']->sql_free_result($res);
+		}
+
+			// Let's go and check
 		if (isset($this->conf['validate.']) && is_array($this->conf['validate.'])) { // Only if any validation is set per typoscript
 			foreach ($this->conf['validate.'] as $key => $value) { // One loop for every validation
 				$sessionfieldKey = str_replace('.', '', $key);
-				// autocheck
-				if ($this->conf['validate.'][$key]['auto']) { // If autocheck of current value is active
-					if (isset($autoarray[$this->conf['validate.'][$key]['auto']])) { // if regulare expression in $autoarray
-						if (isset($this->sessionfields[$sessionfieldKey]) && $this->sessionfields[$sessionfieldKey] != '') { // if there is a value in the field, which to check
-
-							// Check
-							if (!preg_match($autoarray[$this->conf['validate.'][$key]['auto']], $this->sessionfields[$sessionfieldKey])) { // If check failed
-								$this->sessionfields['ERROR'][str_replace('uid', '', $sessionfieldKey)][] = ($this->conf['validate.'][$key]['errormsg'] ? $this->conf['validate.'][$key]['errormsg'] : $this->pi_getLL('error_expression_validation')); // write errormessage
-							}
+					// autocheck
+				if (isset($this->sessionfields[$sessionfieldKey]) && $this->sessionfields[$sessionfieldKey] != '') { // if there is a value in the field, which to check
+					$pattern = '';
+					if ($this->conf['validate.'][$key]['auto']) { // If autocheck of current value is active
+						if (isset($patternArray[$this->conf['validate.'][$key]['auto']])) { // if regulare expression in $patternArray
+							$pattern = $patternArray[$this->conf['validate.'][$key]['auto']];
+						} elseif ($this->conf['validate.'][$key]['expression']) { // regulare expression
+							$pattern = $this->div->marker2value($this->conf['validate.'][$key]['expression'], $this->sessionfields);
 						}
-					}
-				} elseif ($this->conf['validate.'][$key]['expression']) { // regulare expression
-					if (isset($this->sessionfields[$sessionfieldKey]) && $this->sessionfields[$sessionfieldKey] != '') { // if there is a value in the field, which to check
 
-						// Check
-						if (!preg_match($this->div->marker2value($this->conf['validate.'][$key]['expression'], $this->sessionfields), $this->sessionfields[$sessionfieldKey])) { // If check failed
-							$this->sessionfields['ERROR'][str_replace('uid', '', $sessionfieldKey)][] = ($this->conf['validate.'][$key]['errormsg'] ? $this->conf['validate.'][$key]['errormsg'] : $this->pi_getLL('error_expression_validation')); // write errormessage
+						if ($pattern) {
+
+								// Check
+							if (!preg_match($pattern, $this->sessionfields[$sessionfieldKey])) { // If check failed
+								$uid = str_replace('uid', '', $sessionfieldKey);
+								if (isset($this->conf['validate.'][$key]['errormsg'])) {
+									$this->sessionfields['ERROR'][$uid][] = $this->conf['validate.'][$key]['errormsg'];
+								} else {
+									$select = 'tx_powermail_fields.title';
+									$from = 'tx_powermail_fields';
+									$where = 'tx_powermail_fields.uid = ' . intval($uid);
+									$groupBy = '';
+									$orderBy = '';
+									$limit = '1';
+									$row = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows($select, $from, $where, $groupBy, $orderBy, $limit);
+									$this->sessionfields['ERROR'][$uid][] = $this->pi_getLL('error_expression_validation') .
+										' (' . $row[0]['title'] . ')';
+								}
+							}
 						}
 					}
 				}
