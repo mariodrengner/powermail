@@ -10,6 +10,12 @@
 		<languageKey index="default" type="array">
 			<label index="pi1_title">powermail</label>
 			<label index="pi1_plus_wiz_description">Powerful and easy mailform extension with database storing, javascript validation and many more...</label>
+			<label index="plugin_powermail_cat_10">General</label>
+			<label index="plugin_powermail_cat_20">Email</label>
+			<label index="plugin_powermail_cat_30">Label</label>
+			<label index="plugin_powermail_cat_40">Fields</label>
+			<label index="plugin_powermail_cat_50">Javascript</label>
+			<label index="plugin_powermail_cat_60">Upload</label>
 		</languageKey>
 		<languageKey index="de" type="array">
 			<label index="pi1_title">powermail</label>

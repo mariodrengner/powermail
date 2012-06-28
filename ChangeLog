@@ -1,4 +1,8 @@
-﻿2012-06-28  Nicole Cordes <cordes@cps-it.de>
+﻿2012-06-29  Nicole Cordes <cordes@cps-it.de>
+
+	* Revised constants categories and subcategories
+
+2012-06-28  Nicole Cordes <cordes@cps-it.de>
 
 	* Fixed Bug #32941: datetime field validation via jquery 08:00 - 09:00 is broken
 	* Changed hard links to jQuery CDN in typoscript setup to configuration parameter
