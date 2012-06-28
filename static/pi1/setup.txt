@@ -500,6 +500,8 @@ lib.powermailjs {
 				VALIDATOR_DATEINPUT_FIRSTDAY.data = LLL:EXT:powermail/pi1/locallang.xml:JSvalidation_dateinput_firstDay
 				VALIDATOR_DISABLE = TEXT
 				VALIDATOR_DISABLE.value = false
+				VALIDATOR_SINGLE_ERROR = TEXT
+				VALIDATOR_SINGLE_ERROR.value = false
 		}
 	}
 }
@@ -512,6 +514,11 @@ lib.powermailjs.10.marks.VALIDATOR_DISABLE.value = true
 
 [end]
 
+[globalVar = LIT:0 < {$plugin.powermail.js.singleError}]
+
+	lib.powermailjs.10.marks.VALIDATOR_SINGLE_ERROR.value = true
+
+[end]
 
 [userFunc = user_powermailOnCurrentPage({$plugin.powermail.js.alwaysInclude})] && [userFunc = user_powermailCheckT3jquery(false)]
 

@@ -4,6 +4,7 @@
 	* Changed hard links to jQuery CDN in typoscript setup to configuration parameter
 	* Fixed Bug #33021: No Icon in New Content Element wizard when using explicitADMode = explicitAllow
 	* Fixed Bug #32296: Page within a mountpoint using "Show Content from Page" results in 503 header
+	* Added new option to show only one jQuery validation error at the same time (plugin.powermail.js.singleError)
 
 2012-06-27  Nicole Cordes <cordes@cps-it.de>
 

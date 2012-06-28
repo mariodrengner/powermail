@@ -128,6 +128,9 @@ plugin.powermail {
 	caching = 0
 
 	# cat=plugin.powermail_additionalconfig//0920; type=boolean; label= Activate javascript validation: (De)activate javascript validation in fields
+	js.singleError = 0
+
+	# cat=plugin.powermail_additionalconfig//0925; type=boolean; label= Show only one validation error: Show only one validation error at the same time
 	js.validation = 1
 
 	# cat=plugin.powermail_additionalconfig//0930; type=boolean; label= Always include javascript for form validation and special input types (date/datetime/slider)

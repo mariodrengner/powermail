@@ -22,6 +22,10 @@
 	});
 
 	$(function() {
+
+		powermail_disable_validator = ###VALIDATOR_DISABLE###;
+		powermail_validator_single_error = ###VALIDATOR_SINGLE_ERROR###;
+
 		$(':date').dateinput({
 			format: '###VALIDATOR_DATEINPUT_FORMAT###',
 			firstDay: parseInt('###VALIDATOR_DATEINPUT_FIRSTDAY###'),
@@ -136,14 +140,14 @@
 				}
 		);
 
-		if (!###VALIDATOR_DISABLE###) {
+		if (!powermail_disable_validator) {
 			powermail_validator = $('.tx_powermail_pi1_form').validator({
 				position: 'top right',
 				offset: [-5, -20],
 				message: '<div><em/></div>',
 				inputEvent: 'blur',
 				grouped: true,
-				singleError: false,
+				singleError: powermail_validator_single_error,
 				formEvent : 'submit',
 				onBeforeValidate: function(e, els) {
 					clearPlaceholderValue(e, els);
@@ -245,7 +249,7 @@
 			$('ul.powermail_multiplejs_tabs li a').removeClass('act');
 			$(this).addClass('act');
 			// reset error messages if js validation is enabled
-			if (!###VALIDATOR_DISABLE###)
+			if (!powermail_disable_validator)
 			{
 				$(this).parent().parent().find('a').not('.current').each(function(id, item) {
 					var temp = item.href.split('#');
