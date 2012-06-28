@@ -30,25 +30,25 @@
 			readonly: false,
 			yearRange: [-99, 99],
 			change: function(event, date) {
-				var y = parseInt(this.getValue('yyyy'));
-				var m = parseInt(this.getValue('m')) - 1;
-				var d = parseInt(this.getValue('d'));
+				var y = parseInt(this.getValue('yyyy'), 10);
+				var m = parseInt(this.getValue('m'), 10) - 1;
+				var d = parseInt(this.getValue('d'), 10);
 				var timestampOfDate = new Date(y, m, d).getTime() / 1000;
 				var timezoneOffset = new Date(y, m, d).getTimezoneOffset() * 60;
 				timestampOfDate -= timezoneOffset;
 				var oldTimestamp = this.getInput().nextAll('input[type=hidden]').val();
-				if (this.getInput().nextAll('input[type=time]').length > 0 && oldTimestamp != '' && parseInt(oldTimestamp) == oldTimestamp) {
+				if (this.getInput().nextAll('input[type=time]').length > 0 && oldTimestamp != '' && parseInt(oldTimestamp, 10) == oldTimestamp) {
 					var oldDate = new Date(oldTimestamp * 1000);
-					var hours = parseInt(oldDate.getUTCHours());
-					var minutes = parseInt(oldDate.getUTCMinutes());
-					timestampOfDate += parseInt(hours * 3600 + minutes * 60);
+					var hours = parseInt(oldDate.getUTCHours(), 10);
+					var minutes = parseInt(oldDate.getUTCMinutes(), 10);
+					timestampOfDate += parseInt(hours * 3600 + minutes * 60, 10);
 				}
 				this.getInput().next('input[type=hidden]').val(timestampOfDate);
 			}
 		}).each(function(i) {
 					var initTimestamp = $(this).next('input[type=hidden]').val();
-					if (initTimestamp != '' && parseInt(initTimestamp) == initTimestamp) {
-						var initDatetime = new Date(parseInt(initTimestamp) * 1000);
+					if (initTimestamp != '' && parseInt(initTimestamp, 10) == initTimestamp) {
+						var initDatetime = new Date(parseInt(initTimestamp, 10) * 1000);
 						var year = initDatetime.getUTCFullYear();
 						var month = initDatetime.getUTCMonth();
 						var day = initDatetime.getUTCDate();
@@ -88,8 +88,8 @@
 						return false;
 					} else {
 						var time = value.split(':');
-						var hour = parseInt(time[0]);
-						var minute = parseInt(time[1]);
+						var hour = parseInt(time[0], 10);
+						var minute = parseInt(time[1], 10);
 						if (hour > 23 || hour < 0 || minute > 59 || minute < 0) {
 							return false;
 						}
@@ -113,9 +113,9 @@
 			// check if part of datetime field
 			if ($(this).prevAll('input.powermail_datetime').length > 0) {
 				if ($(this).prev('input').val() != '') {
-					var newDate = new Date(parseInt($(this).prev('input').val() * 1000));
-					var h = parseInt(newDate.getUTCHours());
-					var m = parseInt(newDate.getUTCMinutes());
+					var newDate = new Date(parseInt($(this).prev('input').val() * 1000, 10));
+					var h = parseInt(newDate.getUTCHours(), 10);
+					var m = parseInt(newDate.getUTCMinutes(), 10);
 					h = (h < 10) ? '0' + h : h;
 					m = (m < 10) ? '0' + m : m;
 					$(this).val(h + ':' + m);
