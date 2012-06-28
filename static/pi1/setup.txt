@@ -502,6 +502,8 @@ lib.powermailjs {
 				VALIDATOR_DISABLE.value = false
 				VALIDATOR_SINGLE_ERROR = TEXT
 				VALIDATOR_SINGLE_ERROR.value = false
+				VALIDATOR_SCROLL_TO_ERROR = TEXT
+				VALIDATOR_SCROLL_TO_ERROR.value = true
 		}
 	}
 }
@@ -517,6 +519,12 @@ lib.powermailjs.10.marks.VALIDATOR_DISABLE.value = true
 [globalVar = LIT:0 < {$plugin.powermail.js.singleError}]
 
 	lib.powermailjs.10.marks.VALIDATOR_SINGLE_ERROR.value = true
+
+[end]
+
+[globalVar = LIT:1 > {$plugin.powermail.js.scrollToError}]
+
+	lib.powermailjs.10.marks.VALIDATOR_SCROLL_TO_ERROR.value = false
 
 [end]
 

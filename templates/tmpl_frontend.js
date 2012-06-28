@@ -25,6 +25,7 @@
 
 		powermail_disable_validator = ###VALIDATOR_DISABLE###;
 		powermail_validator_single_error = ###VALIDATOR_SINGLE_ERROR###;
+		powermail_scroll_to_error = ###VALIDATOR_SCROLL_TO_ERROR###;
 
 		$(':date').dateinput({
 			format: '###VALIDATOR_DATEINPUT_FORMAT###',
@@ -156,7 +157,9 @@
 					setPlaceholderValue(e, els, matcher);
 				},
 				onFail: function(e, els) {
-					$('html,body').animate({ "scrollTop": $(els[0].input).offset().top - 50}, 1000);
+					if (powermail_scroll_to_error) {
+						$('html,body').animate({ "scrollTop": $(els[0].input).offset().top - 50}, 1000);
+					}
 				}
 			});
 		}

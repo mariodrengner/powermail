@@ -1,6 +1,7 @@
 ﻿2012-06-29  Nicole Cordes <cordes@cps-it.de>
 
 	* Revised constants categories and subcategories
+	* Added new option to select to scroll to the first error on a form (plugin.powermail.js.scrollToError)
 
 2012-06-28  Nicole Cordes <cordes@cps-it.de>
 
