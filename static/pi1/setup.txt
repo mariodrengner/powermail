@@ -599,13 +599,13 @@ page.31320 {
 	20 = USER
 	20 {
 		userFunc = tx_t3jquery->addJS
-		jsurl = http://cdn.jquerytools.org/1.2.5/form/jquery.tools.min.js
+		jsurl = {$plugin.powermail.js.jQueryToolsFormPath}
 		tofooter = 0
 	}
 	25 = USER
 	25 {
 		userFunc = tx_t3jquery->addJS
-		jsurl = http://cdn.jquerytools.org/1.2.5/tiny/jquery.tools.min.js
+		jsurl = {$plugin.powermail.js.jQueryToolsUIPath}
 		tofooter = 0
 	}
 	30 = USER
