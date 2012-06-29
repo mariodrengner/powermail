@@ -718,7 +718,7 @@ tr.odd td{background:#eee;}
 			$excelObject->getProperties()->setTitle('Powermail Export');
 			$excelObject->getProperties()->setDescription('This document was exported from the TYPO3 extension "powermail".');
 			/*
-			$excelObject->getProperties()->setLastModifiedBy("Maarten Balliauw");
+			$excelObject->getProperties()->setLastModifiedBy("Powermail");
 			$excelObject->getProperties()->setSubject("Office 2007 XLSX Test Document");
 			*/
 			// Rename sheet
@@ -770,6 +770,7 @@ tr.odd td{background:#eee;}
 			}
 
 			// Generate EXCEL Rows
+			$i = 0;
 			$GLOBALS['TYPO3_DB']->sql_data_seek($this->res, 0);
 			while (($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($this->res))) {
 				$uploadURLPath = t3lib_div::getIndpEnv('TYPO3_SITE_URL') . $row['uploadPath'];
@@ -778,7 +779,7 @@ tr.odd td{background:#eee;}
 						// if no header row was set, generate 1000 ExcelColNames
 						$excelColNames = $this->getExcelColNames(1000);
 					}
-					$i++;
+					$i ++;
 					$piVars = t3lib_div::xml2array($row['piVars'], 'piVars');
 
 					$sheetCol = 0;
@@ -835,7 +836,7 @@ tr.odd td{background:#eee;}
 									}
 									$sheetCol++;
 								}
-								$sheetCol += intval(count($headerPiVars) - count($piVars));
+								//$sheetCol += intval(count($headerPiVars) - count($piVars));
 							}
 
 							// Dynamic value like uid45
