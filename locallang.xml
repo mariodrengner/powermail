@@ -11,9 +11,9 @@
 			<label index="pi1_title">powermail</label>
 			<label index="pi1_plus_wiz_description">Powerful and easy mailform extension with database storing, javascript validation and many more...</label>
             <label index="extmng.classInnerHeader">Warning!</label>
-            <label index="extmng.classInner">You have to use the "Update"-Button below to ensure proper working for all functions in this extension.</label>
+            <label index="extmng.classInner">You have to press the "Update"-Button below to ensure that all new powermail functions will work properly.</label>
             <label index="extmng.updatermsgHeader">Important!</label>
-            <label index="extmng.updatermsg">Powermail comes with a new updater-script which fix pages with "none"-effects selected. You have to run this script if you are updating from older installation.</label>
+            <label index="extmng.updatermsg">Due to powermail 1.7 changes the logic how to store data on the same page (please read manual for more info), it comes with this update script. You have to run this script to make sure that the form data still get stored on the same page where the powermail plugin is located and no page to store was selected before.</label>
             <label index="extmng.updatermsgLink">[Click here to open the updater]</label>
             <label index="extmng.classInnerHeader">Warning!</label>
             <label index="extmng.classInner">You have to use the "Update"-Button below to ensure proper working for all functions in this extension.</label>
