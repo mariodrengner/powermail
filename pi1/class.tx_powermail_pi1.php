@@ -22,14 +22,6 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-require_once(PATH_tslib . 'class.tslib_pibase.php');
-require_once('class.tx_powermail_form.php');
-require_once('class.tx_powermail_submit.php');
-require_once('class.tx_powermail_confirmation.php');
-require_once('class.tx_powermail_mandatory.php');
-require_once(t3lib_extMgm::extPath('powermail') . 'lib/class.tx_powermail_sessions.php'); // load session class
-require_once(t3lib_extMgm::extPath('powermail') . 'lib/class.tx_powermail_functions_div.php'); // file for div functions
-
 class tx_powermail_pi1 extends tslib_pibase {
 
 	public $prefixId = 'tx_powermail_pi1'; // Same as class name

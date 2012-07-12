@@ -22,13 +22,6 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-require_once(PATH_tslib . 'class.tslib_pibase.php');
-require_once(t3lib_extMgm::extPath('powermail') . 'lib/class.tx_powermail_functions_div.php'); // file for div functions
-require_once(t3lib_extMgm::extPath('powermail') . 'lib/class.tx_powermail_markers.php'); // file for marker functions
-require_once(t3lib_extMgm::extPath('powermail') . 'lib/class.tx_powermail_db.php'); // file for marker functions
-require_once(t3lib_extMgm::extPath('powermail') . 'lib/class.tx_powermail_dynamicmarkers.php'); // file for dynamicmarker functions
-
-
 class tx_powermail_submit extends tslib_pibase {
 	var $prefixId      = 'tx_powermail_submit';		// Same as class name
 	var $scriptRelPath = 'pi1/class.tx_powermail_submit.php';	// Path to this script relative to the extension dir.
@@ -216,7 +209,6 @@ class tx_powermail_submit extends tslib_pibase {
                 }
             } else {
                 // old TYPO3 mail system code
-				require_once(PATH_t3lib . 'class.t3lib_htmlmail.php');
                 $this->mail = t3lib_div::makeInstance('t3lib_htmlmail'); // New object: TYPO3 mail class
                 $this->mail->start(); // start htmlmail
                 $this->mail->recipient = $receiver; // main receiver email address

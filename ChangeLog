@@ -1,6 +1,10 @@
-﻿2012-06-29 Alexander Grein <alexander.grein@typovision.de>
+﻿2012-07-13 Nicole Cordes <cordes@cps-it.de>
 
-	* Fixed Bug in export (HTML/CSV/EXCEL) who mixed up values in different columns
+	* Fixed Task #37630: Remove require_once functions
+
+2012-06-29  Alexander Grein <alexander.grein@typovision.de>
+
+	* Fixed Bug in export (HTML/CSV/EXCEL) which mixed up values in different columns
 
 2012-06-29  Nicole Cordes <cordes@cps-it.de>
 

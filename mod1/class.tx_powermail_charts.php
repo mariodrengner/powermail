@@ -37,9 +37,6 @@
  *
  */
 
-require_once(t3lib_extMgm::extPath('powermail') . 'lib/class.tx_powermail_functions_div.php');
-require_once(t3lib_extMgm::extPath('powermail') . 'mod1/class.tx_powermail_belist.php');
-
 /**
  * Plugin 'tx_powermail_charts' for the 'powermail' extension.
  *
