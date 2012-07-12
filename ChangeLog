@@ -1,6 +1,7 @@
 ﻿2012-07-13 Nicole Cordes <cordes@cps-it.de>
 
 	* Fixed Task #37630: Remove require_once functions
+	* Fixed Bug #37853: Error code in ext:powermail/pi1/class.tx_powermail_mandatory.php (Thanks to Rabehasy)
 
 2012-06-29  Alexander Grein <alexander.grein@typovision.de>
 
