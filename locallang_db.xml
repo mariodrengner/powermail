@@ -20,7 +20,7 @@
 			<label index="tx_powermail_forms.sender">Senders email address</label>
 			<label index="tx_powermail_forms.sendername">Senders name</label>
 			<label index="tx_powermail_forms.confirm">Activate confirmation page</label>
-			<label index="tx_powermail_forms.startingpoint">Save mails in page (empty for same page)</label>
+			<label index="tx_powermail_forms.startingpoint">Save mails in page</label>
 			<label index="tx_powermail_forms.multiple">Multiple steps (every fieldset is a single page)</label>
 			<label index="tx_powermail_forms.multiple.I.0">Show all fieldsets on one page (default)</label>
 			<label index="tx_powermail_forms.multiple.I.1">Multiple pages (client application)</label>
@@ -965,7 +965,7 @@
 			<label index="tx_powermail_forms.sender">Senders email address</label>
 			<label index="tx_powermail_forms.sendername">Senders name</label>
 			<label index="tx_powermail_forms.confirm">Activate confirmation page</label>
-			<label index="tx_powermail_forms.startingpoint">Save mails in page (empty for same page)</label>
+			<label index="tx_powermail_forms.startingpoint">Save mails in page</label>
 			<label index="tx_powermail_forms.multiple">Multiple steps (every fieldset is a single page)</label>
 			<label index="tx_powermail_forms.multiple.I.0">Show all fieldsets on one page (default)</label>
 			<label index="tx_powermail_forms.multiple.I.1">Multiple pages (client application)</label>

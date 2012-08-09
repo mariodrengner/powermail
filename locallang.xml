@@ -16,6 +16,20 @@
 			<label index="plugin_powermail_cat_40">Fields</label>
 			<label index="plugin_powermail_cat_50">Javascript</label>
 			<label index="plugin_powermail_cat_60">Upload</label>
+			<label index="updater_actions">Actions</label>
+			<label index="updater_reload">[reload this page]</label>
+			<label index="updater_result">Result</label>
+			<label index="updater_elements_found">Found %1$s content element(s).</label>
+			<label index="updater_fix_issue">Should the updater fix this issue?</label>
+			<label index="updater_do_it">DO IT</label>
+			<label index="updater_warning_header">Important! Please Read!</label>
+			<label index="updater_warning_message"><![CDATA[The updater manipulates your database and due to the huge amount of configuration variants it is possible that it <br>
+might not produce the expected results.<br>
+So backup your database (at least the table tt_content) or do a t3d export of your site <strong>BEFORE</strong><br>
+you click on any of the "DO IT" Buttons.]]></label>
+			<label index="updater_pageupdate_title">Search for empty powermail storage page settings in tt_content</label>
+			<label index="updater_pageupdate_notice">If you click "DO IT" all empty storage page settings inside powermail content elements will be set to the page containing itself.</label>
+			<label index="updater_pageupdate_updated">Updated tt_content uid: %1$s</label>
 		</languageKey>
 		<languageKey index="de" type="array">
 			<label index="pi1_title">powermail</label>

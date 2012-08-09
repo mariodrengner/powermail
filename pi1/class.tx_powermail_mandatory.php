@@ -176,53 +176,63 @@ class tx_powermail_mandatory extends tslib_pibase {
 	 * @return    void
 	 */
 	public function uniqueCheck() {
-		// config
+			// config
 		$uniquearray = t3lib_div::trimExplode(',', $this->conf['enable.']['unique'], 1); // Get unique constants from ts
 		$confarray = unserialize($GLOBALS['TSFE']->TYPO3_CONF_VARS['EXT']['extConf'][$this->extKey]); // get config from localconf.php
 
-		// let's go
+			// let's go
 		if (is_array($uniquearray) && isset($uniquearray)) {
 			foreach ($uniquearray as $value) {
 
-				// check for unique uids
+					// check for unique uids
 				if (is_numeric(str_replace('uid', '', strtolower($value))) && $this->sessionfields[strtolower($value)]) { // like uid11 and value exists
-					// pid
-					$this->save_PID = $GLOBALS['TSFE']->id; // PID where to save: Take current page
+						// pid
+						// PID where to save: Not set by default.
+					$this->save_PID = 0;
 					if (intval($this->conf['PID.']['dblog']) > 0) {
-						$this->save_PID = $this->conf['PID.']['dblog'];
-					} // PID where to save: Get it from TS if set
+							// PID where to save: Get it from TS if set
+						$this->save_PID = intval($this->conf['PID.']['dblog']);
+					}
 					if (intval($this->cObj->data['tx_powermail_pages']) > 0) {
-						$this->save_PID = $this->cObj->data['tx_powermail_pages'];
-					} // PID where to save: Get it from plugin
+							// PID where to save: Get it from plugin
+						$this->save_PID = intval($this->cObj->data['tx_powermail_pages']);
+					}
 
-					// DB Select
-					$likeValue = $GLOBALS['TYPO3_DB']->escapeStrForLike($GLOBALS['TYPO3_DB']->quoteStr($this->sessionfields[strtolower($value)], 'tx_powermail_mails'), 'tx_powermail_mails');
-					$select = 'piVars';
-					$from = 'tx_powermail_mails';
-					$where = 'pid = ' . intval($this->save_PID) . ' AND piVars LIKE "%' . $likeValue . '%"' . tslib_cObj::enableFields('tx_powermail_mails');
-					$groupBy = '';
-					$orderBy = '';
-					$limit = '';
-					// Get all emails with any entry of current value
-					$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery($select, $from, $where, $groupBy, $orderBy, $limit);
-					if ($res !== FALSE) { // If there is a result
-						while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) { // One loop for every found email
-							if ($row['piVars']) { // entry found
-								$vars = t3lib_div::xml2array($row['piVars'], 'piVars'); // array of values
-								if (!is_array($vars)) {
-									$vars = utf8_encode(t3lib_div::xml2array($row['piVars'], 'piVars'));
-								}
+					if ($this->save_PID > 0) {
+							// DB Select
+						$likeValue = $GLOBALS['TYPO3_DB']->escapeStrForLike(
+							$GLOBALS['TYPO3_DB']->quoteStr($this->sessionfields[strtolower($value)], 'tx_powermail_mails'),
+							'tx_powermail_mails'
+						);
+						$select = 'piVars';
+						$from = 'tx_powermail_mails';
+						$where = 'pid = ' . intval($this->save_PID) . ' AND piVars LIKE "%' . $likeValue . '%"' .
+							tslib_cObj::enableFields('tx_powermail_mails');
+						$groupBy = '';
+						$orderBy = '';
+						$limit = '';
+						// Get all emails with any entry of current value
+						$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery($select, $from, $where, $groupBy, $orderBy, $limit);
+						if ($res !== FALSE) { // If there is a result
+							while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) { // One loop for every found email
+								if ($row['piVars']) { // entry found
+									$vars = t3lib_div::xml2array($row['piVars'], 'piVars'); // array of values
+									if (!is_array($vars)) {
+										$vars = utf8_encode(t3lib_div::xml2array($row['piVars'], 'piVars'));
+									}
 
-								if ($vars[strtolower($value)] == $this->sessionfields[strtolower($value)]) { // entry found
-									$this->sessionfields['ERROR'][strtolower($value)][] = sprintf($this->pi_getLL('error_unique_field', '%s was already used'), $this->sessionfields[strtolower($value)]); // add errormsg
-									break; // stop loop
+									if ($vars[strtolower($value)] == $this->sessionfields[strtolower($value)]) { // entry found
+										$this->sessionfields['ERROR'][strtolower($value)][] = sprintf($this->pi_getLL('error_unique_field', '%s was already used'), $this->sessionfields[strtolower($value)]); // add errormsg
+										break; // stop loop
+									}
 								}
 							}
+							$GLOBALS['TYPO3_DB']->sql_free_result($res);
 						}
-						$GLOBALS['TYPO3_DB']->sql_free_result($res);
 					}
-				} // check for IP address
-				elseif (strtolower($value) == 'ip' && $confarray['disableIPlog'] != 1) { // value == ip AND IP log is not disabled
+				} elseif (strtolower($value) == 'ip' && $confarray['disableIPlog'] != 1) {
+						// check for IP address
+						// value == ip AND IP log is not disabled
 					$select = 'senderIP';
 					$from = 'tx_powermail_mails';
 					$where = 'pid = ' . (($this->conf['PID.']['dblog']) ? intval($this->conf['PID.']['dblog']) : $GLOBALS['TSFE']->id) .
