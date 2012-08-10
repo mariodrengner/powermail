@@ -1,4 +1,4 @@
-(function($) {
+(function ($) {
 	$.tools.validator.localize('en', {
 		'*': '###VALIDATOR_LABEL_PLEASE_CORRECT###',
 		'[required]': '###VALIDATOR_LABEL_REQUIRED###',
@@ -21,20 +21,23 @@
 		'shortDays': '###VALIDATOR_DATEINPUT_SHORTDAYS###'
 	});
 
-	$(function() {
+	$(function () {
 
 		powermail_disable_validator = ###VALIDATOR_DISABLE###;
 		powermail_validator_single_error = ###VALIDATOR_SINGLE_ERROR###;
 		powermail_scroll_to_error = ###VALIDATOR_SCROLL_TO_ERROR###;
+		powermail_enable_date_selector = ###DATE_SHOW_SELECTORS###;
+		powermail_enable_date_icon = ###DATE_SHOW_TRIGGER_ICON###;
 
 		$(':date').dateinput({
 			format: '###VALIDATOR_DATEINPUT_FORMAT###',
 			firstDay: parseInt('###VALIDATOR_DATEINPUT_FIRSTDAY###'),
-			selectors: true,
+			selectors: powermail_enable_date_selector,
+			trigger: powermail_enable_date_icon,
 			disabled: false,
 			readonly: false,
 			yearRange: [-99, 99],
-			change: function(event, date) {
+			change: function (event, date) {
 				var y = parseInt(this.getValue('yyyy'), 10);
 				var m = parseInt(this.getValue('m'), 10) - 1;
 				var d = parseInt(this.getValue('d'), 10);
@@ -48,73 +51,73 @@
 					var minutes = parseInt(oldDate.getUTCMinutes(), 10);
 					timestampOfDate += parseInt(hours * 3600 + minutes * 60, 10);
 				}
-				this.getInput().next('input[type=hidden]').val(timestampOfDate);
+				this.getInput().nextAll('input[type=hidden]').val(timestampOfDate);
 			}
-		}).each(function(i) {
-					var initTimestamp = $(this).next('input[type=hidden]').val();
-					if (initTimestamp != '' && parseInt(initTimestamp, 10) == initTimestamp) {
-						var initDatetime = new Date(parseInt(initTimestamp, 10) * 1000);
-						var year = initDatetime.getUTCFullYear();
-						var month = initDatetime.getUTCMonth();
-						var day = initDatetime.getUTCDate();
-						$(this).data('dateinput').setValue(year, month, day);
-					}
-				});
+		}).each(function (i) {
+			var initTimestamp = $(this).nextAll('input[type=hidden]').val();
+			if (initTimestamp != '' && parseInt(initTimestamp, 10) == initTimestamp) {
+				var initDatetime = new Date(parseInt(initTimestamp, 10) * 1000);
+				var year = initDatetime.getUTCFullYear();
+				var month = initDatetime.getUTCMonth();
+				var day = initDatetime.getUTCDate();
+				$(this).data('dateinput').setValue(year, month, day);
+			}
+		});
 
 		$.tools.validator.fn('input:checkbox',
-				function(input, value) {
-					checkboxes = input.parent().parent().find('input:checkbox');
-					if (checkboxes.filter('.required_one').length > 0) {
-						if (checkboxes.filter(':checked').length == 0) {
-							return (input.filter('.required_one').length == 0) ? true : '###VALIDATOR_LABEL_ONE_REQUIRED###';
-						} else {
-							powermail_validator.data('validator').reset(checkboxes);
-						}
+			function (input, value) {
+				checkboxes = input.parent().parent().find('input:checkbox');
+				if (checkboxes.filter('.required_one').length > 0) {
+					if (checkboxes.filter(':checked').length == 0) {
+						return (input.filter('.required_one').length == 0) ? true : '###VALIDATOR_LABEL_ONE_REQUIRED###';
+					} else {
+						powermail_validator.data('validator').reset(checkboxes);
 					}
-					return true;
 				}
+				return true;
+			}
 		);
 
 		// initialize range input
 		$(':range').rangeinput();
 
-		$('.tx_powermail_pi1_form input:checkbox').click(function() {
+		$('.tx_powermail_pi1_form input:checkbox').click(function () {
 			$(this).parent().parent().find('input:checkbox').blur();
-            var checkid = $(this).attr('id');
-            var valueid = checkid.replace(/check_/, 'value_');
-            var targetid = checkid.replace(/check_/, '');
-            $('#' + targetid).val($(this).is(':checked') ? $('#' + valueid).val() : '');
+			var checkid = $(this).attr('id');
+			var valueid = checkid.replace(/check_/, 'value_');
+			var targetid = checkid.replace(/check_/, '');
+			$('#' + targetid).val($(this).is(':checked') ? $('#' + valueid).val() : '');
 		});
 
 		// time validation
 		$.tools.validator.fn('input[type=time]', '###VALIDATOR_LABEL_REQUIRED###',
-				function(input, value) {
-					if (value != '' && !/\d\d:\d\d/.test(value)) {
+			function (input, value) {
+				if (value != '' && !/\d\d:\d\d/.test(value)) {
+					return false;
+				} else if (value != '') {
+					var time = value.split(':');
+					var hour = parseInt(time[0], 10);
+					var minute = parseInt(time[1], 10);
+					if (hour > 23 || hour < 0 || minute > 59 || minute < 0) {
 						return false;
-					} else {
-						var time = value.split(':');
-						var hour = parseInt(time[0], 10);
-						var minute = parseInt(time[1], 10);
-						if (hour > 23 || hour < 0 || minute > 59 || minute < 0) {
-							return false;
-						}
-						if (input.prevAll('input.powermail_datetime').length > 0) {
-							var oldDate = new Date(input.prev('input').val() * 1000);
-							var year = oldDate.getUTCFullYear();
-							var month = oldDate.getUTCMonth();
-							var day = oldDate.getUTCDate();
-							var secondsToAdd = hour * 3600 + minute * 60;
-							var timestamp = (new Date(year, month, day, hour, minute, 0).getTime() / 1000);
-							var timezoneOffset = new Date(year, month, day, hour, minute, 0).getTimezoneOffset() * 60;
-							input.prev('input').val(timestamp - timezoneOffset);
-						}
-						return true;
 					}
+					if (input.prevAll('input.powermail_datetime').length > 0) {
+						var oldDate = new Date(input.prev('input').val() * 1000);
+						var year = oldDate.getUTCFullYear();
+						var month = oldDate.getUTCMonth();
+						var day = oldDate.getUTCDate();
+						var secondsToAdd = hour * 3600 + minute * 60;
+						var timestamp = (new Date(year, month, day, hour, minute, 0).getTime() / 1000);
+						var timezoneOffset = new Date(year, month, day, hour, minute, 0).getTimezoneOffset() * 60;
+						input.prev('input').val(timestamp - timezoneOffset);
+					}
+					return true;
 				}
+			}
 		);
 
 		// validate time fields
-		$('input[type=time]').addClass('powermail_time').each(function(i) {
+		$('input[type=time]').addClass('powermail_time').each(function (i) {
 			// check if part of datetime field
 			if ($(this).prevAll('input.powermail_datetime').length > 0) {
 				if ($(this).prev('input').val() != '') {
@@ -132,13 +135,13 @@
 
 		// select validation
 		$.tools.validator.fn('select[required="required"]', '',
-				function(el, value) {
-                    if (el.attr('multiple')) {
-                        return value != null ? true: '###VALIDATOR_LABEL_ONE_REQUIRED###';
-                    } else {
-                        return value.length > 0 ? true : '';
-                    }
+			function (el, value) {
+				if (el.attr('multiple')) {
+					return value != null ? true : '###VALIDATOR_LABEL_ONE_REQUIRED###';
+				} else {
+					return value.length > 0 ? true : '';
 				}
+			}
 		);
 
 		if (!powermail_disable_validator) {
@@ -149,38 +152,38 @@
 				inputEvent: 'blur',
 				grouped: true,
 				singleError: powermail_validator_single_error,
-				formEvent : 'submit',
-				onBeforeValidate: function(e, els) {
+				formEvent: 'submit',
+				onBeforeValidate: function (e, els) {
 					clearPlaceholderValue(e, els);
 				},
-				onBeforeFail: function(e, els, matcher) {
+				onBeforeFail: function (e, els, matcher) {
 					setPlaceholderValue(e, els, matcher);
 				},
-				onFail: function(e, els) {
+				onFail: function (e, els) {
 					if (powermail_scroll_to_error) {
-						$('html,body').animate({ "scrollTop": $(els[0].input).offset().top - 50}, 1000);
+						$('html,body').animate({ "scrollTop":$(els[0].input).offset().top - 50}, 1000);
 					}
 				}
 			});
 		}
 
-        var fakeTextarea = document.createElement('textarea'),
-            textareaMaxlengthSupport = ('maxlength' in fakeTextarea);
+		var fakeTextarea = document.createElement('textarea'),
+			textareaMaxlengthSupport = ('maxlength' in fakeTextarea);
 
-        if (!textareaMaxlengthSupport) {
-			$('textarea[maxlength]').each(function() {
-                $(this).bind('keypress blur', function() {
-                    $(this).val($(this).val().substr(0, $(this).attr('maxlength')));
-                });
-            });
-        }
+		if (!textareaMaxlengthSupport) {
+			$('textarea[maxlength]').each(function () {
+				$(this).bind('keypress blur', function () {
+					$(this).val($(this).val().substr(0, $(this).attr('maxlength')));
+				});
+			});
+		}
 
 		// add placeholder attribute behavior in web browsers that don't support it
 		var fakeInput = document.createElement('input'),
-				placeHolderSupport = ('placeholder' in fakeInput);
+			placeHolderSupport = ('placeholder' in fakeInput);
 		clearPlaceholderValues = function () {
 			if (!placeHolderSupport) {
-				$('input:text, textarea').each(function(i) {
+				$('input:text, textarea').each(function (i) {
 					if ($(this).val() === $(this).attr('placeholder')) {
 						$(this).val('');
 					}
@@ -207,7 +210,7 @@
 		};
 
 		if (!placeHolderSupport) {
-			$('input:text, textarea').each(function(i) {
+			$('input:text, textarea').each(function (i) {
 				if ($(this).val().length === 0) {
 					var originalText = $(this).attr('placeholder');
 					$(this).val(originalText);
@@ -235,7 +238,7 @@
 		$('ul.powermail_multiplejs_tabs li a:first').addClass('act'); // first tab with class "act"
 		if ($.ui && typeof($.ui.tabs) == 'function') {
 			// Add UI tabs
-			$('.powermail_multiple_js .powermail_multiplejs_tabs_item a').each(function(id, item) {
+			$('.powermail_multiple_js .powermail_multiplejs_tabs_item a').each(function (id, item) {
 				var temp = item.href.split('#');
 				var temp_last = temp[temp.length - 1];
 				var search = /^tx\-powermail\-pi1\_fieldset/;
@@ -248,13 +251,12 @@
 			// add TOOLS tabs
 			$('ul.powermail_multiplejs_tabs').tabs('div.fieldsets > fieldset');
 		}
-		$('ul.powermail_multiplejs_tabs li a').click(function() { // change "act" on click
+		$('ul.powermail_multiplejs_tabs li a').click(function () { // change "act" on click
 			$('ul.powermail_multiplejs_tabs li a').removeClass('act');
 			$(this).addClass('act');
 			// reset error messages if js validation is enabled
-			if (!powermail_disable_validator)
-			{
-				$(this).parent().parent().find('a').not('.current').each(function(id, item) {
+			if (!powermail_disable_validator) {
+				$(this).parent().parent().find('a').not('.current').each(function (id, item) {
 					var temp = item.href.split('#');
 					var resetSelector = $('#' + temp[temp.length - 1] + ' :input');
 					powermail_validator.data('validator').reset(resetSelector);

@@ -448,10 +448,6 @@ plugin.tx_powermail_pi1.clear.session = 1
 
 # ---------------------- Additional Typoscript ---------------------
 
-[userFunc = user_powermailOnCurrentPage({$plugin.powermail.js.alwaysInclude})]
-
-	// if powermail is on current page build up validation js
-
 lib.powermailjs = COA
 lib.powermailjs {
 
@@ -504,15 +500,17 @@ lib.powermailjs {
 			VALIDATOR_SINGLE_ERROR.value = false
 			VALIDATOR_SCROLL_TO_ERROR = TEXT
 			VALIDATOR_SCROLL_TO_ERROR.value = true
+			DATE_SHOW_SELECTORS = TEXT
+			DATE_SHOW_SELECTORS.value = true
+			DATE_SHOW_TRIGGER_ICON = TEXT
+			DATE_SHOW_TRIGGER_ICON.value = true
 		}
 	}
 }
 
-[end]
-
 [globalVar = LIT:1 > {$plugin.powermail.js.validation}]
 
-lib.powermailjs.10.marks.VALIDATOR_DISABLE.value = true
+	lib.powermailjs.10.marks.VALIDATOR_DISABLE.value = true
 
 [end]
 
@@ -527,6 +525,19 @@ lib.powermailjs.10.marks.VALIDATOR_DISABLE.value = true
 	lib.powermailjs.10.marks.VALIDATOR_SCROLL_TO_ERROR.value = false
 
 [end]
+
+[globalVar = LIT:1 > {$plugin.powermail.js.showSelectors}]
+
+	lib.powermailjs.10.marks.DATE_SHOW_SELECTORS.value = false
+
+[end]
+
+[globalVar = LIT:1 > {$plugin.powermail.js.showTriggerIcon}]
+
+	lib.powermailjs.10.marks.DATE_SHOW_TRIGGER_ICON.value = false
+
+[end]
+
 
 [userFunc = user_powermailOnCurrentPage({$plugin.powermail.js.alwaysInclude})] && [userFunc = user_powermailCheckT3jquery(false)]
 
@@ -544,7 +555,7 @@ page.includeJSlibs {
 
 	// if powermail is on current page and t3jquery is NOT loaded include validation js into page footer
 
-page.jsFooterInline.10 < lib.powermailjs
+page.jsFooterInline.10 = < lib.powermailjs
 
 [end]
 
@@ -626,7 +637,7 @@ page.31320 {
 	30 = USER
 	30 {
 		userFunc = tx_t3jquery->addJS
-		jsdata.cObject < lib.powermailjs
+		jsdata.cObject = < lib.powermailjs
 		compress = 1
 		tofooter = 0
 	}

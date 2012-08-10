@@ -181,6 +181,12 @@ plugin.powermail {
 	# cat=plugin.powermail_additionalconfig/plugin_powermail_cat_50/0510; type=boolean; label= Automatically scroll to error: Automatically scroll to form element with first validation error
 	js.scrollToError = 1
 
+	# cat=plugin.powermail_additionalconfig/plugin_powermail_cat_50/0520; type=boolean; label= Show month and year selectors: Show pull down menu for month and year
+	js.showSelectors = 1
+
+	# cat=plugin.powermail_additionalconfig/plugin_powermail_cat_50/0530; type=boolean; label= Show calendar icons: Show trigger icons in date and datetime fields to enable the calendar overlay
+	js.showTriggerIcon = 1
+
 
 	# cat=plugin.powermail_additionalconfig/plugin_powermail_cat_60/0610; type=text; label= Folder for uploaded files: If you are using min. one upload field in frontend, you can change the folder where the uploaded file is safed
 	upload.folder = uploads/tx_powermail/files/
