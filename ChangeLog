@@ -1,4 +1,8 @@
-﻿2012-08-10 Nicole Cordes <cordes@cps-it.de>
+﻿2012-08-18 Nicole Cordes <cordes@cps-it.de>
+
+	* Removed support for TYPO3 versions lower than TYPO3 4.5
+
+2012-08-10 Nicole Cordes <cordes@cps-it.de>
 
 	* Added feature to disable mail storage with empty plugin or typoscript setting
 	* Added security fix of version 1.6.9

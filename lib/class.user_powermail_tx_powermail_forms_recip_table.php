@@ -38,18 +38,10 @@ class user_powermail_tx_powermail_forms_recip_table {
 		$tables = $GLOBALS['TYPO3_DB']->admin_get_tables();
 
 		if(is_array($tables)) {
-			if(t3lib_div::int_from_ver(TYPO3_version) < t3lib_div::int_from_ver('4.2.0')) {
-				foreach($tables as $v) {
-					$params['items'][] = array($pObj->sL($v),$v);
-				}
-			}
-			else {
-				foreach($tables as $k => $v) {
-					$params['items'][] = array($pObj->sL($k),$k);
-				}
+			foreach($tables as $k => $v) {
+				$params['items'][] = array($pObj->sL($k),$k);
 			}
 		}
-
 	}
 }
 

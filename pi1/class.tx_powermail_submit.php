@@ -188,9 +188,7 @@ class tx_powermail_submit extends tslib_pibase {
 			$returnPath = (t3lib_div::validEmail($returnPath)) ? $returnPath : $from; // return path
 			$replyToEmail = $this->cObj->cObjGetSingle($this->conf['email.'][$this->subpart . '.']['reply.']['email'], $this->conf['email.'][$this->subpart . '.']['reply.']['email.']); // set replyto email
 			$replyToName = $this->quoteStringWithComma($this->cObj->cObjGetSingle($this->conf['email.'][$this->subpart . '.']['reply.']['name'], $this->conf['email.'][$this->subpart . '.']['reply.']['name.'])); // set replyto name
-			if (t3lib_div::int_from_ver(TYPO3_version) >= t3lib_div::int_from_ver('4.5')) {
-				$this->useSwiftMailer = 1;
-			}
+			$this->useSwiftMailer = 1;
 
 			if ($this->useSwiftMailer) {
 					// new TYPO3 swiftmailer code
