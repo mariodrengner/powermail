@@ -1,6 +1,7 @@
 ﻿2012-08-18 Nicole Cordes <cordes@cps-it.de>
 
 	* Removed support for TYPO3 versions lower than TYPO3 4.5
+	* Fixed deprecated function to support greater TYPO3 6.0
 
 2012-08-10 Nicole Cordes <cordes@cps-it.de>
 

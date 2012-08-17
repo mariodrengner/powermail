@@ -76,7 +76,13 @@ class tx_powermail_pi1_wizicon {
 	 */
 	function includeLocalLang()	{
 		$llFile = t3lib_extMgm::extPath(powermail) . 'locallang.xml';
-		$LOCAL_LANG = t3lib_div::readLLXMLfile($llFile, $GLOBALS['LANG']->lang);
+		if (t3lib_utility_VersionNumber::convertVersionNumberToInteger(TYPO3_version) >= 4006000) {
+			/** @var $languageFactory t3lib_l10n_Factory */
+			$languageFactory = t3lib_div::makeInstance('t3lib_l10n_Factory');
+			$LOCAL_LANG = $languageFactory->getParsedData($llFile, $GLOBALS['LANG']->lang, '', 1);
+		} else {
+			$LOCAL_LANG = t3lib_div::readLLXMLfile($llFile, $GLOBALS['LANG']->lang);
+		}
 
 		return $LOCAL_LANG;
 	}
