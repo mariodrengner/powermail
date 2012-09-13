@@ -59,8 +59,9 @@ class tx_powermail_pi1 extends tslib_pibase {
 		$this->piVars = $this->div->sec($this->piVars); // first of all clean piVars
 
 			// TODO: Extract this functionality to its own class
-		if (!isset($this->piVars['sendNow']) && !$this->conf['field.']['checkboxJS']) {
 			// Add empty piVars for values which were not submitted but on last page
+			// Only if any data was submitted as otherwise it might delete them
+		if (count($this->piVars) > 0 && !isset($this->piVars['sendNow']) && !$this->conf['field.']['checkboxJS']) {
 			$select = 'tx_powermail_fieldsets.uid';
 			$from = 'tx_powermail_fieldsets';
 			$uid = (($this->cObj->data['_LOCALIZED_UID'] > 0) ? $this->cObj->data['_LOCALIZED_UID'] : $this->cObj->data['uid']);
