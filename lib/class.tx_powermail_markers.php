@@ -179,8 +179,13 @@ class tx_powermail_markers extends tslib_pibase {
 		$this->markerArray['###POWERMAIL_ALL###'] = trim($this->cObj->substituteMarkerArrayCached($this->tmpl['all']['all'], array(), $subpartArray)); // Fill ###POWERMAIL_ALL###
 
 		$this->markerArray['###POWERMAIL_THX_RTE###'] = ($this->conf['rte.']['parse'] == 1 ? $this->pi_RTEcssText(tslib_cObj::substituteMarkerArrayCached($this->cObj->data['tx_powermail_thanks'], $this->markerArray)) : tslib_cObj::substituteMarkerArrayCached($this->cObj->data['tx_powermail_thanks'], $this->markerArray)); // Thx message with ###fields###
+
+			// Force absolute urls for email texts
+		$tempParseFunc_RTE = $GLOBALS['TSFE']->tmpl->setup['lib.']['parseFunc_RTE.'];
+		$GLOBALS['TSFE']->tmpl->setup['lib.']['parseFunc_RTE.']['tags.']['link.']['typolink.']['forceAbsoluteUrl'] = 1;
 		$this->markerArray['###POWERMAIL_EMAILRECIPIENT_RTE###'] = ($this->conf['rte.']['parse'] == 1 ? $this->pi_RTEcssText(tslib_cObj::substituteMarkerArrayCached($this->cObj->data['tx_powermail_mailreceiver'], $this->markerArray)) : tslib_cObj::substituteMarkerArrayCached($this->cObj->data['tx_powermail_mailreceiver'], $this->markerArray)); // Email to receiver message with ###fields###
 		$this->markerArray['###POWERMAIL_EMAILSENDER_RTE###'] = ($this->conf['rte.']['parse'] == 1 ? $this->pi_RTEcssText(tslib_cObj::substituteMarkerArrayCached($this->cObj->data['tx_powermail_mailsender'], $this->markerArray)) : tslib_cObj::substituteMarkerArrayCached($this->cObj->data['tx_powermail_mailsender'], $this->markerArray)); // Email to sender message with ###fields###
+		$GLOBALS['TSFE']->tmpl->setup['lib.']['parseFunc_RTE.'] = $tempParseFunc_RTE;
 
 		return $this->markerArray;
 	}
