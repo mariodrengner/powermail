@@ -4,6 +4,7 @@
 	* Added new option to send empty values (and markers) in emails
 	* Fixed labels.allowTags at is was broken due to security update
 	* Force absolute links in email texts
+	* Cleaned up static/pi1/setup.txt
 
 2012-08-18 Nicole Cordes <cordes@cps-it.de>
 
