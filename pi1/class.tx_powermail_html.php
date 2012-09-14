@@ -352,11 +352,15 @@ class tx_powermail_html extends tslib_pibase {
 		$subpartArray['###CONTENT###'] = $content_item; // subpart 3
 
 		// Outer Marker array
+		/*
 		if ($this->conf['label.']['parse']) {
 			$this->markerArray['###LABEL_MAIN###'] = $this->div->parseFunc($this->title, $this->cObj);
 		} else {
 			$this->markerArray['###LABEL_MAIN###'] = htmlspecialchars($this->title);
 		}
+		*/
+		$this->markerArray['###LABEL_MAIN###'] = $this->markerArray['###LABEL###'];
+
 		$this->markerArray['###POWERMAIL_FIELD_UID###'] = $this->uid;
 
 		$this->html_hookwithinfields(); // adds hook to manipulate the markerArray for any field
@@ -543,7 +547,7 @@ class tx_powermail_html extends tslib_pibase {
 		} elseif ($this->fe_field && $GLOBALS['TSFE']->fe_user->user[$this->fe_field]) { // 2. if value should be filled from current logged in user
 			$this->markerArray['###CONTENT###'] = t3lib_div::removeXSS($GLOBALS['TSFE']->fe_user->user[$this->fe_field]);
 		} elseif ($this->pi_getFFvalue(t3lib_div::xml2array($this->xml), 'value')) { // 3. take value from backend (default value)
-			$this->markerArray['###CONTENT###'] = t3lib_div::removeXSS($this->pi_getFFvalue(t3lib_div::xml2array($this->xml), 'value'), $this->conf['label.']['allowTags']);
+			$this->markerArray['###CONTENT###'] = t3lib_div::removeXSS($this->pi_getFFvalue(t3lib_div::xml2array($this->xml), 'value'));
 		} elseif (!empty($this->conf['prefill.']['uid' . $this->uid])) { // 4. prefilling with typoscript for current field enabled
 			$this->markerArray['###CONTENT###'] = $this->cObj->cObjGetSingle($this->conf['prefill.']['uid' . $this->uid], $this->conf['prefill.']['uid' . $this->uid . '.']); // add typoscript value
 		} else { // 5. no prefilling - so clear value marker
@@ -1221,10 +1225,26 @@ class tx_powermail_html extends tslib_pibase {
 
 		// ###LABEL###
 		if ($this->conf['label.']['parse']) {
-			$this->markerArray['###LABEL###'] = $this->div->parseFunc($this->title, $this->cObj);
+			$label = $this->div->parseFunc($this->title, $this->cObj);
 		} else {
-			$this->markerArray['###LABEL###'] = htmlspecialchars($this->title);
+			$label = htmlspecialchars($this->title);
+
+				// Reset allowed tags
+			if (!empty($this->conf['label.']['allowTags'])) {
+				$searchTags = $replaceTags = array();
+				preg_match_all('/<([^>]*)>/', $this->conf['label.']['allowTags'], $allowTags);
+				foreach ($allowTags[1] as $value) {
+					$searchTags[] = htmlspecialchars('<' . $value . '>');
+					$searchTags[] = htmlspecialchars('</' . $value . '>');
+					$replaceTags[] = '<' . $value . '>';
+					$replaceTags[] ='</' . $value . '>';
+				}
+				unset($value);
+				$label = str_replace($searchTags, $replaceTags, $label);
+			}
 		}
+
+		$this->markerArray['###LABEL###'] = $label;
 
 		// ###DESCRIPTION###
 		if (!empty($this->description)) {

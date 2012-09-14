@@ -2,6 +2,7 @@
 
 	* Fixed piVars initialisation when going back from error page
 	* Added new option to send empty values (and markers) in emails
+	* Fixed labels.allowTags at is was broken due to security update
 
 2012-08-18 Nicole Cordes <cordes@cps-it.de>
 
