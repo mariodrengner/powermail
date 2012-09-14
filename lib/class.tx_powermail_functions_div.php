@@ -688,6 +688,19 @@ class tx_powermail_functions_div {
 		}
 	}
 
+	public function renderFieldStdWrap($conf, $uid, $value) {
+		$cObj = t3lib_div::makeInstance('tslib_cObj');
+		$stdWrap = array();
+
+		if (isset($conf['uid' . $uid . '_stdWrap.'])) {
+			$stdWrap = $conf['uid' . $uid . '_stdWrap.'];
+		} elseif (isset($conf['all_stdWrap.'])) {
+			$stdWrap = $conf['all_stdWrap.'];
+		}
+
+		return $cObj->stdWrap($value, $stdWrap);
+	}
+
 	/**
 	 * Construct for div class
 	 *

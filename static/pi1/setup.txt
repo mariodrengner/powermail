@@ -159,6 +159,52 @@ plugin.tx_powermail_pi1 {
 		unique = {$plugin.powermail.enable.unique}
 	}
 
+	error {
+		file_extension {
+			all_stdWrap {
+				wrap = <strong>|</strong>
+			}
+
+			# Example to customize error messages
+			#uid999_stdWrap {
+			#	wrap = <em>|</em>
+			#}
+		}
+
+		file_main {
+			all_stdWrap {
+				wrap = <strong>|</strong>
+			}
+
+			# Example to customize error messages
+			#uid999_stdWrap {
+			#	wrap = <em>|</em>
+			#}
+		}
+
+		file_mimetype {
+			all_stdWrap {
+				wrap = <strong>|</strong>
+			}
+
+			# Example to customize error messages
+			#uid999_stdWrap {
+			#	wrap = <em>|</em>
+			#}
+		}
+
+		file_toolarge {
+			all_stdWrap {
+				wrap = <strong>|</strong>
+			}
+
+			# Example to customize error messages
+			#uid999_stdWrap {
+			#	wrap = <em>|</em>
+			#}
+		}
+	}
+
 	field {
 		checkboxJS = {$plugin.powermail.field.checkboxJS}
 		checkboxSplitSign.noTrimWrap = |, ||
@@ -221,6 +267,17 @@ plugin.tx_powermail_pi1 {
 		messages = {$plugin.powermail.mandatory.messages}
 		symbol = {$plugin.powermail.mandatory.symbol}
 		wrap = {$plugin.powermail.mandatory.wrap}
+
+		emptyfield {
+			all_stdWrap {
+				wrap = <strong>|</strong>
+			}
+
+			# Example to customize error messages
+			#uid999_stdWrap {
+			#	wrap = <em>|</em>
+			#}
+		}
 	}
 
 	markerALL {
