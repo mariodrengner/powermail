@@ -85,7 +85,7 @@ class tx_powermail_markers extends tslib_pibase {
 			if ($res !== FALSE) {
 				$orderedSessionData = array();
 				while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
-					if ($this->sessiondata['uid' . $row['uid']] != "") {
+					if (!empty($this->sessiondata['uid' . $row['uid']]) || $this->conf['email.']['sendEmptyValues']) {
 						$orderedSessionData['uid' . $row['uid']] = $this->sessiondata['uid' . $row['uid']];
 					}
 					unset($this->sessiondata['uid' . $row['uid']]);
@@ -131,7 +131,7 @@ class tx_powermail_markers extends tslib_pibase {
 							$i = 0; // init counter
 							foreach ($v as $kv => $vv) { // One loop for every piVar
 								if (is_numeric(str_replace('uid', '', $k))) { // check if key is like uid55
-									if ($vv) { // if value exists
+									if ($vv || $this->conf['email.']['sendEmptyValues']) { // if value exists
 										$this->markerArray['###' . strtoupper($k) . '_' . $kv . '###'] = stripslashes($this->div->nl2br2($vv)); // fill ###UID55_0###
 										$this->markerArray['###' . strtoupper($k) . '###'] .= ($i != 0 ? $this->cObj->stdWrap($this->conf['field.']['checkboxSplitSign'], $this->conf['field.']['checkboxSplitSign.']) : '') . stripslashes($this->div->nl2br2($vv)); // fill ###UID55### (comma between every value)
 										$this->markerArray['###LABEL_' . strtoupper($k) . '###'] = $this->GetLabelfromBackend($k, $v); // fill ###LABEL_UID55###

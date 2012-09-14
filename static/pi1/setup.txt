@@ -16,8 +16,6 @@ plugin.tx_powermail_pi1 {
 	emailformat.enableTagsInPlainTextPart = {$plugin.powermail.emailformat.enableTagsInPlainTextPart}
 	# ---
 	enable.unique = {$plugin.powermail.enable.unique}
-	email.noreply = {$plugin.powermail.email.noreply}
-	email.checkMX = {$plugin.powermail.email.checkMX}
 	hiddenfields.show = {$plugin.powermail.hiddenfields.show}
 	markerALL.hideLabel = {$plugin.powermail.markerALL.hideLabel}
 	markerALL.notIn = {$plugin.powermail.markerALL.notIn}
@@ -58,6 +56,9 @@ plugin.tx_powermail_pi1 {
 
 	# Some settings for Emails
 	email {
+		noreply = {$plugin.powermail.email.noreply}
+		checkMX = {$plugin.powermail.email.checkMX}
+		sendEmptyValues = {$plugin.powermail.email.sendEmptyValues}
 
 		# Settings for mail to the default receiver(s)
 		recipient_mail {

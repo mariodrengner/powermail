@@ -74,6 +74,8 @@ plugin.powermail {
 	# cat=plugin.powermail_mainconfig/plugin_powermail_cat_20/0280; type=boolean; label= Use rteCSStext function: Text from rich text editor will be parsed automatically for emails and thx message (every line gets an p tag, etc...). Disabling could be useful if you want to use only plain text mails.
 	rte.parse = 1
 
+	# cat=plugin.powermail_mainconfig/plugin_powermail_cat_20/0290; type=boolean; label= Send labels for empty values
+	email.sendEmptyValues = 0
 
 
 	# cat=plugin.powermail_additionalconfig/plugin_powermail_cat_10/0010; type=boolean; label= Allow caching: Check if powermail frontend output (first page for php multiple step forms) should be cached. Please empty TYPO3 frontend cache of all pages containing powermail forms after changing. Please Do NOT use this feature if a captcha field is on the first page of a form.

@@ -1,6 +1,7 @@
 ﻿2012-09-13 Nicole Cordes <cordes@cps-it.de>
 
 	* Fixed piVars initialisation when going back from error page
+	* Added new option to send empty values (and markers) in emails
 
 2012-08-18 Nicole Cordes <cordes@cps-it.de>
 
