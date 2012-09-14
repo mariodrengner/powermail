@@ -31,18 +31,17 @@
  */
 
 class tx_powermail_scheduler extends tx_scheduler_Task {
-	
+
 	public $lang;
 
 	public $msg;
-	
+
 	/**
 	* Function executed from the Scheduler.
 	*
 	* @return    bool
 	*/
 	public function execute() {
-		require_once(t3lib_extMgm::extPath('lang', 'lang.php')); // include lang class
 		$LANG = t3lib_div::makeInstance('language');
 		$LANG->init('en');
 
@@ -50,7 +49,7 @@ class tx_powermail_scheduler extends tx_scheduler_Task {
 			$this->msg = 'No Page ID given!';
 			return false;
 		}
-		
+
 		// tsconfig
 		$tmp_defaultconfig = array (
 			'time' => 86400, // default setting 1 day
@@ -87,16 +86,24 @@ class tx_powermail_scheduler extends tx_scheduler_Task {
             $tsconfig['format'] = $this->format; // overwrite from scheduler settings
         }
 
+			// Covert TSconfig to utf-8
+		foreach ($tsconfig as $key => $value) {
+			if (isset($GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset']) && $GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset'] !== 'utf-8') {
+				$tsconfig[$key] = utf8_encode($value);
+			}
+		}
+		unset($key, $value);
+
 		if (!t3lib_div::validEmail($tsconfig['email_receiver'])) { // if receiver email is set
 			$this->msg = 'Wrong receiver mail given!';
 			return false;
 		}
-		
+
 		if (!t3lib_extMgm::isLoaded('phpexcel_library') && $tsconfig['format'] == 'email_xls') {
 			$this->msg = 'Please use csv or install extension phpexcel_library';
 			return false;
 		}
-		
+
 		// Generate the xls file
 		$export = t3lib_div::makeInstance('tx_powermail_export');
 		$export->pid = $this->pid; // set page id
@@ -134,7 +141,7 @@ class tx_powermail_scheduler extends tx_scheduler_Task {
                     ->addPart($tsconfig['body'], 'text/plain')
                     ->setBody($tsconfig['body'], 'text/html')
                     ->attach(Swift_Attachment::fromPath($file))
-                    ->setCharset($GLOBALS['TSFE']->metaCharset);
+                    ->setCharset('utf-8');
 
                 if ($tsconfig['email_receiver_cc'] !== ''){
                     $mail->setCc(t3lib_div::trimExplode(',', $tsconfig['email_receiver_cc']));
@@ -168,7 +175,7 @@ class tx_powermail_scheduler extends tx_scheduler_Task {
 		unlink($file);
 		return true;
 	}
-	
+
 	/**
 	* Return message for backend
 	*

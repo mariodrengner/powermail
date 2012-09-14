@@ -6,6 +6,7 @@
 	* Force absolute links in email texts
 	* Cleaned up static/pi1/setup.txt
 	* Added Feature #40874: bold tag (<b>) inside class.tx_powermail_mandatory.php (Thanks to Simon)
+	* Fixed Bug #40071: Export mails: no codepage set (Thanks to Christian Hennecke)
 
 2012-08-18 Nicole Cordes <cordes@cps-it.de>
 

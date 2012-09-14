@@ -23,7 +23,7 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
- 
+
  // Defining circumstances for CLI mode:
 define('TYPO3_cliMode', TRUE);
 define('PATH_thisScript', $_SERVER['SCRIPT_FILENAME']);
@@ -45,7 +45,7 @@ $pid = intval($_GET['pid']);
 $content = $file = '';
 
 if ($pid > 0) { // if Page id given from GET param
-	
+
 	// tsconfig
 	$tmp_defaultconfig = array (
 		'time' => 86400, // default setting 1 day
@@ -59,10 +59,19 @@ if ($pid > 0) { // if Page id given from GET param
 		'attachedFilename' => '' // overwrite filename
 	);
 	$tmp_tsconfig = t3lib_BEfunc::getModTSconfig($pid, 'tx_powermail_cli'); // get whole tsconfig from backend
+
+		// Convert TSconfig to utf-8
+	foreach ($tmp_tsconfig as $key => $value) {
+		if (isset($GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset']) && $GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset'] !== 'utf-8') {
+			$tmp_tsconfig[$key] = utf8_encode($value);
+		}
+	}
+	unset($key, $value);
+
 	$tsconfig = array_merge((array) $tmp_defaultconfig, (array) $tmp_tsconfig['properties']['exportmail.']); // get tsconfig from powermail cli
-	
+
 	if (t3lib_div::validEmail($tsconfig['email_receiver'])) { // if receiver email is set
-		
+
 		if (t3lib_extMgm::isLoaded('phpexcel_library') || $tsconfig['format'] != 'email_xls') {
 
 			// Generate the xls file
@@ -78,7 +87,7 @@ if ($pid > 0) { // if Page id given from GET param
 			$export->main(); // generate file
 
 			if ($export->resNumRows > 0) { // if file is not empty
-				
+
                 $file = t3lib_div::getFileAbsFileName('typo3temp/' . $export->filename); // read filename
                 if (t3lib_div::compat_version('4.5')){
                     // new TYPO3 swiftmailer code
@@ -89,7 +98,7 @@ if ($pid > 0) { // if Page id given from GET param
                         ->addPart($tsconfig['body'], 'text/plain')
                         ->setBody($tsconfig['body'], 'text/html')
                         ->attach(Swift_Attachment::fromPath($file))
-                        ->setCharset($GLOBALS['TSFE']->metaCharset);
+                        ->setCharset('utf-8');
 
                     if ($tsconfig['email_receiver_cc'] !== ''){
                         $mail->setCc(t3lib_div::trimExplode(',', $tsconfig['email_receiver_cc']));
@@ -117,7 +126,7 @@ if ($pid > 0) { // if Page id given from GET param
 					$content .= 'Powermail Error in sending mail';
 				}
                 unlink($file);
-		
+
 			} else {
 				$content .= 'There are no mails to export in the last ' . intval($tsconfig['time']) . ' seconds in pid ' . $pid;
 			}
