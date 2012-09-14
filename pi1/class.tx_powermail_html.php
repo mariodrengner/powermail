@@ -284,11 +284,7 @@ class tx_powermail_html extends tslib_pibase {
 			for ($i = 0; $i < count($optionlines); $i++) { // One tag for every option
 				$options[$i] = t3lib_div::trimExplode('|', $optionlines[$i], 0); // Every row is a new option
 				$markerArray['###NAME###'] = 'name="' . $this->prefixId . '[uid' . $this->uid . '][' . $i . ']" '; // add name to markerArray
-				if ($this->conf['label.']['parse']) {
-					$markerArray['###LABEL###'] = $this->div->parseFunc($options[$i][0], $this->cObj);
-				} else {
-					$markerArray['###LABEL###'] = htmlspecialchars($options[$i][0]);
-				}
+				$markerArray['###LABEL###'] = $this->getLabel($options[$i][0]);
 				$markerArray['###LABEL_NAME###'] = 'uid' . $this->uid . '_' . $i; // add labelname
 				$markerArray['###ID###'] = 'id="uid' . $this->uid . '_' . $i . '" '; // add labelname
 				$markerArray['###VALUE###'] = 'value="' . (isset($options[$i][1]) ? htmlspecialchars($options[$i][1]) : htmlspecialchars($options[$i][0])) . '" ';
@@ -359,7 +355,7 @@ class tx_powermail_html extends tslib_pibase {
 			$this->markerArray['###LABEL_MAIN###'] = htmlspecialchars($this->title);
 		}
 		*/
-		$this->markerArray['###LABEL_MAIN###'] = $this->markerArray['###LABEL###'];
+		$this->markerArray['###LABEL_MAIN###'] = $this->getLabel($this->title);
 
 		$this->markerArray['###POWERMAIL_FIELD_UID###'] = $this->uid;
 
@@ -403,11 +399,7 @@ class tx_powermail_html extends tslib_pibase {
 			for ($i = 0; $i < count($optionlines); $i++) { // One tag for every option
 				$options[$i] = t3lib_div::trimExplode('|', $optionlines[$i], 0); // To split: label | value | *
 				$markerArray['###NAME###'] = 'name="' . $this->prefixId . '[uid' . $this->uid . ']" '; // add name to markerArray
-				if ($this->conf['label.']['parse']) {
-					$markerArray['###LABEL###'] = $this->div->parseFunc($options[$i][0], $this->cObj);
-				} else {
-					$markerArray['###LABEL###'] = htmlspecialchars($options[$i][0]);
-				}
+				$markerArray['###LABEL###'] = $this->getLabel($options[$i][0]);
 				$markerArray['###LABEL_NAME###'] = 'uid' . $this->uid . '_' . $i; // add labelname
 				$markerArray['###ID###'] = 'id="uid' . $this->uid . '_' . $i . '" '; // add labelname
 				$markerArray['###VALUE###'] = 'value="' . (isset($options[$i][1]) ? htmlspecialchars($options[$i][1]) : htmlspecialchars($options[$i][0])) . '" ';
@@ -460,11 +452,7 @@ class tx_powermail_html extends tslib_pibase {
 		$subpartArray = array(); // init
 		$subpartArray['###CONTENT###'] = $content_item; // subpart 3
 
-		if ($this->conf['label.']['parse']) {
-			$this->markerArray['###LABEL_MAIN###'] = $this->div->parseFunc($this->title, $this->cObj);
-		} else {
-			$this->markerArray['###LABEL_MAIN###'] = htmlspecialchars($this->title);
-		}
+		$this->markerArray['###LABEL_MAIN###'] = $this->getLabel($this->title);
 		$this->markerArray['###POWERMAIL_FIELD_UID###'] = $this->uid;
 
 		if ($this->pi_getFFvalue(t3lib_div::xml2array($this->xml), 'mandatory') == 1) {
@@ -1069,6 +1057,41 @@ class tx_powermail_html extends tslib_pibase {
 		return $content;
 	}
 
+	/**
+	 * Gets the label and takes care about label.allowTags
+	 *
+	 * @param string $label
+	 *
+	 * @return string
+	 */
+	private function getLabel($label) {
+		if ($this->conf['label.']['parse']) {
+			$newLabel = $this->div->parseFunc($label, $this->cObj);
+		} else {
+			$newLabel = htmlspecialchars($label);
+
+				// Reset allowed tags
+			if (!empty($this->conf['label.']['allowTags'])) {
+				$searchTags = $replaceTags = array();
+				preg_match_all('/<([^>]*)>/', $this->conf['label.']['allowTags'], $allowTags);
+				foreach ($allowTags[1] as $value) {
+					preg_match_all('/<' . $value . '[^>]*>/', $label, $matches);
+					foreach ($matches[0] as $match) {
+						$searchTags[] = htmlspecialchars($match);
+						$searchTags[] = htmlspecialchars('</' . $value . '>');
+						$replaceTags[] = $match;
+						$replaceTags[] ='</' . $value . '>';
+					}
+					unset($match);
+				}
+				unset($value);
+				$newLabel = str_replace($searchTags, $replaceTags, $newLabel);
+			}
+		}
+
+		return $newLabel;
+	}
+
 	################################################################################################################
 
 	/**
@@ -1224,27 +1247,7 @@ class tx_powermail_html extends tslib_pibase {
 		}
 
 		// ###LABEL###
-		if ($this->conf['label.']['parse']) {
-			$label = $this->div->parseFunc($this->title, $this->cObj);
-		} else {
-			$label = htmlspecialchars($this->title);
-
-				// Reset allowed tags
-			if (!empty($this->conf['label.']['allowTags'])) {
-				$searchTags = $replaceTags = array();
-				preg_match_all('/<([^>]*)>/', $this->conf['label.']['allowTags'], $allowTags);
-				foreach ($allowTags[1] as $value) {
-					$searchTags[] = htmlspecialchars('<' . $value . '>');
-					$searchTags[] = htmlspecialchars('</' . $value . '>');
-					$replaceTags[] = '<' . $value . '>';
-					$replaceTags[] ='</' . $value . '>';
-				}
-				unset($value);
-				$label = str_replace($searchTags, $replaceTags, $label);
-			}
-		}
-
-		$this->markerArray['###LABEL###'] = $label;
+		$this->markerArray['###LABEL###'] = $this->getLabel($this->title);
 
 		// ###DESCRIPTION###
 		if (!empty($this->description)) {
