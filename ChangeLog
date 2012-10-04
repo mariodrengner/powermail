@@ -1,4 +1,8 @@
-﻿2012-09-13 Nicole Cordes <cordes@cps-it.de>
+﻿2012-10-04 Nicole Cordes <cordes@cps-it.de>
+
+	* Fixed Backend Module to work as global installed extension
+
+2012-09-13 Nicole Cordes <cordes@cps-it.de>
 
 	* Fixed piVars initialisation when going back from error page
 	* Added new option to send empty values (and markers) in emails
