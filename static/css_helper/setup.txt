@@ -1,0 +1,3 @@
+[userFunc = user_powermailOnCurrentPage]
+page.includeCSS.powermail_frontend_helper = EXT:powermail/res/css/powermail_frontend_helper.css
+[end]

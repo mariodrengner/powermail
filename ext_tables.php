@@ -8,6 +8,7 @@ $extRelPath = t3lib_extMgm::extRelPath($_EXTKEY);
 $extIconPath = $extRelPath . 'res/img/';
 
 t3lib_extMgm::addStaticFile($_EXTKEY, 'static/pi1/', 'Powermail');
+t3lib_extMgm::addStaticFile($_EXTKEY, 'static/css_helper/', 'Powermail helper CSS');
 t3lib_extMgm::addStaticFile($_EXTKEY, 'static/css_basic/', 'Powermail basic CSS');
 t3lib_extMgm::addStaticFile($_EXTKEY, 'static/css_fancy/', 'Powermail fancy CSS');
 $confArr = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['powermail']);
