@@ -56,13 +56,13 @@ class tx_powermail_functions_div {
 					// If value is not an array
 				if (!is_array($value)) {
 						// Remove potential XSS code
-					$array[$key] = t3lib_div::removeXSS(trim($value));
+					$array[$key] = t3lib_div::removeXSS(htmlspecialchars(trim($value)));
 				} else {
 						// Value is still an array (second level)
 					foreach ($value as $key2 => $value2) { // one loop for every key in second level
 						if (!is_array($value2)) {
 								// Remove potential XSS code
-							$array[$key][$key2] = t3lib_div::removeXSS(trim($value2));
+							$array[$key][$key2] = t3lib_div::removeXSS(htmlspecialchars(trim($value2)));
 						} else {
 								 // if array with 3 or more dimensions - delete this value
 							unset($array[$key][$key2]);

@@ -1,6 +1,7 @@
 ﻿2012-10-05 Nicole Cordes <cordes@cps-it.de>
 
 	* Added new static template for helper CSS (info icon, error message, date picker)
+	* Fixed Bug #39807: Text truncation if special character is found (Thanks to Thorsten Schneider)
 
 2012-10-04 Nicole Cordes <cordes@cps-it.de>
 
