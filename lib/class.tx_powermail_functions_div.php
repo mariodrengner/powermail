@@ -569,10 +569,19 @@ class tx_powermail_functions_div {
 			'ps' => 'application/postscript',
 
 			// ms office
-			'doc' => 'application/msword',
+			'doc' => array(
+				'application/msword',
+				'application/vnd.ms-office'
+			),
 			'rtf' => 'application/rtf',
-			'xls' => 'application/vnd.ms-excel',
-			'ppt' => 'application/vnd.ms-powerpoint',
+			'xls' => array(
+				'application/vnd.ms-excel',
+				'application/vnd.ms-office'
+			),
+			'ppt' => array(
+				'application/vnd.ms-powerpoint',
+				'application/vnd.ms-office'
+			),
 			'docx' => array(
 				'application/x-zip',
 				'application/zip',
