@@ -429,7 +429,11 @@ class tx_powermail_submit extends tslib_pibase {
 
 			// 5. If Sendername is not set, take default value
 		if (empty($this->sendername)) { // if no sendername was defined (see 1.)
-			$this->sendername = $this->extKey; // take "powermail" as sendername
+			if (!empty($this->sender)) {
+				$this->sendername = $this->sender;
+			} else {
+				$this->sendername = $this->extKey; // take "powermail" as sendername
+			}
 		}
 
 		return FALSE;
