@@ -268,7 +268,7 @@ class tx_powermail_mandatory extends tslib_pibase {
 		));
 		$patternArray = array_merge($patternArray, array_fill_keys(
 			array('validate-url', 'url'),
-			'%^(https?:\/\/)?[a-z0-9\.\-]+\.[a-z\.]{2,6}[#&+_\?\/\w \.\-=]*$%i'
+			'%^(https?:\/\/)?[a-z0-9][a-z0-9\.\-]+\.[a-z\.]{2,6}[#&+_\?\/\w \.\-=]*$%i'
 		));
 		$patternArray = array_merge($patternArray, array_fill_keys(
 			array('validate-digits', 'numbers'),

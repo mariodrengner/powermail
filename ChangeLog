@@ -1,4 +1,8 @@
-﻿2012-11-22 Nicole Cordes <cordes@cps-it.de>
+﻿2012-12-13 Nicole Cordes <cordes@cps-it.de>
+
+	* Fixed error in regular expression for urls
+
+2012-11-22 Nicole Cordes <cordes@cps-it.de>
 
 	* Added fallback for empty sendername in emails to the email address (before setting it to "powermail")
 	* Fixed Bug #42711: Mime-type for powerpoint is wrong (Thanks to Chris Mueller)
