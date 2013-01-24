@@ -1,4 +1,8 @@
-﻿2012-12-13 Nicole Cordes <cordes@cps-it.de>
+﻿2013-01-24 Nicole Cordes <cordes@cps-it.de>
+
+	* Added possibility to define default values for the recipient email and name in TypoScript (email.default_recipient)
+
+2012-12-13 Nicole Cordes <cordes@cps-it.de>
 
 	* Fixed error in regular expression for urls
 

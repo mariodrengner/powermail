@@ -156,10 +156,12 @@ class tx_powermail_submit extends tslib_pibase {
 			if (t3lib_div::validEmail($this->cObj->cObjGetSingle($this->conf['email.'][$this->subpart . '.']['sender.']['email'], $this->conf['email.'][$this->subpart . '.']['sender.']['email.']))) { // if overwrite value was set in ts
 				$this->maildata['sender'] = $this->cObj->cObjGetSingle($this->conf['email.'][$this->subpart . '.']['sender.']['email'], $this->conf['email.'][$this->subpart . '.']['sender.']['email.']); // overwrite sender email
 			}
+
 			$this->maildata['sendername'] = $this->username; // set sendername
 			if (strlen($this->cObj->cObjGetSingle($this->conf['email.'][$this->subpart . '.']['sender.']['name'], $this->conf['email.'][$this->subpart . '.']['sender.']['name.'])) > 1) { // if sendername should be overwritten by typoscript
 				$this->maildata['sendername'] = $this->cObj->cObjGetSingle($this->conf['email.'][$this->subpart . '.']['sender.']['name'], $this->conf['email.'][$this->subpart . '.']['sender.']['name.']); // overwrite sender name
 			}
+
 			$this->maildata['subject'] = $this->subject_r; // set subject
 			$this->maildata['cc'] = (isset($this->CCReceiver) ? $this->CCReceiver : ''); // carbon copy (take email addresses or nothing if not available)
 		} elseif ($this->subpart == 'sender_mail') { // extended settings: mail to sender
@@ -168,10 +170,12 @@ class tx_powermail_submit extends tslib_pibase {
 			if (t3lib_div::validEmail($this->cObj->cObjGetSingle($this->conf['email.'][$this->subpart . '.']['sender.']['email'], $this->conf['email.'][$this->subpart . '.']['sender.']['email.']))) { // if overwrite value was set in ts
 				$this->maildata['sender'] = $this->cObj->cObjGetSingle($this->conf['email.'][$this->subpart . '.']['sender.']['email'], $this->conf['email.'][$this->subpart . '.']['sender.']['email.']); // overwrite sender email
 			}
+
 			$this->maildata['sendername'] = $this->sendername; // set sendername
 			if (strlen($this->cObj->cObjGetSingle($this->conf['email.'][$this->subpart . '.']['sender.']['name'], $this->conf['email.'][$this->subpart . '.']['sender.']['name.'])) > 1) { // if sendername should be overwritten by typoscript
 				$this->maildata['sendername'] = $this->cObj->cObjGetSingle($this->conf['email.'][$this->subpart . '.']['sender.']['name'], $this->conf['email.'][$this->subpart . '.']['sender.']['name.']); // overwrite sender name
 			}
+
 			$this->maildata['subject'] = $this->subject_s; // set subject
 			$this->maildata['cc'] = ''; // no cc
 		}
@@ -417,8 +421,13 @@ class tx_powermail_submit extends tslib_pibase {
 			}
 		}
 
-			// 4. Split to main receiver and to all other receivers (aa@aa.com, bb@bb.com, cc@cc.com => 1. aa@aa.com / 2. bb@bb.com, cc@cc.com)
-		if (isset($emails)) { // if email string is set
+			// 4. Fallback to default TS settings
+		if (empty($emails)) {
+			$emails = $this->cObj->cObjGetSingle($this->conf['email.']['default_recipient.']['email'], $this->conf['email.']['default_recipient.']['email.']);
+		}
+
+			// 5. Split to main receiver and to all other receivers (aa@aa.com, bb@bb.com, cc@cc.com => 1. aa@aa.com / 2. bb@bb.com, cc@cc.com)
+		if (!empty($emails)) { // if email string is set
 			if (strpos($emails, ',') > 1) { // if there is a , in the string (more than only one email is set)
 				$this->MainReceiver = substr($emails, 0, strpos($emails, ',')); // aa@aa.com
 				$this->CCReceiver = substr($emails, trim(strpos($emails, ',') + 1)); // bb@bb.com, cc@cc.com
@@ -427,12 +436,18 @@ class tx_powermail_submit extends tslib_pibase {
 			}
 		}
 
-			// 5. If Sendername is not set, take default value
+			// 6. If Sendername is not set, take default value
 		if (empty($this->sendername)) { // if no sendername was defined (see 1.)
-			if (!empty($this->sender)) {
-				$this->sendername = $this->sender;
-			} else {
-				$this->sendername = $this->extKey; // take "powermail" as sendername
+				// Fallback to default TS settings
+			$this->sendername = $this->cObj->cObjGetSingle($this->conf['email.']['default_recipient.']['name'], $this->conf['email.']['default_recipient.']['name.']);
+
+				// If still not set take email address
+			if (empty($this->sendername)) {
+				if (!empty($this->MainReceiver)) {
+					$this->sendername = $this->MainReceiver;
+				} else {
+					$this->sendername = $this->extKey; // take "powermail" as sendername
+				}
 			}
 		}
 

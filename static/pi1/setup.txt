@@ -76,6 +76,15 @@ plugin.tx_powermail_pi1 {
 			#10.wrap = |,
 		}
 
+		# Settings for the recipient if not filled in flexform
+		default_recipient {
+			email = TEXT
+			email.value =
+
+			name = TEXT
+			name.value =
+		}
+
 		# Settings for mail to the default receiver(s)
 		recipient_mail {
 			# Add some attachments to the email (wrap every attachment with , if you want to add more than only one)
