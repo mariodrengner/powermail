@@ -245,6 +245,31 @@ plugin.tx_powermail_pi1 {
 		htmlSpecialChars = 1
 	}
 
+	# target of the form
+	formbackaction = TEXT
+	formbackaction {
+		stdWrap.typolink {
+			parameter.data = TSFE:id
+			returnLast = url
+			useCacheHash = 1
+			section.field = uid
+			section.override.field = _LOCALIZED_UID
+			section.override.if.isTrue.field = _LOCALIZED_UID
+			additionalParams.cObject = COA
+			additionalParams.cObject {
+				10 = TEXT
+				10 {
+					wrap = &tx_powermail_pi1[multiple]=|
+					required = 1
+					field = tx_powermail_fieldsets
+					if.value = 2
+					if.equals.field = tx_powermail_multiple
+				}
+			}
+		}
+		htmlSpecialChars = 1
+	}
+
 	format {
 		date = {$plugin.powermail.format.date}
 		datetime = {$plugin.powermail.format.datetime}

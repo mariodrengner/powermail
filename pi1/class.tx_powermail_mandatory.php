@@ -70,18 +70,9 @@ class tx_powermail_mandatory extends tslib_pibase {
 		// Fill Markers
 		$this->markerArray = $this->markers->GetMarkerArray($this->conf, $this->sessionfields, $this->cObj, 'mandatory'); // Fill markerArray
 
-		$anchorId = ($this->cObj->data['_LOCALIZED_UID'] > 0 ? $this->cObj->data['_LOCALIZED_UID'] : $this->cObj->data['uid']);
-		$targetLinkParams = array(
-			'returnLast' => 'url',
-			'parameter' => $GLOBALS['TSFE']->id,
-			'useCacheHash' => 1,
-			'additionalParams' => (($this->cObj->data['tx_powermail_multiple'] == 2)
-				? '&tx_powermail_pi1[multiple]=' . $this->cObj->data['tx_powermail_fieldsets']
-				: '')
-			//'no_cache' => 1
-			//'section' =>
-		);
-		$this->markerArray['###POWERMAIL_TARGET###'] = htmlspecialchars($this->cObj->typolink('x', $targetLinkParams) . '#c' . $anchorId);
+		// Enable TypoScript generation of form action
+		$this->cObj->start($this->cObj->data, 'tx_powermail_fieldsets');
+		$this->markerArray['###POWERMAIL_TARGET###'] = $this->cObj->cObjGetSingle($this->conf['formbackaction'], $this->conf['formbackaction.']);
 		$this->markerArray['###POWERMAIL_NAME###'] = $this->cObj->data['tx_powermail_title'] . '_mandatory'; // Fill Marker with formname
 		$this->markerArray['###POWERMAIL_METHOD###'] = $this->conf['form.']['method']; // Form method
 

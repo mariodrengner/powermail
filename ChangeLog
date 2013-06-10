@@ -1,4 +1,9 @@
-﻿2013-01-24 Nicole Cordes <cordes@cps-it.de>
+﻿2013-06-11 Nicole Cordes <cordes@cps-it.de>
+
+	* Added security fix of version 1.6.10
+	* Added feature 37453: Provide backaction (Thanks to Jan Bednarik)
+
+2013-01-24 Nicole Cordes <cordes@cps-it.de>
 
 	* Added possibility to define default values for the recipient email and name in TypoScript (email.default_recipient)
 
