@@ -85,6 +85,10 @@ class tx_powermail_html extends tslib_pibase {
 					break;
 				case 'captcha':
 					$this->content = $this->html_captcha(); // generate captcha request
+						// Unset captcha information
+					unset($this->sessionfields['OK'][$this->uid]);
+					$GLOBALS['TSFE']->fe_user->setKey('ses', $this->extKey . '_' . ($this->cObj->data['_LOCALIZED_UID'] > 0 ? $this->cObj->data['_LOCALIZED_UID'] : $this->cObj->data['uid']), $this->sessionfields); // Generate Session without ERRORS
+					$GLOBALS['TSFE']->storeSessionData(); // Save session
 					break;
 				case 'radio':
 					$this->content = $this->html_radio(); // generate radio buttons <input type="radio"...

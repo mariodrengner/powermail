@@ -399,37 +399,46 @@ class tx_powermail_mandatory extends tslib_pibase {
 					// sr_freecap
 					if (t3lib_extMgm::isLoaded('sr_freecap', 0) && $this->conf['captcha.']['use'] == 'sr_freecap') { // use sr_freecap if available
 
-						require_once(t3lib_extMgm::extPath('sr_freecap') . 'pi2/class.tx_srfreecap_pi2.php');
-						$this->freeCap = t3lib_div::makeInstance('tx_srfreecap_pi2');
-						session_start(); // start session
+						if ($this->sessionfields['OK'][$row['uid']] !== 'sr_freecap') {
+							require_once(t3lib_extMgm::extPath('sr_freecap') . 'pi2/class.tx_srfreecap_pi2.php');
+							$this->freeCap = t3lib_div::makeInstance('tx_srfreecap_pi2');
+							session_start(); // start session
 
-						if ($this->sessionfields['uid' . $row['uid']] == '') { // if captcha value is empty
+							if ($this->sessionfields['uid' . $row['uid']] == '') { // if captcha value is empty
 
-							$this->sessionfields['ERROR'][$row['uid']][] = $this->pi_getLL('error_captcha_empty'); // write error message to session
+								$this->sessionfields['ERROR'][$row['uid']][] = $this->pi_getLL('error_captcha_empty'); // write error message to session
 
-						} elseif (($_SESSION['sr_freecap_word_hash'] != md5($this->sessionfields['uid' . $row['uid']])) && ($_SESSION['sr_freecap_word_hash'] != md5($this->sessionfields['uid' . $row['uid']] . "\n")) && ($GLOBALS['TSFE']->fe_user->sesData['tx_sr_freecap']['sr_freecap_word_hash'] != md5($this->sessionfields['uid' . $row['uid']])) && (is_object($this->freeCap) && !$this->freeCap->checkWord($this->sessionfields['uid' . $row['uid']]))
-						) {
+							} elseif (
+								(is_object($this->freeCap) && !$this->freeCap->checkWord($this->sessionfields['uid' . $row['uid']]))
+							) {
 
-							$this->sessionfields['ERROR'][$row['uid']][] = $this->pi_getLL('error_captcha_wrong'); // write error message to session
+								$this->sessionfields['ERROR'][$row['uid']][] = $this->pi_getLL('error_captcha_wrong'); // write error message to session
 
+							} else {
+								$this->sessionfields['OK'][$row['uid']] = 'sr_freecap';
+							}
 						}
 					} // captcha
 					elseif (t3lib_extMgm::isLoaded('captcha', 0) && $this->conf['captcha.']['use'] == 'captcha') { // use captcha if available
 
-						session_start(); // start session
-						$captchaStr = $_SESSION['tx_captcha_string']; // get captcha value from session
+						if ($this->sessionfields['OK'][$row['uid']] !== 'captcha') {
+							session_start(); // start session
+							$captchaStr = $_SESSION['tx_captcha_string']; // get captcha value from session
 
-						if ($this->sessionfields['uid' . $row['uid']] == '') { // if captcha value is empty
-							$this->sessionfields['ERROR'][$row['uid']][] = $this->pi_getLL('error_captcha_empty'); // write error message to session
-						} elseif ($this->sessionfields['uid' . $row['uid']] != $captchaStr) { // if captcha value is wrong
-							$this->sessionfields['ERROR'][$row['uid']][] = $this->pi_getLL('error_captcha_wrong'); // write error message to session
+							if ($this->sessionfields['uid' . $row['uid']] == '') { // if captcha value is empty
+								$this->sessionfields['ERROR'][$row['uid']][] = $this->pi_getLL('error_captcha_empty'); // write error message to session
+							} elseif ($this->sessionfields['uid' . $row['uid']] != $captchaStr) { // if captcha value is wrong
+								$this->sessionfields['ERROR'][$row['uid']][] = $this->pi_getLL('error_captcha_wrong'); // write error message to session
+							} else {
+								$this->sessionfields['OK'][$row['uid']] = 'captcha';
+							}
 						}
 					}
 
 					// jm_recaptcha
 					elseif (t3lib_extMgm::isLoaded('jm_recaptcha', 0) && $this->conf['captcha.']['use'] == 'recaptcha') { // use recaptcha if available
 
-						if (!$this->sessionfields['OK'][$row['uid']]) { // do this check only if recaptcha gave not ok before // if ok, you don't have to check again if captcha is right
+						if ($this->sessionfields['OK'][$row['uid']] !== 'jm_recaptcha') { // do this check only if recaptcha gave not ok before // if ok, you don't have to check again if captcha is right
 							require_once(t3lib_extMgm::extPath('jm_recaptcha') . 'class.tx_jmrecaptcha.php'); // include recaptcha class
 							$recaptcha = t3lib_div::makeInstance('tx_jmrecaptcha'); // new object
 
@@ -437,7 +446,7 @@ class tx_powermail_mandatory extends tslib_pibase {
 							if (!$status['verified']) { // if code is ok
 								$this->sessionfields['ERROR'][$row['uid']][] = $this->pi_getLL('error_captcha_wrong'); // error message
 							} else { // code ok
-								$this->sessionfields['OK'][$row['uid']] = 'recaptcha'; // recaptcha code is ok - set an ok to the session for further checks
+								$this->sessionfields['OK'][$row['uid']] = 'jm_recaptcha'; // recaptcha code is ok - set an ok to the session for further checks
 							}
 						}
 					}
@@ -445,13 +454,17 @@ class tx_powermail_mandatory extends tslib_pibase {
 					// wt_calculating_captcha
 					elseif (t3lib_extMgm::isLoaded('wt_calculating_captcha', 0) && $this->conf['captcha.']['use'] == 'wt_calculating_captcha') { // use wt_calculating_captcha if available
 
-						require_once(t3lib_extMgm::extPath('wt_calculating_captcha') . 'class.tx_wtcalculatingcaptcha.php'); // include captcha class
-						$captcha = t3lib_div::makeInstance('tx_wtcalculatingcaptcha'); // generate object
+						if ($this->sessionfields['OK'][$row['uid']] !== 'wt_calculating_captcha') {
+							require_once(t3lib_extMgm::extPath('wt_calculating_captcha') . 'class.tx_wtcalculatingcaptcha.php'); // include captcha class
+							$captcha = t3lib_div::makeInstance('tx_wtcalculatingcaptcha'); // generate object
 
-						if ($this->sessionfields['uid' . $row['uid']] == '') { // if captcha value is empty
-							$this->sessionfields['ERROR'][$row['uid']][] = $this->pi_getLL('error_captcha_empty'); // write error message to session
-						} elseif (!$captcha->correctCode($this->sessionfields['uid' . $row['uid']])) { // if captcha value is wrong
-							$this->sessionfields['ERROR'][$row['uid']][] = $this->pi_getLL('error_captcha_wrong'); // write error message to session
+							if ($this->sessionfields['uid' . $row['uid']] == '') { // if captcha value is empty
+								$this->sessionfields['ERROR'][$row['uid']][] = $this->pi_getLL('error_captcha_empty'); // write error message to session
+							} elseif (!$captcha->correctCode($this->sessionfields['uid' . $row['uid']])) { // if captcha value is wrong
+								$this->sessionfields['ERROR'][$row['uid']][] = $this->pi_getLL('error_captcha_wrong'); // write error message to session
+							} else {
+								$this->sessionfields['OK'][$row['uid']] = 'wt_calculating_captcha'; // recaptcha code is ok - set an ok to the session for further checks
+							}
 						}
 					}
 				}
