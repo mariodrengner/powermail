@@ -170,7 +170,7 @@
 			<label index="tx_powermail_forms.sender">E-Mail Adresse des Absenders</label>
 			<label index="tx_powermail_forms.sendername">Name des Absenders</label>
 			<label index="tx_powermail_forms.confirm">Bestätigungsseite aktivieren</label>
-			<label index="tx_powermail_forms.startingpoint">Speicherort für Mails (leer für gleiche Seite)</label>
+			<label index="tx_powermail_forms.startingpoint">Speicherort für Mails</label>
 			<label index="tx_powermail_forms.multiple">Mehrere Schritte (jedes Fieldset ist eine eigene Seite)</label>
 			<label index="tx_powermail_forms.multiple.I.0">Zeige alle Fieldsets auf einer Seite (Standard)</label>
 			<label index="tx_powermail_forms.multiple.I.1">Mehrere Seiten (Clientseitig)</label>
