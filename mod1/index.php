@@ -22,11 +22,6 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-unset($MCONF);
-require_once('conf.php');
-require_once($BACK_PATH . 'init.php');
-require_once($BACK_PATH . 'template.php');
-
 $LANG->includeLLFile('EXT:powermail/mod1/locallang.xml');
 $BE_USER->modAccess($MCONF, 1);
 

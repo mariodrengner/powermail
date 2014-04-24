@@ -30,7 +30,7 @@ Powermail.noRows = {
 
 Powermail.topMenu = {
 	init: function() {
-        var filterUrlPart = '&pid=' + Powermail.statics.pid + '&startDateTime=' + Powermail.statics.startDateTime + '&endDateTime=' + Powermail.statics.endDateTime;
+        var filterUrlPart = '&M=web_txpowermailM1&pid=' + Powermail.statics.pid + '&startDateTime=' + Powermail.statics.startDateTime + '&endDateTime=' + Powermail.statics.endDateTime;
         var xls_button = Powermail.statics.enableXlsExport ? {tag: 'a', href: '?export=xls' + filterUrlPart, target:'_self', html: Powermail.statics.excelIcon, title: Powermail.lang.exportExcelText} : {};
         var csv_button = Powermail.statics.enableCsvExport ? {tag: 'a', href: '?export=csv' + filterUrlPart, target:'_self', html: Powermail.statics.csvIcon, title: Powermail.lang.exportCsvText} : {};
         var html_button = Powermail.statics.enableHtmlExport ? {tag: 'a', href: '?export=html' + filterUrlPart, target:'_self', html: Powermail.statics.htmlIcon, title: Powermail.lang.exportHtmlText} : {};
