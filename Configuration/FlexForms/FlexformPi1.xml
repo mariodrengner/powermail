@@ -42,7 +42,9 @@
 											<pid>###CURRENT_PID###</pid>,
 											<setValue>set</setValue>
 										</params>
-										<script>wizard_add.php</script>
+										<module type="array">
+                                            						<name>wizard_add</name>
+                                        					</module>
 									</add>
 									<!-- Edit don't work - see TYPO3 bug at http://forge.typo3.org/issues/34420 -->
 									<!--<edit>-->
@@ -277,7 +279,12 @@
 										<type>popup</type>
 										<title>Link</title>
 										<icon>link_popup.gif</icon>
-										<script>browse_links.php?mode=wizard</script>
+										<module type="array">
+					                                            <name>wizard_element_browser</name>
+					                                            <urlParameters type="array">
+					                                                <mode>wizard</mode>
+					                                            </urlParameters>
+										</module>
 										<JSopenParams>height=300,width=500,status=0,menubar=0,scrollbars=1</JSopenParams>
 									</link>
 								</wizards>
